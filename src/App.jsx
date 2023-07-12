@@ -1,8 +1,11 @@
 import { Routes, Route } from 'react-router-dom'
+
 import Home from './components/Home'
-import About from './components/About'
+import Course from './components/Course'
 import CreateCourse from './components/CreateCourse'
 import Navbar from './components/Navbar'
+import Progress from './components/Progress'
+import Discussion from './components/Discussion'
 
 function App() {
   return (
@@ -10,8 +13,10 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="about" element={<About />} />
+        <Route path="courses" element={<Course />} />
         <Route path="create/course" element={<CreateCourse />} />
+        <Route path="progress" element={<Progress />} />
+        <Route path="discussion" element={<Discussion />} />
       </Routes>
     </>
   )

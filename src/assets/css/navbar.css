@@ -34,6 +34,12 @@ nav a:hover {
 	color: var(--secondaryColor);
 }
 
+nav a.active {
+	text-decoration: none;
+	font-weight: bold;
+	color: #26A641;
+}
+
 header .nav-btn {
 	padding: 5px;
 	cursor: pointer;
@@ -52,10 +58,26 @@ nav {
 	align-items: center;
 }
 
+.logout {
+	/* padding-left: auto; */
+	margin-right: -25rem;
+	margin-left: 25rem;
+}
+
+img {
+	text-decoration: none;
+	color: var(--textColor);
+}
+
 @media only screen and (max-width: 1024px) {
 	header .nav-btn {
 		visibility: visible;
 		opacity: 1;
+	}
+	
+	.logout {
+		margin-right: 25rem;
+		/* margin-left: -25rem; */
 	}
 
 	header nav {
