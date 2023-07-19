@@ -40,25 +40,25 @@ const AddCourseContent = () => {
         console.log('items:', items)
     }
 
-    const handleContentChange = (val) => {
+    const handleContentChange = (val, i) => {
         const key = "text"
-        setItems((p) => [...p, {[key]:val}])
+        // setItems((p) => [...p, {[key]:val}])
         // setUserData({...userData, "items": [...userData.items, {[key]: val}]})
 
         // const items = userData['items']
 
-        const uniqueItems = items.reduce((acc, {key, val}) => {
-            const existingItemIdx = acc.findIndex(item => item.key === key)
-            if(existingItemIdx !== -1) acc[existingItemIdx] = {key, val}
-            else acc.push({key, val})
+        const res = items.map((obj, idx) => {
+            if(i === idx){
+                if(obj.hasOwnProperty("text")) obj.text = val
+            }
 
-            return acc
-        }, [])
+            return obj
+        })
 
         //const uniqueItems = [...items.reduce((map, { key, val }) => map.set(key, { key, val }), new Map()).values()];
 
-        setItems(uniqueItems)
-        setUserData({...userData, "items": uniqueItems})
+        setItems(res)
+        setUserData({...userData, "items": res})
     }
 
     return (
@@ -66,7 +66,7 @@ const AddCourseContent = () => {
             <div className="course-container" onDrop={handleDrop} onDragOver={allowDrop}>
                 {items.map((obj, idx) => (
                     <div className="course-item" key={idx}>
-                        {obj.hasOwnProperty("text") && <div><TextField margin="normal" value={obj.text} onChange={(e) => handleContentChange(e.target.value)} variant="outlined" color="secondary" /></div>}
+                        {obj.hasOwnProperty("text") && <div><TextField margin="normal" value={obj.text} onChange={(e) => handleContentChange(e.target.value, idx)} variant="outlined" color="secondary" /></div>}
                     </div>
                 ))}
             </div>
