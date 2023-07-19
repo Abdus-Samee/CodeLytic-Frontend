@@ -10,8 +10,12 @@ const AddCourseContent = () => {
     const { setCurrentStep, userData, setUserData } = useContext(multiStepContext)
 
     useEffect(() => {
-        console.log(items)
-    }, [items])
+        const userDataItems = (userData['items'] === undefined)? [] : userData['items']
+        // console.log(userDataItems)
+        setItems(userDataItems)
+
+        // items.map((k, o) => console.log(k, o))
+    }, [])
 
     const handleDragStart = (event, type) => {
 
@@ -24,16 +28,45 @@ const AddCourseContent = () => {
     const handleDrop = (event) => {
         event.preventDefault();
 
-        const newItem = "text"
-        setItems((prevItems) => [...prevItems, newItem])
+        const key = "text"
+        const val = ""
+        // setItems((prevItems) => [...prevItems, newItem])
+        // setItems((p) => [...p, {[key]:val}])
+        const p = items;
+        p.push({[key]:val})
+        setItems(p)
+        setUserData({...userData, "items": items});
+        console.log('data:', userData['items'])
+        console.log('items:', items)
+    }
+
+    const handleContentChange = (val) => {
+        const key = "text"
+        setItems((p) => [...p, {[key]:val}])
+        // setUserData({...userData, "items": [...userData.items, {[key]: val}]})
+
+        // const items = userData['items']
+
+        const uniqueItems = items.reduce((acc, {key, val}) => {
+            const existingItemIdx = acc.findIndex(item => item.key === key)
+            if(existingItemIdx !== -1) acc[existingItemIdx] = {key, val}
+            else acc.push({key, val})
+
+            return acc
+        }, [])
+
+        //const uniqueItems = [...items.reduce((map, { key, val }) => map.set(key, { key, val }), new Map()).values()];
+
+        setItems(uniqueItems)
+        setUserData({...userData, "items": uniqueItems})
     }
 
     return (
         <div>
             <div className="course-container" onDrop={handleDrop} onDragOver={allowDrop}>
-                {items.map((item, key) => (
-                    <div className="course-item" key={key}>
-                        {item === "text" && <div><TextField margin="normal" variant="outlined" color="secondary" /></div>}
+                {items.map((obj, idx) => (
+                    <div className="course-item" key={idx}>
+                        {obj.hasOwnProperty("text") && <div><TextField margin="normal" value={obj.text} onChange={(e) => handleContentChange(e.target.value)} variant="outlined" color="secondary" /></div>}
                     </div>
                 ))}
             </div>
