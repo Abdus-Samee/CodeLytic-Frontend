@@ -9,6 +9,10 @@ const AddCourseContent = () => {
     const [items, setItems] = useState([])
     const { setCurrentStep, userData, setUserData } = useContext(multiStepContext)
 
+    const contentItems = [
+        'Text Box', 'Image', 'Link', 'List'
+    ]
+
     useEffect(() => {
         const userDataItems = (userData['items'] === undefined)? [] : userData['items']
         // console.log(userDataItems)
@@ -18,7 +22,7 @@ const AddCourseContent = () => {
     }, [])
 
     const handleDragStart = (event, type) => {
-
+        event.dataTransfer.setData('type', type)
     }
       
     const allowDrop = (event) => {
@@ -26,16 +30,22 @@ const AddCourseContent = () => {
     }
       
     const handleDrop = (event) => {
-        event.preventDefault();
+        event.preventDefault()
 
-        const key = "text"
+        const type = event.dataTransfer.getData('type')
+        let key = ""
+        if(type === 'Text Box') key = "text"
+        else if(type === "Image") key = "img"
+        else if(type === "Link") key = "a"
+        else if(type === "List") key = "ul"
+
         const val = ""
         // setItems((prevItems) => [...prevItems, newItem])
         // setItems((p) => [...p, {[key]:val}])
-        const p = items;
+        const p = items
         p.push({[key]:val})
         setItems(p)
-        setUserData({...userData, "items": items});
+        setUserData({...userData, "items": items})
         console.log('data:', userData['items'])
         console.log('items:', items)
     }
@@ -63,13 +73,23 @@ const AddCourseContent = () => {
 
     return (
         <div>
-            <div className="course-container" onDrop={handleDrop} onDragOver={allowDrop}>
-                {items.map((obj, idx) => (
-                    <div className="course-item" key={idx}>
-                        {obj.hasOwnProperty("text") && <div><TextField margin="normal" value={obj.text} onChange={(e) => handleContentChange(e.target.value, idx)} variant="outlined" color="secondary" /></div>}
-                    </div>
-                ))}
-            </div>
+            <div className="box">
+                <div className="course-container" onDrop={handleDrop} onDragOver={allowDrop}>
+                    {items.map((obj, idx) => (
+                        <div className="course-item" key={idx}>
+                            {obj.hasOwnProperty("text") && <div><TextField fullWidth margin="normal" value={obj.text} onChange={(e) => handleContentChange(e.target.value, idx)} variant="outlined" color="secondary" /></div>}
+                        </div>
+                    ))}
+                </div>
+                <div className="content-panel">
+                    <h3>Add Content</h3>
+                    {contentItems.map((item, key) => (
+                        <div key={key} className="content-item" draggable="true" onDragStart={(e) => handleDragStart(e, item)}>
+                            {item}
+                        </div>
+                    ))}
+                </div>
+                </div>
             <div>
                 <Button variant="contained" color="secondary" onClick={() => setCurrentStep(1)}>
                     Back
@@ -78,12 +98,6 @@ const AddCourseContent = () => {
                 <Button variant="contained" color="primary" onClick={() => setCurrentStep(3)}>
                     Next
                 </Button>
-            </div>
-            <div className="content-panel">
-                <h3>Add Content</h3>
-                <div className="content-item" draggable="true" onDragStart={handleDragStart}>
-                    Text Box
-                </div>
             </div>
         </div>
     )
