@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react"
 import { Button, TextField } from "@mui/material"
 
 import { multiStepContext } from "../StepContext"
+import ImageContainer from "./ImageContainer"
 
 import "../assets/css/coursecontent.css"
 
@@ -34,12 +35,18 @@ const AddCourseContent = () => {
 
         const type = event.dataTransfer.getData('type')
         let key = ""
-        if(type === 'Text Box') key = "text"
-        else if(type === "Image") key = "img"
+        let val = ""
+        if(type === 'Text Box'){
+            key = "text"
+            val = ""
+        }
+        else if(type === "Image"){
+            key = "img"
+            val = null
+        }
         else if(type === "Link") key = "a"
         else if(type === "List") key = "ul"
 
-        const val = ""
         // setItems((prevItems) => [...prevItems, newItem])
         // setItems((p) => [...p, {[key]:val}])
         const p = items
@@ -51,7 +58,6 @@ const AddCourseContent = () => {
     }
 
     const handleContentChange = (val, i) => {
-        const key = "text"
         // setItems((p) => [...p, {[key]:val}])
         // setUserData({...userData, "items": [...userData.items, {[key]: val}]})
 
@@ -71,6 +77,21 @@ const AddCourseContent = () => {
         setUserData({...userData, "items": res})
     }
 
+    const handleImageAddition = (i, imageFile) => {
+        console.log("img addition: ", i)
+        const res = items.map((obj, idx) => {
+            if(i === idx){
+                if(obj.hasOwnProperty("img")) obj.img = imageFile
+            }
+
+            return obj
+        })
+
+        setItems(res)
+        setUserData({...userData, "items": res})
+        console.log(userData)
+    }
+
     return (
         <div>
             <div className="box">
@@ -78,6 +99,7 @@ const AddCourseContent = () => {
                     {items.map((obj, idx) => (
                         <div className="course-item" key={idx}>
                             {obj.hasOwnProperty("text") && <div><TextField fullWidth margin="normal" value={obj.text} onChange={(e) => handleContentChange(e.target.value, idx)} variant="outlined" color="secondary" /></div>}
+                            {obj.hasOwnProperty("img") && <div><ImageContainer src={obj.img} idx={idx} handleImageAddition={handleImageAddition} /></div>}
                         </div>
                     ))}
                 </div>

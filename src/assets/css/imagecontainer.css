@@ -1,0 +1,26 @@
+img {
+    width: 50%;
+    height: 50%;
+    object-fit: contain;
+}
+
+.img-container {
+    width: 300px;
+    height: 300px;
+    border: 2px dashed #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+  
+.drag-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #666;
+}
+  
+button {
+    margin-top: 10px;
+}
+  
