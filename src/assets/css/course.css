@@ -1,0 +1,57 @@
+/* course.css */
+
+/* Styling for the Courses container */
+.course-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  /* Styling for individual course cards */
+  .course-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+  }
+  
+  .course-card h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  
+  .course-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Additional styles can be added here if needed */
+  
+  /* Centering the Courses container and setting overall page styles */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  /* Media query for responsiveness (adjust as needed) */
+  @media screen and (max-width: 600px) {
+    .course-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+  
