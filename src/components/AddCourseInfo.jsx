@@ -1,14 +1,23 @@
-import { useState, useContext } from "react"
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect, useContext } from "react"
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Button, TextField, Autocomplete, Stack } from "@mui/material"
 
 // import { multiStepContext } from "../StepContext"
 
 const AddCourseInfo = () => {
     // const { setCurrentStep, userData, setUserData } = useContext(multiStepContext)
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+    const location = useLocation()
     const [courseName, setCourseName] = useState("")
     const [desc, setDesc] = useState("")
+
+    useEffect(() => {
+        const { courseName, desc } = location.state || {}
+        if(courseName && desc){
+            setCourseName(courseName)
+            setDesc(desc)
+        }
+    }, [])
 
     const tags = [
         { label: 'sorting' },

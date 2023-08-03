@@ -22,7 +22,7 @@
   .content-panel {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     padding: 10px;
     background-color: #f5f5f5;
     margin-top: 2vh;
@@ -36,3 +36,6 @@
     cursor: pointer;
   }
   
+  .btn-submit {
+    margin-left: 10vw;
+  }

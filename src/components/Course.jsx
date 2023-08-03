@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import "../assets/css/course.css";
+import React, { useState } from "react"
+import "../assets/css/course.css"
 
 const Course = () => {
     const [courses, setCourses] = useState([
@@ -10,9 +10,9 @@ const Course = () => {
   
     const addCourse = (name) => {
       // Generate a unique ID for the new course
-      const newId = Math.max(...courses.map((course) => course.id)) + 1;
-      const newCourse = { id: newId, name };
-      setCourses((prevCourses) => [...prevCourses, newCourse]);
+      const newId = Math.max(...courses.map((course) => course.id)) + 1
+      const newCourse = { id: newId, name }
+      setCourses((prevCourses) => [...prevCourses, newCourse])
     };
   
     return (
@@ -28,17 +28,17 @@ const Course = () => {
         </div>
         <AddCourseForm addCourse={addCourse} />
       </div>
-    );
-  };
+    )
+  }
   
   const AddCourseForm = ({ addCourse }) => {
-    const [courseName, setCourseName] = useState("");
+    const [courseName, setCourseName] = useState("")
   
     const handleSubmit = (e) => {
       e.preventDefault();
       if (courseName.trim() !== "") {
-        addCourse(courseName.trim());
-        setCourseName("");
+        addCourse(courseName.trim())
+        setCourseName("")
       }
     };
   
