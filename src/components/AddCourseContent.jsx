@@ -16,10 +16,7 @@ const AddCourseContent = () => {
 
     useEffect(() => {
         const userDataItems = (userData['items'] === undefined)? [] : userData['items']
-        // console.log(userDataItems)
         setItems(userDataItems)
-
-        // items.map((k, o) => console.log(k, o))
     }, [])
 
     const handleDragStart = (event, type) => {

@@ -2,6 +2,8 @@ import { Routes, Route } from 'react-router-dom'
 
 import Home from './components/Home'
 import Course from './components/Course'
+import AddCourseInfo from './components/AddCourseInfo'
+import UserCourses from './components/UserCourses'
 import CreateCourse from './components/CreateCourse'
 import Navbar from './components/Navbar'
 import Progress from './components/Progress'
@@ -15,7 +17,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="courses" element={<Course />} />
-        <Route path="create/course" element={<StepContext><CreateCourse /></StepContext>} />
+        <Route path="create/course" element={<AddCourseInfo />} />
+        <Route path="user/:id/courses" element={<UserCourses />} />
         <Route path="progress" element={<Progress />} />
         <Route path="discussion" element={<Discussion />} />
       </Routes>
