@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { Button, TextField } from "@mui/material"
 
 // import { multiStepContext } from "../StepContext"
@@ -9,6 +9,7 @@ import "../assets/css/coursecontent.css"
 
 const AddCourseContent = () => {
     const location = useLocation()
+    const navigate = useNavigate()
     const [items, setItems] = useState([])
     // const { setCurrentStep, userData, setUserData } = useContext(multiStepContext)
 
@@ -81,6 +82,22 @@ const AddCourseContent = () => {
         setItems(res)
         // setUserData({...userData, "items": res})
         console.log(items)
+    }
+
+    const handleSubmitLecture = () => {
+        console.log("Lecture Content: ", items)
+
+        const userId = 1;
+
+        // navigate(`/user/${userId}/courses`, {
+        //     state: {
+        //         courseName,
+        //         desc
+        //     }
+        // })
+
+        // update subsection data `items` to database
+        // navigate to user courses
     }
 
     return (
