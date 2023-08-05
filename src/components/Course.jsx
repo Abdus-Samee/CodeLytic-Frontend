@@ -1,33 +1,23 @@
-import React, { useEffect } from "react";
-import { Card, CardContent, Typography, Button } from "@mui/material";
+import React from "react";
+import { Card, CardContent, Typography, Button} from "@mui/material";
+import LockIcon from '@mui/icons-material/Lock';
 import "../assets/css/course.css";
 import { Link, useNavigate } from 'react-router-dom';
 
 const Course = () => {
   const [courses, setCourses] = React.useState([
-    { id: 1, name: "Dynamic Programming", quizzes: 3, lectures: 5 },
-    { id: 2, name: "Searching", quizzes: 2, lectures: 3 },
-    { id: 3, name: "Sorting", quizzes: 4, lectures: 6 }
+    { id: 1, name: "Dynamic Programming", quizzes: 3, lectures: 5, premium: false },
+    { id: 2, name: "Searching", quizzes: 2, lectures: 3, premium: false },
+    { id: 3, name: "Sorting", quizzes: 4, lectures: 6, premium: false },
+    { id: 4, name: "Graph", quizzes: 4, lectures: 6, premium: true}
   ]);
 
   const navigate = useNavigate();
+  
 
-  // trying to fetch data when the component first loads...
-  // useEffect(() => {
-  //   try {
-  //     setLoading(true)(async () => {
-  //       const data = await (await fetch(`${API_BASE_URL}/data`)).json();
-  //       setData(data);
-  //     })();
-  //   } catch (error) {
-  //     setError(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // })  
-
-  const handleShowCourse = (courseId) => {
-    // Navigate to the ShowCourse route with the appropriate user ID and course ID
+  const handleShowCourse = (courseId,premium) => {
+    if (!premium)
+    {// Navigate to the ShowCourse route with the appropriate user ID and course ID
     const userId = 1;
     //find the coursename with corresponding courseId
     const course = courses.find(course => course.id === courseId)
@@ -39,6 +29,7 @@ const Course = () => {
     }
   })
 }
+}
 
   return (
     <div>
@@ -49,6 +40,7 @@ const Course = () => {
             <CardContent>
               <Typography variant="h5" component="div">
                 {course.name}
+                {course.premium && <LockIcon />}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Number of Quizzes: {course.quizzes}
@@ -59,9 +51,9 @@ const Course = () => {
               <Button
                 variant="outlined"
                 color="primary"
-                onClick={() => handleShowCourse(course.id)}
+                onClick={() => handleShowCourse(course.id,course.premium)}
               >
-                Start Course
+                {course.premium ?null:"Start Course"}
               </Button>
             </CardContent>
           </Card>
