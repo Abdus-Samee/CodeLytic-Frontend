@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useLocation, useNavigate } from "react-router-dom"
-import { Container, Box, Typography, Button, Stepper, Step, StepButton } from '@mui/material'
+import { Container, Box, Typography, Button, Stepper, Step, StepButton, Divider, Grid, Card, CardContent, CardActions } from '@mui/material'
 
 const ShowCourse = ({ match }) => {
   const params = useParams()
@@ -19,6 +19,14 @@ const ShowCourse = ({ match }) => {
     { title: 'sorting', content: 'gg' },
     { title: 'dfs', content: 'mb' },
     { title: 'bfs', content: 'good' },
+  ]
+
+  const quizzes = [
+    { title: 'Quiz 1' },
+    { title: 'Quiz 2' },
+    { title: 'Quiz 3' },
+    { title: 'Quiz 4' },
+    { title: 'Quiz 5' },
   ]
 
   const totalSteps = () => {
@@ -43,26 +51,26 @@ const ShowCourse = ({ match }) => {
         ? // It's the last step, but not all steps have been completed,
           // find the first step that has been completed
           lectures.findIndex((step, i) => !(i in completed))
-        : activeStep + 1;
+        : activeStep + 1
       
     if(newActiveStep >= totalSteps()) newActiveStep = 0
 
-    setActiveStep(newActiveStep);
+    setActiveStep(newActiveStep)
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setActiveStep((prevActiveStep) => prevActiveStep - 1)
   };
 
   const handleStep = (step) => () => {
-    setActiveStep(step);
+    setActiveStep(step)
   };
 
   const handleComplete = () => {
-    const newCompleted = completed;
-    newCompleted[activeStep] = true;
-    setCompleted(newCompleted);
-    handleNext();
+    const newCompleted = completed
+    newCompleted[activeStep] = true
+    setCompleted(newCompleted)
+    handleNext()
   };
 
   const handleReset = () => {
@@ -136,6 +144,26 @@ const ShowCourse = ({ match }) => {
                 <Button onClick={() => navigate('/courses')}>All Courses</Button>
               </Box>
             </React.Fragment>
+            <br />
+            <Typography variant="h6">Quizzes</Typography>
+            <Divider />
+            <br />
+            <Grid container spacing={2}>
+              {quizzes.map((o, i) => (
+                <Grid item xs={3}>
+                  <Card sx={{ minWidth: 275 }} key={i}>
+                    <CardContent>
+                      <Typography variant="h5" component="div">
+                        {o.title}
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button size="small">Learn More</Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
           </div>
         </Box>
       </Container>
