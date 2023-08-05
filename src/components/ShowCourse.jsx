@@ -23,10 +23,6 @@ const ShowCourse = ({ match }) => {
 
   const quizzes = [
     { title: 'Quiz 1' },
-    { title: 'Quiz 2' },
-    { title: 'Quiz 3' },
-    { title: 'Quiz 4' },
-    { title: 'Quiz 5' },
   ]
 
   const totalSteps = () => {

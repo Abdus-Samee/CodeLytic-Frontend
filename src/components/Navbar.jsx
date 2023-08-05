@@ -15,6 +15,7 @@ function Navbar() {
 	const userId = 1
 	const courseName = 'Dynamic Programming'
 	const desc = 'Dp'
+	const img = ''
 
 	return (
 		<header>
@@ -26,7 +27,7 @@ function Navbar() {
 				<NavLink to="create/course">Create Course</NavLink>
 				<NavLink to="progress">Progress</NavLink>
 				<NavLink to="discussion">Discussion</NavLink>
-				<NavLink to={`user/${userId}`} state={{ courseName, desc }} className="profile">Profile</NavLink>	
+				<NavLink to={`user/${userId}`} state={{ courseName, desc, img }} className="profile">Profile</NavLink>	
 				<NavLink to="/" className="logout">Logout</NavLink>
 				<button
 					className="nav-btn nav-close-btn"

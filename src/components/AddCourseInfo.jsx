@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react"
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Button, TextField, Autocomplete, Stack } from "@mui/material"
+import UploadFileIcon from "@mui/icons-material/UploadFile"
 
 // import { multiStepContext } from "../StepContext"
 
@@ -10,13 +11,16 @@ const AddCourseInfo = () => {
     const location = useLocation()
     const [courseName, setCourseName] = useState("")
     const [desc, setDesc] = useState("")
+    const [img, setImg] = useState()
 
     useEffect(() => {
-        const { courseName, desc } = location.state || {}
+        const { courseName, desc, img } = location.state || {}
         if(courseName && desc){
             setCourseName(courseName)
             setDesc(desc)
         }
+
+        if(img) setImg(img)
     }, [])
 
     const tags = [
@@ -29,13 +33,18 @@ const AddCourseInfo = () => {
         { label: 'recursion' },
     ]
 
+    const handleImageUpload = (e) => {
+        setImg(URL.createObjectURL(e.target.files[0]))
+    }
+
     const handleCreateCourse = () => {
         const userId = 1;
 
         navigate(`/user/${userId}`, {
             state: {
                 courseName,
-                desc
+                desc,
+                img
             }
         })
     }
@@ -79,6 +88,12 @@ const AddCourseInfo = () => {
                         />
                     )}
                 />
+            </div>
+            <div>
+                <Button component="label" variant="outlined" startIcon={<UploadFileIcon />} sx={{ marginRight: '1rem' }}>
+                    Upload Image
+                    <input type="file" accept="image/*" hidden onChange={handleImageUpload} />
+                </Button>
             </div>
             <div>
                 <Button variant="contained" color="primary" onClick={handleCreateCourse}>

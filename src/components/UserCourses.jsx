@@ -7,13 +7,14 @@ const UserCourses = () => {
     const location = useLocation()
     const navigate = useNavigate()
     const userId = params.id
-    const { courseName, desc } = location.state
+    const { courseName, desc, img } = location.state
 
     const editCourseInfo = () => {
         navigate('/create/course', {
             state: {
                 courseName,
-                desc
+                desc,
+                img
             }
         })
     }
@@ -33,6 +34,7 @@ const UserCourses = () => {
                 <div className="course-card">
                     <h2>{courseName}</h2>
                     <p>{desc}</p>
+                    <img src={img} />
                     <button onClick={editCourseInfo}>Edit Course Info</button>
                     <button onClick={addLecture}>Add Lecture</button>
                     <button onClick={addQuiz}>Add Quiz</button>
