@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Card, CardContent, Typography, TextField, Button } from "@mui/material";
+import { Card, CardContent, Typography, Button } from "@mui/material";
 import "../assets/css/course.css";
 
 const Course = () => {
   const [courses, setCourses] = useState([
-    { id: 1, name: "Dynamic Programming" },
-    { id: 2, name: "Searching" },
-    { id: 3, name: "Sorting" }
+    { id: 1, name: "Dynamic Programming", quizzes: 3, lectures: 5 },
+    { id: 2, name: "Searching", quizzes: 2, lectures: 3 },
+    { id: 3, name: "Sorting", quizzes: 4, lectures: 6 }
   ]);
 
   return (
@@ -19,7 +19,15 @@ const Course = () => {
               <Typography variant="h5" component="div">
                 {course.name}
               </Typography>
-              {/* Add more course details or actions here if needed */}
+              <Typography variant="body2" color="text.secondary">
+                Number of Quizzes: {course.quizzes}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Number of Lectures: {course.lectures}
+              </Typography>
+              <Button variant="outlined" color="primary">
+                Start Course
+              </Button>
             </CardContent>
           </Card>
         ))}
