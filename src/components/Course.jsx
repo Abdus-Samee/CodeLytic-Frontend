@@ -19,9 +19,10 @@ const Course = () => {
     //find the coursename with corresponding courseId
     const course = courses.find(course => course.id === courseId)
     const coursename = course.name
-    navigate(`/user/${userId}/showcourse/${courseId}`,{
+    navigate(`/course/${courseId}`,{
       state: {
-        coursename
+        coursename,
+        userId
     }
   })
 }

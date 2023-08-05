@@ -22,7 +22,7 @@ function App() {
         <Route path="create/course-content" element={<AddCourseContent />} />
         <Route path="progress" element={<Progress />} />
         <Route path="discussion" element={<Discussion />} />
-        <Route path="user/:id/showcourse/:courseId" element={<ShowCourse />} /> {/* New route */}
+        <Route path="course/:courseId" element={<ShowCourse />} /> {/* New route */}
       </Routes>
     </>
   );
