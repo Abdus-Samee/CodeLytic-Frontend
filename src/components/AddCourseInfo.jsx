@@ -32,7 +32,7 @@ const AddCourseInfo = () => {
     const handleCreateCourse = () => {
         const userId = 1;
 
-        navigate(`/user/${userId}/courses`, {
+        navigate(`/user/${userId}`, {
             state: {
                 courseName,
                 desc

@@ -58,10 +58,16 @@ nav {
 	align-items: center;
 }
 
-.logout {
+.profile {
 	/* padding-left: auto; */
 	margin-right: -25rem;
 	margin-left: 25rem;
+}
+
+.logout {
+	/* padding-left: auto; */
+	margin-right: -30rem;
+	margin-left: 28rem;
 }
 
 img {

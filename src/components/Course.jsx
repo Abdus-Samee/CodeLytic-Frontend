@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, CardContent, Typography, Button } from "@mui/material";
 import "../assets/css/course.css";
 import { Link, useNavigate } from 'react-router-dom';
@@ -11,7 +11,20 @@ const Course = () => {
   ]);
 
   const navigate = useNavigate();
-  
+
+  // trying to fetch data when the component first loads...
+  // useEffect(() => {
+  //   try {
+  //     setLoading(true)(async () => {
+  //       const data = await (await fetch(`${API_BASE_URL}/data`)).json();
+  //       setData(data);
+  //     })();
+  //   } catch (error) {
+  //     setError(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // })  
 
   const handleShowCourse = (courseId) => {
     // Navigate to the ShowCourse route with the appropriate user ID and course ID

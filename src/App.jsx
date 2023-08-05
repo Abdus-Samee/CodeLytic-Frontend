@@ -18,7 +18,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="courses" element={<Course />} />
         <Route path="create/course" element={<AddCourseInfo />} />
-        <Route path="user/:id/courses" element={<UserCourses />} />
+        <Route path="user/:id/" element={<UserCourses />} />
         <Route path="create/course-content" element={<AddCourseContent />} />
         <Route path="progress" element={<Progress />} />
         <Route path="discussion" element={<Discussion />} />
