@@ -16,9 +16,9 @@ const ShowCourse = ({ match }) => {
   const [completed, setCompleted] = useState({});
 
   const lectures = [
-    { title: 'sorting', content: 'gg' },
-    { title: 'dfs', content: 'mb' },
-    { title: 'bfs', content: 'good' },
+    { title: 'sorting', content: 'Sorting algorithms: mergesort, bubblesort, quicksort etc' },
+    { title: 'dfs', content: 'Depth First Search traversal' },
+    { title: 'bfs', content: 'Breadth First Search traversal' },
   ]
 
   const quizzes = [
