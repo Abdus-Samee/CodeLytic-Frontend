@@ -105,7 +105,7 @@ const ShowCourse = ({ match }) => {
           </Stepper>
           <div>
             <React.Fragment>
-              <Typography variant="h4" sx={{ mt: 2, mb: 1, py: 1 }}>
+              <Typography color="primary" variant="h4" sx={{ mt: 2, mb: 1, py: 1 }}>
                 Lecture {activeStep + 1}
               </Typography>
               {showLecture(activeStep)}

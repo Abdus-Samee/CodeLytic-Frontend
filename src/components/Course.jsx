@@ -1,8 +1,9 @@
-import React from "react";
-import { Card, CardContent, Typography, Button} from "@mui/material";
-import LockIcon from '@mui/icons-material/Lock';
-import "../assets/css/course.css";
-import { Link, useNavigate } from 'react-router-dom';
+import React from "react"
+import { Card, CardContent, Typography, Button, Container } from "@mui/material"
+import LockIcon from '@mui/icons-material/Lock'
+import { Link, useNavigate } from 'react-router-dom'
+
+import "../assets/css/course.css"
 
 const Course = () => {
   const [courses, setCourses] = React.useState([
@@ -34,6 +35,7 @@ const Course = () => {
   return (
     <div>
       <h1>Courses</h1>
+      <Container>
       <div className="course-cards">
         {courses.map((course) => (
           <Card className="course-card" key={course.id}>
@@ -48,17 +50,20 @@ const Course = () => {
               <Typography variant="body2" color="text.secondary">
                 Number of Lectures: {course.lectures}
               </Typography>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => handleShowCourse(course.id,course.premium)}
-              >
-                {course.premium ?null:"Start Course"}
-              </Button>
+              {!course.premium && 
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => handleShowCourse(course.id,course.premium)}
+                >
+                  Show Course
+                </Button>
+              }
             </CardContent>
           </Card>
         ))}
       </div>
+      </Container>
     </div>
   );
 }

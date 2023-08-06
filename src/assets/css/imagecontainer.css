@@ -12,12 +12,14 @@ img {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    margin-left: 35%;
 }
   
 .drag-text {
     font-size: 18px;
     font-weight: bold;
     color: #666;
+    text-align: center;
 }
   
 button {
