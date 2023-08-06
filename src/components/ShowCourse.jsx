@@ -122,21 +122,7 @@ const ShowCourse = ({ match }) => {
                 <Button onClick={handleNext} sx={{ mr: 1 }}>
                   Next
                 </Button>
-                {activeStep !== lectures.length &&
-                  (completed[activeStep] ? (
-                    <Button
-                      variant="outlined"
-                      disabled
-                    >
-                      Step {activeStep + 1} already completed
-                    </Button>
-                  ) : (
-                    <Button onClick={handleComplete}>
-                      {completedSteps() === totalSteps() - 1
-                        ? 'Finish'
-                        : 'Complete Step'}
-                    </Button>
-                  ))}
+                
                 <Button onClick={() => navigate('/courses')}>All Courses</Button>
               </Box>
             </React.Fragment>
