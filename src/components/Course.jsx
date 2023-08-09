@@ -18,7 +18,6 @@ const Course = () => {
 
   useEffect(() => {
     loadAllCourses().then((res) => {
-      console.log('printing')
       console.log(res)
     }).catch((e) => console.log(e))
   }, [])

@@ -1,6 +1,5 @@
 import { myAxios } from './helper'
 
-export const loadAllCourses = async () => {
-    const res = await myAxios.get('/course/')
-    return res.data
+export const loadAllCourses = () => {
+    return myAxios.get('/course/').then((res) => res.data)
 }
