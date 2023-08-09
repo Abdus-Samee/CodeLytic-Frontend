@@ -1,20 +1,27 @@
-import React from "react"
+import { useState, useEffect } from "react"
+import { Link, useNavigate } from 'react-router-dom'
 import { Card, CardContent, Typography, Button, Container } from "@mui/material"
 import LockIcon from '@mui/icons-material/Lock'
-import { Link, useNavigate } from 'react-router-dom'
+
+import { loadAllCourses } from "../services/course-service"
 
 import "../assets/css/course.css"
 
 const Course = () => {
-  const [courses, setCourses] = React.useState([
+  const navigate = useNavigate()
+  const [courses, setCourses] = useState([
     { id: 1, name: "Dynamic Programming", quizzes: 3, lectures: 5, premium: false },
     { id: 2, name: "Searching", quizzes: 2, lectures: 3, premium: false },
     { id: 3, name: "Sorting", quizzes: 4, lectures: 6, premium: false },
     { id: 4, name: "Graph", quizzes: 4, lectures: 6, premium: true}
-  ]);
+  ])
 
-  const navigate = useNavigate();
-  
+  useEffect(() => {
+    loadAllCourses().then((res) => {
+      console.log('printing')
+      console.log(res)
+    }).catch((e) => console.log(e))
+  }, [])
 
   const handleShowCourse = (courseId,premium) => {
     if (!premium)
@@ -65,7 +72,7 @@ const Course = () => {
       </div>
       </Container>
     </div>
-  );
+  )
 }
 
-export default Course;
+export default Course
