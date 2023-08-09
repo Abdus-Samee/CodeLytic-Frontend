@@ -3,8 +3,12 @@ import {
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
-const QuizCard = ({ sl, obj }) => {
+const QuizCard = ({ sl, obj, handleEditQuestion }) => {
   const { question, ans, options } = obj
+
+  const handleEdit = () => {
+    handleEditQuestion(sl - 1)
+  }
 
   return (
     <Accordion>
@@ -48,7 +52,7 @@ const QuizCard = ({ sl, obj }) => {
             </FormControl>
           </Box>
           <Box sx={{ mt: 3, ml: 1, mb: 1 }}>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={handleEdit}>
               Edit Question
             </Button>
           </Box>

@@ -15,12 +15,16 @@ const AddCourseQuiz = () => {
   const [ans, setAns] = useState('')
   const [options, setOptions] = useState([])
   const [warning, setWarning] = useState('')
+  const [editQuestion, setEditQuestion] = useState(false)
+  const [editIdx, setEditIdx] = useState(-1)
 
+  // add an option to the list of options
   const handleOptionAddition = (option) => {
     if(!option) setWarning('No option added!')
     else setOptions((prev) => [...prev, { option: option, edit: false }])
   }
 
+  // used to edit an option
   const handleEditOption = (i) => {
     const res = options.map((obj, idx) => {
       if (i === idx) {
@@ -33,6 +37,32 @@ const AddCourseQuiz = () => {
     setOptions(res)
   }
 
+  // used to edit a quiz question
+  const handleEditQuestion = (i) => {
+    const q = quiz[i]
+    setQs(q.question)
+    setAns(q.ans)
+    setOptions(q.options)
+    setEditQuestion(true)
+    setEditIdx(i)
+  }
+
+  // helper function to update the edited question
+  const editHelper = () => {
+    const res = quiz.map((obj, idx) => {
+      if (idx === editIdx) {
+        obj.question = qs
+        obj.ans = ans
+        obj.options = options
+      }
+
+      return obj
+    })
+
+    setQuiz(res)
+  }
+
+  // update the edited option
   const mutToImmut = (i, opt) => {
     const res = options.map((obj, idx) => {
       if (i === idx) {
@@ -49,13 +79,20 @@ const AddCourseQuiz = () => {
     setOptions(res)
   }
 
+  // add the question to the quiz
   const submitQuestion = () => {
     if((qs === '') || (options.length === 0) || (ans === '')){
         if(qs == '') setWarning('Question field is empty!')
         if(options.length === 0) setWarning(prev => prev+'\n'+'No options have been added!')
         if(ans === '') setWarning(prev => prev+'\n'+'No answer has been assigned!')
     }else if(!warning){
-        setQuiz((prev) => [...prev, { question: qs, ans: ans, options: options }])
+        if(!editQuestion) setQuiz((prev) => [...prev, { question: qs, ans: ans, options: options }])
+        else{
+            editHelper()
+            setEditQuestion(false)
+            setEditIdx(-1)
+        }
+
         setQs('')
         setAns('')
         setOptions([])
@@ -63,6 +100,7 @@ const AddCourseQuiz = () => {
     }
   }
 
+  // submit the quiz
   const proceed = () => {
 
   }
@@ -165,7 +203,7 @@ const AddCourseQuiz = () => {
             <Grid item xs={5}>
                 <Container>
                 {quiz.map((obj, idx) => (
-                    <QuizCard key={idx} sl={idx + 1} obj={obj} />
+                    <QuizCard key={idx} sl={idx + 1} obj={obj} handleEditQuestion={handleEditQuestion} />
                 ))}
                 </Container>
             </Grid>
