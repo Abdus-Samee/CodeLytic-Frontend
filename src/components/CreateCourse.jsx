@@ -3,7 +3,7 @@ import { Stepper, StepLabel, Step } from "@mui/material"
 
 import AddCourseInfo from "./AddCourseInfo"
 import AddCourseContent from "./AddCourseContent"
-import AddCourseQuiz from "./AddCourseQuiz"
+// import AddCourseQuiz from "./AddCourseQuiz"
 import { multiStepContext } from "../StepContext"
 
 import "../assets/css/createcourse.css"

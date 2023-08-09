@@ -24,7 +24,7 @@ const UserCourses = () => {
     }
 
     const addQuiz = () => {
-        
+        navigate('/create/course-quiz')
     }
 
     return(

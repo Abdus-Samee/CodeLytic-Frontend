@@ -1,0 +1,186 @@
+import React, { useState } from 'react'
+import {
+   Grid,  Container, TextField, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Divider, Typography,
+   Snackbar
+} from '@mui/material'
+import MuiAlert from '@mui/material/Alert'
+
+import ImmutableOption from './ImmutableOption'
+import MutableOption from './MutableOption'
+import QuizCard from './QuizCard'
+
+const AddCourseQuiz = () => {
+  const [quiz, setQuiz] = useState([])
+  const [qs, setQs] = useState('')
+  const [ans, setAns] = useState('')
+  const [options, setOptions] = useState([])
+  const [warning, setWarning] = useState('')
+
+  const handleOptionAddition = (option) => {
+    if(!option) setWarning('No option added!')
+    else setOptions((prev) => [...prev, { option: option, edit: false }])
+  }
+
+  const handleEditOption = (i) => {
+    const res = options.map((obj, idx) => {
+      if (i === idx) {
+        obj.edit = true
+      }
+
+      return obj
+    })
+
+    setOptions(res)
+  }
+
+  const mutToImmut = (i, opt) => {
+    const res = options.map((obj, idx) => {
+      if (i === idx) {
+        if(!opt) setWarning('No option added!')
+        else{
+            obj.option = opt
+            obj.edit = false
+        }
+      }
+
+      return obj
+    })
+
+    setOptions(res)
+  }
+
+  const submitQuestion = () => {
+    if((qs === '') || (options.length === 0) || (ans === '')){
+        if(qs == '') setWarning('Question field is empty!')
+        if(options.length === 0) setWarning(prev => prev+'\n'+'No options have been added!')
+        if(ans === '') setWarning(prev => prev+'\n'+'No answer has been assigned!')
+    }else if(!warning){
+        setQuiz((prev) => [...prev, { question: qs, ans: ans, options: options }])
+        setQs('')
+        setAns('')
+        setOptions([])
+        console.log(quiz)
+    }
+  }
+
+  const proceed = () => {
+
+  }
+
+  const handleSnackbarClose = () => {
+    setWarning('')
+  }
+
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  })
+
+  return (
+    <>
+        <Typography 
+            variant='h6'
+            color="primary"
+            style={{ marginLeft: '51%', marginTop: '1vh', marginBottom: '1vh' }}>
+                Add Quiz
+        </Typography>
+        <Grid container direction="row" justifyContent="space-around" alignItems="center">
+            <Grid item xs={6}>
+                <Container>
+                <TextField
+                    multiline
+                    variant="outlined"
+                    label="Question"
+                    color="primary"
+                    minRows={4}
+                    value={qs}
+                    onChange={(e) => setQs(e.target.value)}
+                    fullWidth
+                />
+
+                <div style={{ width: '100%' }}>
+                    <FormControl>
+                    <FormLabel
+                        id="demo-radio-buttons-group-label"
+                        style={{ marginTop: '1vh' }}
+                    >
+                        Options
+                    </FormLabel>
+                    <RadioGroup
+                        aria-labelledby="demo-radio-buttons-group-label"
+                        defaultValue=""
+                        name="radio-buttons-group"
+                        onChange={(e) => setAns(e.target.value)}
+                    >
+                        {options.map((obj, idx) => (
+                        <FormControlLabel
+                            key={idx}
+                            value={obj.option}
+                            control={<Radio />}
+                            label={
+                            <ImmutableOption
+                                idx={idx}
+                                option={obj.option}
+                                edit={obj.edit}
+                                handleEditOption={handleEditOption}
+                                mutToImmut={mutToImmut}
+                            />
+                            }
+                        />
+                        ))}
+                        <FormControlLabel
+                        value=""
+                        control={<></>}
+                        label={
+                            <MutableOption
+                            value=""
+                            handleOptionAddition={handleOptionAddition}
+                            />
+                        }
+                        />
+                    </RadioGroup>
+                    </FormControl>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '3vw' }}>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={submitQuestion}
+                    >
+                        Add Quiz
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={proceed}
+                    >
+                        Submit
+                    </Button>
+                </div>
+                </Container>
+            </Grid>
+            <Divider
+                orientation="vertical"
+                style={{ minHeight: '80vh', width: '1px' }}
+            />
+            <Grid item xs={5}>
+                <Container>
+                {quiz.map((obj, idx) => (
+                    <QuizCard key={idx} sl={idx + 1} obj={obj} />
+                ))}
+                </Container>
+            </Grid>
+        </Grid>
+        {warning !== '' && 
+            <Snackbar
+                open={true}
+                autoHideDuration={6000}
+                onClose={handleSnackbarClose}
+            >
+                <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: '100%' }}>{warning}</Alert>
+            </Snackbar>
+        }
+    </>
+  )
+}
+
+export default AddCourseQuiz
