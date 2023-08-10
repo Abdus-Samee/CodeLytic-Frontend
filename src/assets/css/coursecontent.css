@@ -8,11 +8,31 @@
     border: 2px dashed #ccc;
     height: 580px;
     width: 1000px;
-    padding: 5px;
+    padding: 1rem;
     margin-bottom: 20px;
     margin-top: 2vh;
     overflow-y: scroll;
     margin-right: 1vw;
+    background-color: #F2F2F2;
+  }
+
+  .course-container::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  .course-container::-webkit-scrollbar-thumb {
+    background: #333440;
+    /* display: none; */
+    border-radius: 10px;
+    box-shadow: inset 2px 2px 2px hsla(0, 0%, 100%, 0.25),
+      inset -2px -2px 2px rgba(0, 0, 0, 0.25);
+  }
+  
+  .course-container::-webkit-scrollbar-track {
+    background: linear-gradient(90deg, #201c29, #201c29 1px, #17141d 0, #17141d);
+    background: white;
+    /* display: none; */
   }
   
   .course-item {
@@ -24,7 +44,7 @@
     flex-direction: column;
     justify-content: space-around;
     padding: 10px;
-    background-color: #f5f5f5;
+    background-color: #444654;
     margin-top: 2vh;
   }
   

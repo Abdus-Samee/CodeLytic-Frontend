@@ -149,7 +149,7 @@ const AddCourseContent = () => {
                             {obj.key==="a" && <div><AnchorContainer idx={idx} handleLinkAddition={handleLinkAddition} /></div>}
                             {obj.key==="h1" && 
                                 <div>
-                                    <TextField fullWidth margin="normal" value={obj.val} 
+                                    <TextField fullWidth size="small" margin="normal" value={obj.val} 
                                         onChange={(e) => handleContentChange(e.target.value, idx)} variant="outlined" color="primary" 
                                         inputProps={{style: {fontSize: '2em', fontWeight: 'bold'}}}
                                      />
@@ -157,7 +157,7 @@ const AddCourseContent = () => {
                             }
                             {obj.key==="h3" && 
                                 <div>
-                                    <TextField fullWidth margin="normal" value={obj.val} 
+                                    <TextField fullWidth size="small" margin="normal" value={obj.val} 
                                         onChange={(e) => handleContentChange(e.target.value, idx)} variant="outlined" color="primary" 
                                         inputProps={{style: {fontSize: '1.17em', fontWeight: '700'}}}
                                      />
