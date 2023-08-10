@@ -12,6 +12,8 @@ import Discussion from './components/Discussion'
 import ShowCourse from './components/ShowCourse'
 import AddCourseQuiz from './components/Content/Quiz/AddCourseQuiz'
 
+import './App.css'
+
 function App() {
   return (
     <>

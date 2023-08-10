@@ -9,12 +9,99 @@ import "../assets/css/course.css"
 
 const Course = () => {
   const navigate = useNavigate()
-  const [courses, setCourses] = useState([
-    { id: 1, name: "Dynamic Programming", quizzes: 3, lectures: 5, premium: false },
-    { id: 2, name: "Searching", quizzes: 2, lectures: 3, premium: false },
-    { id: 3, name: "Sorting", quizzes: 4, lectures: 6, premium: false },
-    { id: 4, name: "Graph", quizzes: 4, lectures: 6, premium: true}
-  ])
+
+  const courses = [
+    {
+      id: 1,
+      date: 'Aug 10, 2023',
+      coursename: 'Sorting first',
+      author: 'A. Samee',
+      img: '',
+      premium: false,
+      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
+    },
+    {
+      id: 2,
+      date: 'Aug 10, 2023',
+      coursename: 'Sorting',
+      author: 'A. Samee',
+      img: '',
+      premium: true,
+      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
+    },
+    {
+      id: 3,
+      date: 'Aug 10, 2023',
+      coursename: 'Sorting',
+      author: 'A. Samee',
+      img: '',
+      premium: false,
+      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
+    },
+    {
+      id: 4,
+      date: 'Aug 10, 2023',
+      coursename: 'Sorting',
+      author: 'A. Samee',
+      img: '',
+      premium: false,
+      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
+    },
+    {
+      id: 5,
+      date: 'Aug 10, 2023',
+      coursename: 'Sorting',
+      author: 'A. Samee',
+      img: '',
+      premium: true,
+      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
+    },
+    {
+      id: 6,
+      date: 'Aug 10, 2023',
+      coursename: 'Sorting',
+      author: 'A. Samee',
+      img: '',
+      premium: false,
+      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
+    },
+    {
+      id: 7,
+      date: 'Aug 10, 2023',
+      coursename: 'Sorting',
+      author: 'A. Samee',
+      img: '',
+      premium: true,
+      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
+    },
+    {
+      id: 8,
+      date: 'Aug 10, 2023',
+      coursename: 'Sorting',
+      author: 'A. Samee',
+      img: '',
+      premium: false,
+      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
+    },
+    {
+      id: 9,
+      date: 'Aug 10, 2023',
+      coursename: 'Sorting',
+      author: 'A. Samee',
+      img: '',
+      premium: false,
+      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
+    },
+    {
+      id: 10,
+      date: 'Aug 10, 2023',
+      coursename: 'Sorting last',
+      author: 'A. Samee',
+      img: '',
+      premium: true,
+      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
+    },
+  ];
 
   useEffect(() => {
     loadAllCourses().then((res) => {
@@ -23,54 +110,56 @@ const Course = () => {
   }, [])
 
   const handleShowCourse = (courseId,premium) => {
-    if (!premium)
-    {// Navigate to the ShowCourse route with the appropriate user ID and course ID
-    const userId = 1;
-    //find the coursename with corresponding courseId
-    const course = courses.find(course => course.id === courseId)
-    const coursename = course.name
-    navigate(`/course/${courseId}`,{
-      state: {
-        coursename,
-        userId
-    }
+    if (!premium){// Navigate to the ShowCourse route with the appropriate user ID and course ID
+      const userId = 1;
+      //find the coursename with corresponding courseId
+      const course = courses.find(course => course.id === courseId)
+      const coursename = course.name
+      navigate(`/course/${courseId}`,{
+        state: {
+          coursename,
+          userId
+      }
   })
 }
 }
 
   return (
-    <div>
-      <h1>Courses</h1>
-      <Container>
-      <div className="course-cards">
-        {courses.map((course) => (
-          <Card className="course-card" key={course.id}>
-            <CardContent>
-              <Typography variant="h5" component="div">
-                {course.name}
-                {course.premium && <LockIcon />}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Number of Quizzes: {course.quizzes}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Number of Lectures: {course.lectures}
-              </Typography>
-              {!course.premium && 
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => handleShowCourse(course.id,course.premium)}
-                >
-                  Show Course
-                </Button>
-              }
-            </CardContent>
-          </Card>
+    <section className="card-list">
+        {courses.map((obj, idx) => (
+          <article key={idx} class="card">
+            <header class="card-header">
+              <p>{obj.date}</p>
+              <h2 onClick={() => handleShowCourse(obj.id, obj.premium)}>{obj.coursename}</h2>
+            </header>
+
+            <div class="card-author">
+              {obj.premium && (
+                <>
+                  <div class="author-avatar" style={{ paddingLeft: '.8vw'}}>
+                    <LockIcon fontSize="large" />
+                  </div>
+                  <svg class="half-circle" viewBox="0 0 106 57">
+                    <path d="M102 4c0 27.1-21.9 49-49 49S4 31.1 4 4"></path>
+                  </svg>
+                </>
+              )}
+
+              <div class="author-name">
+                <div class="author-name-prefix">Author</div>
+                {obj.author}
+              </div>
+            </div>
+            <div class="tags">
+              {obj.tags.map((k, i) => (
+                <a key={i} href="#">
+                  {k}
+                </a>
+              ))}
+            </div>
+          </article>
         ))}
-      </div>
-      </Container>
-    </div>
+      </section>
   )
 }
 

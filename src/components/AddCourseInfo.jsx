@@ -49,6 +49,19 @@ const AddCourseInfo = () => {
         })
     }
 
+    const textFieldInputLabelProps = {
+        style: { color: '#f0e69b'},
+        shrink: true,
+    }
+
+    const textFieldInputProps = {
+        style: { color: '#ffffff', background: '#333440'},
+    }
+
+    const textFieldSx = {
+        "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {"& >fieldset": {border: '1px #fbbf77'}}
+    }
+
     return (
         <Container className="App">
             <div className="register">
@@ -59,19 +72,24 @@ const AddCourseInfo = () => {
                     <div id='form' className='flex flex-col'>
                         <TextField
                             label="Course Name"
+                            InputLabelProps={textFieldInputLabelProps}
+                            inputProps={textFieldInputProps}
                             margin="normal"
-                            variant="outlined"
+                            size="small"
+                            variant="standard"
                             color="secondary"
                             value={courseName}
                             onChange={(e) => setCourseName(e.target.value)}
                         />
                         <TextField
                             label="Course Description"
+                            InputLabelProps={textFieldInputLabelProps}
+                            inputProps={textFieldInputProps}
                             multiline
                             rows={10}
                             fullWidth
                             margin="normal"
-                            variant="outlined"
+                            variant="standard"
                             color="secondary"
                             value={desc}
                             onChange={(e) => setDesc(e.target.value)}

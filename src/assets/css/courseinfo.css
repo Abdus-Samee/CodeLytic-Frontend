@@ -11,16 +11,21 @@
   /* font-family: 'Poppins', sans-serif; */
 }
 
+.MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] {
+  color: #ffffff;
+  background: #333440;
+}
+
 .register{
   margin-left: 5vw;
+  margin-top: 1vh;
   max-width: 1000px;
   max-height: 85vh;
   width: 100vw;
   display:flex;
-  border: 1px solid #e9ecef;
-  border-radius: 5px;
-  box-shadow: 1px 3px 10px #29335c;
-  background-color: white;
+  background: linear-gradient(90deg, #201c29, #201c29 1px, #17141d 0, #17141d);
+  border-radius: 10px;
+  box-shadow: -1rem 2rem 3rem #000;
 }
 
 .register span{
