@@ -8,9 +8,11 @@ import AddCourseContent from './components/AddCourseContent'
 import CreateCourse from './components/CreateCourse'
 import Navbar from './components/Navbar'
 import Progress from './components/Progress'
-import Discussion from './components/Discussion'
 import ShowCourse from './components/ShowCourse'
 import AddCourseQuiz from './components/Content/Quiz/AddCourseQuiz'
+import Discussion from './components/Discussion/Discussion'
+import Post from './components/Discussion/Post'
+import { PostProvider } from './contexts/PostContext'
 
 import './App.css'
 
@@ -26,8 +28,9 @@ function App() {
         <Route path="create/course-content" element={<AddCourseContent />} />
         <Route path="create/course-quiz" element={<AddCourseQuiz />} />
         <Route path="progress" element={<Progress />} />
+        <Route path="course/:courseId" element={<ShowCourse />} />
         <Route path="discussion" element={<Discussion />} />
-        <Route path="course/:courseId" element={<ShowCourse />} /> {/* New route */}
+        <Route path="posts/:id" element={<PostProvider><Post /></PostProvider>} />
       </Routes>
     </>
   )
