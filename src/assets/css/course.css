@@ -169,6 +169,7 @@ a {
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
   -webkit-box-decoration-break: clone;
+  box-decoration-break: slice;
   background-clip: text;
   border-color: white;
   cursor: default;
