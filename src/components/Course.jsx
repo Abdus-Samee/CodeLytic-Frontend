@@ -104,9 +104,12 @@ const Course = () => {
   ];
 
   useEffect(() => {
-    loadAllCourses().then((res) => {
-      console.log(res)
-    }).catch((e) => console.log(e))
+    // loadAllCourses().then((res) => {
+    //   console.log(res)
+    // }).catch((e) => console.log(e))
+    fetch("https://b809-103-94-134-4.ngrok-free.app/course/")
+            .then(response => response.json())
+            .then(data => console.log(data))
   }, [])
 
   const handleShowCourse = (courseId,premium) => {
