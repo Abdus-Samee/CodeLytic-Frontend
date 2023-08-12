@@ -1,3 +1,5 @@
+import { Container, Box, Paper } from "@mui/material"
+
 import { usePost } from "../../contexts/PostContext"
 import { useAsyncFn } from "../../hooks/useAsync"
 // import { createComment } from "../../services/comments"
@@ -22,9 +24,28 @@ const Post = () => {
   }
 
   return (
-    <>
-      <h1>{post.title}</h1>
-      <article>{post.body}</article>
+    <Container>
+      <h1 class="post-title">{post.title}</h1>
+      <Box
+        sx={{
+          display: 'flex',
+          '& > :not(style)': {
+            m: 1,
+          },
+        }}
+      >
+        <Paper
+          elevation={12}
+          sx={{
+            background: '#1F1E23',
+            color: '#ffffff',
+            padding: 1,
+            width: '100%'
+          }}
+        >
+          <div dangerouslySetInnerHTML={{ __html: post.body}}></div>
+        </Paper>
+      </Box>
       <h3 className="comments-title">Comments</h3>
       <section>
         <CommentForm
@@ -38,7 +59,7 @@ const Post = () => {
           </div>
         )}
       </section>
-    </>
+    </Container>
   )
 }
 

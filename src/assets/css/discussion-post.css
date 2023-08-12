@@ -22,9 +22,14 @@
   .error-msg {
     color: hsl(0, 100%, 67%);
   }
+
+  .post-title {
+    color: #AAECB1;
+  }
   
   .comments-title {
     margin-bottom: .5rem;
+    color: #C6AB3F;
   }
   
   .comment-form-row {

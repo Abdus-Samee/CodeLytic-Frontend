@@ -12,11 +12,11 @@ export function usePost() {
 export function PostProvider({ children }) {
   const { id } = useParams()
   const posts = [
-    {id: 1, title: "Post 1", body: "This is the body of post 1"},
-    {id: 2, title: "Post 2", body: "This is the body of post 2"},
-    {id: 3, title: "Post 3", body: "This is the body of post 3"},
-    {id: 4, title: "Post 4", body: "This is the body of post 4"},
-    {id: 5, title: "Post 5", body: "This is the body of post 5"},
+    {id: 1, title: "Post 1", body: "This is the body of post 1", tags: ["tag1", "tag2"]},
+    {id: 2, title: "Post 2", body: "<h1>This is the body of post 2</h1><br/>This is the heading<br/>This is the subheading<br/>More text", tags: ["tag1", "tag2"]},
+    {id: 3, title: "Post 3", body: "This is the body of post 3", tags: ["tag1", "tag2"]},
+    {id: 4, title: "Post 4", body: "This is the body of post 4", tags: ["tag1", "tag2"]},
+    {id: 5, title: "Post 5", body: "This is the body of post 5", tags: ["tag1", "tag2"]},
   ]
   // const { loading, error, value: post } = useAsync(() => getPosts(id), [id])
   const post = posts.find(post => post.id == id)
