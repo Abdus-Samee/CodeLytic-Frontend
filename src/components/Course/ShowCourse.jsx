@@ -4,6 +4,10 @@ import { useParams, useLocation, useNavigate } from "react-router-dom"
 import "../../assets/css/showcourse.css"
 
 const ShowCourse = () => {
+    const params = useParams()
+    const location = useLocation()
+    const navigate = useNavigate()
+    
     const courseId = params.courseId  
     const { coursename, userId } = location.state
 
