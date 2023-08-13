@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Card, CardContent, Typography, Button, Container } from "@mui/material"
 import LockIcon from '@mui/icons-material/Lock'
 
+import Search from "./Search"
+
 import { loadAllCourses } from "../services/course-service"
 
 import "../assets/css/course.css"
@@ -128,6 +130,8 @@ const Course = () => {
 }
 
   return (
+    <div>
+    <Search />
     <section className="card-list">
         {courses.map((obj, idx) => (
           <article key={idx} className="card">
@@ -163,6 +167,7 @@ const Course = () => {
           </article>
         ))}
       </section>
+      </div>
   )
 }
 
