@@ -107,9 +107,9 @@ const Course = () => {
     // loadAllCourses().then((res) => {
     //   console.log(res)
     // }).catch((e) => console.log(e))
-    fetch("https://b809-103-94-134-4.ngrok-free.app/course/")
-            .then(response => response.json())
-            .then(data => console.log(data))
+    // fetch("https://b809-103-94-134-4.ngrok-free.app/course/")
+    //         .then(response => response.json())
+    //         .then(data => console.log(data))
   }, [])
 
   const handleShowCourse = (courseId,premium) => {
@@ -130,30 +130,30 @@ const Course = () => {
   return (
     <section className="card-list">
         {courses.map((obj, idx) => (
-          <article key={idx} class="card">
-            <header class="card-header">
+          <article key={idx} className="card">
+            <header className="card-header">
               <p>{obj.date}</p>
               <h2 onClick={() => handleShowCourse(obj.id, obj.premium)}>{obj.coursename}</h2>
             </header>
 
-            <div class="card-author">
+            <div className="card-author">
               {obj.premium && (
                 <>
-                  <div class="author-avatar" style={{ paddingLeft: '.8vw'}}>
+                  <div className="author-avatar" style={{ paddingLeft: '.8vw'}}>
                     <LockIcon fontSize="large" />
                   </div>
-                  <svg class="half-circle" viewBox="0 0 106 57">
+                  <svg className="half-circle" viewBox="0 0 106 57">
                     <path d="M102 4c0 27.1-21.9 49-49 49S4 31.1 4 4"></path>
                   </svg>
                 </>
               )}
 
-              <div class="author-name">
-                <div class="author-name-prefix">Author</div>
+              <div className="author-name">
+                <div className="author-name-prefix">Author</div>
                 {obj.author}
               </div>
             </div>
-            <div class="tags">
+            <div className="tags">
               {obj.tags.map((k, i) => (
                 <a key={i} href="#">
                   {k}

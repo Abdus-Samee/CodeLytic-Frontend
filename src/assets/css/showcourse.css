@@ -1,0 +1,17 @@
+.course-description {
+    padding: 2vh;
+}
+
+.info > .chip {
+    margin-left: 1vw;
+    background-color: #f5f5f5;
+    cursor: pointer;
+}
+
+.info > .chip:hover {
+    background: linear-gradient(90deg, #ff8a00, #e52e71);
+}
+
+.btn-info {
+    margin-top: 2vh;
+}

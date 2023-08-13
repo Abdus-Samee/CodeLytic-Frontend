@@ -2,23 +2,24 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useLocation, useNavigate } from "react-router-dom"
 import { Container, Box, Typography, Button, Stepper, Step, StepButton, Divider, Grid, Card, CardContent, CardActions } from '@mui/material'
 
-const ShowCourse = ({ match }) => {
+const ShowLecture = () => {
   const params = useParams()
   const location = useLocation()
   const navigate = useNavigate()
+  const courseId = params.courseId
+  const subId = params.subId
+  const { coursename, step } = location.state
+  const [activeStep, setActiveStep] = useState(0)
+  const [completed, setCompleted] = useState({})
 
-  const courseId = params.courseId // Extract course ID from the route parameter
-  
-  // Here you can fetch the lectures and quizzes for the specified course using the courseId
-  const { coursename, userId } = location.state
-
-  const [activeStep, setActiveStep] = useState(0);
-  const [completed, setCompleted] = useState({});
+  useEffect(() => {
+    setActiveStep(step)
+    // console.log('step:', activeStep)
+  }, [])
 
   const lectures = [
     { title: 'sorting', content: 'Sorting algorithms: mergesort, bubblesort, quicksort etc' },
     { title: 'dfs', content: 'Depth First Search traversal' },
-    { title: 'bfs', content: 'Breadth First Search traversal' },
   ]
 
   const quizzes = [
@@ -85,10 +86,6 @@ const ShowCourse = ({ match }) => {
     )
   }
 
-  useEffect(() => {
-    //fetch course data
-  }, [])
-
   return (
     <div>
       <h1>{coursename} </h1>
@@ -132,7 +129,7 @@ const ShowCourse = ({ match }) => {
             <br />
             <Grid container spacing={2}>
               {quizzes.map((o, i) => (
-                <Grid item xs={3}>
+                <Grid key={i} item xs={3}>
                   <Card sx={{ minWidth: 275 }} key={i}>
                     <CardContent>
                       <Typography variant="h5" component="div">
@@ -150,7 +147,7 @@ const ShowCourse = ({ match }) => {
         </Box>
       </Container>
     </div>
-  );
-};
+  )
+}
 
-export default ShowCourse;
+export default ShowLecture

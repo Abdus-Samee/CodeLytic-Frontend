@@ -6,9 +6,10 @@ import AddCourseInfo from './components/AddCourseInfo'
 import UserCourses from './components/UserCourses'
 import AddCourseContent from './components/AddCourseContent'
 import CreateCourse from './components/CreateCourse'
+import ShowLecture from './components/ShowLecture'
 import Navbar from './components/Navbar'
 import Progress from './components/Progress'
-import ShowCourse from './components/ShowCourse'
+import ShowCourse from './components/Course/ShowCourse'
 import AddCourseQuiz from './components/Content/Quiz/AddCourseQuiz'
 import Discussion from './components/Discussion/Discussion'
 import Post from './components/Discussion/Post'
@@ -28,9 +29,11 @@ function App() {
         <Route path="create/course-content" element={<AddCourseContent />} />
         <Route path="create/course-quiz" element={<AddCourseQuiz />} />
         <Route path="progress" element={<Progress />} />
-        <Route path="course/:courseId" element={<ShowCourse />} />
+        <Route path="course/:courseId" exact element={<ShowCourse />} />
+        <Route path="course/:courseId/subsection/:subId" element={<ShowLecture />} />
         <Route path="discussion" element={<Discussion />} />
         <Route path="posts/:id" element={<PostProvider><Post /></PostProvider>} />
+  
       </Routes>
     </>
   )
