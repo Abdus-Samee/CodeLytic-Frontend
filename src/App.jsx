@@ -14,6 +14,7 @@ import AddCourseQuiz from './components/Content/Quiz/AddCourseQuiz'
 import Discussion from './components/Discussion/Discussion'
 import Post from './components/Discussion/Post'
 import { PostProvider } from './contexts/PostContext'
+import CreatePost from './components/Discussion/CreatePost'
 
 import './App.css'
 
@@ -33,7 +34,7 @@ function App() {
         <Route path="course/:courseId/subsection/:subId" element={<ShowLecture />} />
         <Route path="discussion" element={<Discussion />} />
         <Route path="posts/:id" element={<PostProvider><Post /></PostProvider>} />
-  
+        <Route path="discussion/create" element={<CreatePost />} />
       </Routes>
     </>
   )

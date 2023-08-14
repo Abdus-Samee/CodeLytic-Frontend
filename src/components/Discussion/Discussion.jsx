@@ -1,6 +1,6 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
-import { Container, List, ListItem, ListItemText, Chip, Typography, Divider } from "@mui/material"
+import { Container, List, ListItem, ListItemText, Chip, Button, Divider } from "@mui/material"
 
 // import { useAsync } from "../../hooks/useAsync"
 // import { getPosts } from "../../services/posts"
@@ -24,6 +24,10 @@ const Discussion = () => {
   if (loading) return <h1>Loading</h1>
   if (error) return <h1 className="error-msg">{error}</h1>
 
+  const handleCreate = () => {
+    navigate('/discussion/create')
+  }
+
   const handlePostClick = (postId) => {
     navigate(`/posts/${postId}`)
   }
@@ -38,6 +42,7 @@ const Discussion = () => {
 
   return(
     <Container sx={{ marginTop: '1vh', }}>
+      <Button variant="contained" size="small" color="secondary" onClick={handleCreate} style={{ marginBottom: '1vh', }}>Create</Button>
       <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
         {posts.map(post => (
           <React.Fragment key={post.id}>

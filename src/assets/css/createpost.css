@@ -1,0 +1,303 @@
+/* * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Open Sans";
+    background: #2c3e50;
+    color: #ecf0f1;
+    line-height: 1.618em;
+  } */
+
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap');
+
+  .discussion-wrapper {
+    max-width: 50rem;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .discussion-tabs {
+    position: relative;
+    margin-top: 2vh;
+    background: #17141D;
+    box-shadow: -1rem 0 3rem #000;
+    /* height: 14.75rem; */
+  }
+
+  .discussion-tabs::before,
+  .discussion-tabs::after {
+    content: "";
+    display: table;
+  }
+
+  .discussion-tabs::after {
+    clear: both;
+  }
+
+  .discussion-tab {
+    float: left;
+  }
+
+  .discussion-tab-switch {
+    display: none;
+  }
+
+  .discussion-tab-label {
+    position: relative;
+    display: block;
+    line-height: 2.75em;
+    height: 3em;
+    padding: 0 1.618em;
+    background: #17141D;
+    border-right: 0.125rem solid #17141D;
+    color: #fff;
+    cursor: pointer;
+    top: 0;
+    transition: all 0.25s;
+  }
+
+  .discussion-tab-label:hover {
+    top: -0.25rem;
+    transition: top 0.25s;
+  }
+
+  .discussion-tab-content {
+    height: 12rem;
+    position: absolute;
+    z-index: 1;
+    top: 2.75em;
+    left: 0;
+    padding: 1.618rem;
+    background: #fff;
+    color: #2c3e50;
+    border-bottom: 0.25rem solid #bdc3c7;
+    opacity: 0;
+    transition: all 0.35s;
+  }
+
+  .discussion-tab-switch:checked + .discussion-tab-label {
+    background: #fff;
+    color: #2c3e50;
+    border-bottom: 0;
+    border-right: 0.125rem solid #fff;
+    transition: all 0.35s;
+    z-index: 1;
+    top: -0.0625rem;
+  }
+  
+  .discussion-tab-switch:checked + .discussion-tab-label + .discussion-tab-content {
+    z-index: 2;
+    opacity: 1;
+    transition: all 0.35s;
+  }
+
+/* Set content for font-families */
+.ql-font-arial,
+.ql-font span[data-value="arial"]::before {
+  font-family: Arial, sans-serif;
+}
+.ql-font-comic-sans,
+.ql-font span[data-value="comic-sans"]::before {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+.ql-font-courier-new,
+.ql-font span[data-value="courier-new"]::before {
+  font-family: "Courier New";
+}
+.ql-font-georgia,
+.ql-font span[data-value="georgia"]::before {
+  font-family: Georgia, serif;
+}
+.ql-font-helvetica,
+.ql-font span[data-value="helvetica"]::before {
+  font-family: Helvetica, sans-serif;
+}
+.ql-font-Inter,
+.ql-font span[data-value="Inter"]::before {
+  font-family: 'Inter', sans-serif;
+}
+.ql-font-lucida,
+.ql-font span[data-value="lucida"]::before {
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
+/* Set content for sizes */
+.ql-size-extra-small,
+.ql-size span[data-value="extra-small"]::before {
+  font-size: 13px !important;
+}
+.ql-size-small,
+.ql-size span[data-value="small"]::before {
+  font-size: 14px !important;
+}
+.ql-size-medium,
+.ql-size span[data-value="medium"]::before {
+  font-size: 18px !important;
+}
+.ql-size-large,
+.ql-size span[data-value="large"]::before {
+  font-size: 20px !important;
+}
+
+.ql-editor {
+  min-height: 30vh; 
+  font-size: 16px;
+}
+.discussion-app .ql-snow .ql-tooltip.ql-flip {
+  width: auto;
+  left: 17px!important;
+  white-space: normal;
+}
+
+ @page {
+  margin: 1in;
+}
+
+@media print {
+  body {
+    background: none;
+  }
+  .container .ql-editor {
+    width: 6.5in;
+    height: 9in;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    align-self: flex-start;
+  }
+  .container .ql-toolbar.ql-snow {
+    display: none;
+  }
+}
+
+  .rdw-editor-main {
+    background-color: #f5f6f9;
+    border: 1px solid#eee;
+    margin-bottom: 17px;
+    padding: 7px 17px 7px 17px;
+    line-height: 27px;
+  }
+
+  .public-DraftEditor-content {
+    min-height: 300px;
+  }
+
+  .rdw-dropdown-optionwrapper {
+    width: 100%!important;
+  }
+
+  #discussion-input {
+    margin: 0 !important;
+    border-radius: 8px;
+    border: 1px solid #F0F5F7;
+    padding: 5px 20px;
+    font-size: 15px;
+    background: #F0F5F7;
+    width: 100% !important;
+    color: black;
+    transition: all 0.3s ease-in-out 0s;
+    box-shadow: none;
+    height: 60px;
+    font-family: 'DM Mono', monospace;
+  }
+  #discussion-input, #discussion-btn {
+    /* font-family: inherit; */
+    font-size: inherit;
+    line-height: inherit;
+  }
+  
+  #discussion-label {
+    padding: 0;
+    font-size: 17px;
+    color: #B19cd9;
+    font-weight: 500;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    display: block;
+  }
+  .btn {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    font-family: 'Inter', sans-serif;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    letter-spacing: 0;
+    padding: 9px 30px;
+    font-size: 15px;
+    line-height: 2;
+    border-radius: 8px;
+    -webkit-user-select: none;
+    user-select: none;
+    transition: all 0.3s ease-in-out 0s;
+  }
+  .btn, #discussion-btn {
+    outline: none !important;
+  }
+  .btn__theme {
+    color: #fff;
+    background-color: #673ab7;
+    border-color: #673ab7;
+  }
+  .discussion-app{
+    position: relative;
+    float: left;
+    width: 100%;
+    display: block;
+    /* padding: 1rem 0; */
+  }
+  .discussion-app__tittle {
+    text-align: center;
+    font-size: 47px;
+    font-weight: 700;
+    margin-bottom: 17px;
+  }
+  .discussion-app__tittle span{
+    color: #673ab7;
+  }
+  .post__list {
+    margin: 37px 0 17px 0;
+    border-bottom: 1px solid lavender;
+    padding-bottom: 17px;
+  }
+  .post__list h2 {
+    margin-bottom: 17px;
+    font-size: 24px;
+    font-weight: 600;
+  }
+  .post__list p {
+    margin-bottom: 17px;
+    font-size: 18px;
+    font-weight: 400;
+    color: #524c4c;
+  }
+  span.required {
+    color: #f44336;
+  }
+  form.update__forms {
+    border: 1px solid #1967d2;
+    box-shadow: 0 6px 15px 0 rgb(64 79 104 / 5%);
+    padding: 1rem;
+    background: #333440;
+  }
+  .errors{
+    color: #f44336;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 17px;
+  }
+  .btn__add{
+    margin: 37px auto;
+    display: table;
+    padding: 14px 37px 14px 37px;
+    font-size: 20px;
+    line-height: normal;
+  }
+  .post__description{
+    position: relative;
+  }
