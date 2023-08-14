@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { Autocomplete, TextField, Paper } from "@mui/material"
 import ReactQuill from "react-quill"
 import EditorToolbar, { modules, formats } from "./EditorToolbar"
 import "react-quill/dist/quill.snow.css"
@@ -9,11 +10,22 @@ import "../../assets/css/createpost.css"
 const CreatePost = () => {
   const navigate = useNavigate()
 
+  const tags = [
+    { label: 'sorting' },
+    { label: 'graph' },
+    { label: 'dfs' },
+    { label: 'bfs' },
+    { label: 'searching' },
+    { label: 'dp' },
+    { label: 'recursion' },
+  ]
+
   const [view, setView] = useState("create")
   const [isError, setError] = useState(null)
   const [userInfo, setuserInfo] = useState({
     title: '',
     body: '',
+    tags: [],
   })
 
   const onChangeValue = (e) => {
@@ -31,6 +43,12 @@ const CreatePost = () => {
 
   const handleTabClick = (e) => {
     setView(e.target.value)
+  }
+
+  const handleTagSelection = (val) => {
+    setuserInfo({ ...userInfo,
+        tags: val
+    })
   }
   
   const addDetails = async (event) => {
@@ -106,8 +124,28 @@ return (
                         </div>
                         <br />
                         {isError !== null && <div className="errors"> {isError} </div>}
-                        <div className="form-group col-sm-12 text-right">
-                            <button id="discussion-btn" type="submit" className="btn btn__theme"> Submit  </button>
+                        <div className="discussion-bottom form-group col-sm-12 text-right">
+                            <div className="discussion-tag-selection">
+                                <Autocomplete
+                                    multiple
+                                    id="discussion-tags-outlined"
+                                    options={tags}
+                                    getOptionLabel={(option) => option.label}
+                                    filterSelectedOptions
+                                    PaperComponent={({ children }) => (
+                                      <Paper style={{ background: "#445069" }}>{children}</Paper>
+                                    )}
+                                    onChange={(event, value) => handleTagSelection(value)}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            placeholder="Add tags"
+                                            style={{ color: "pink !important" }}
+                                        />
+                                    )}
+                                />
+                            </div>
+                            <button id="discussion-btn" type="submit" className="btn btn__theme">Submit</button>
                         </div> 
                     </div> 
                     </form>

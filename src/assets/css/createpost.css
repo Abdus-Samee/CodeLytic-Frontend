@@ -191,14 +191,14 @@
     margin: 0 !important;
     border-radius: 8px;
     border: 1px solid #F0F5F7;
-    padding: 5px 20px;
+    padding: 5px 10px;
     font-size: 15px;
     background: #F0F5F7;
     width: 100% !important;
     color: black;
     transition: all 0.3s ease-in-out 0s;
     box-shadow: none;
-    height: 60px;
+    height: 40px;
     font-family: 'DM Mono', monospace;
   }
   #discussion-input, #discussion-btn {
@@ -253,7 +253,7 @@
   }
   .discussion-app__tittle {
     text-align: center;
-    font-size: 47px;
+    font-size: 40px;
     font-weight: 700;
     margin-bottom: 17px;
   }
@@ -285,12 +285,14 @@
     padding: 1rem;
     background: #333440;
   }
+
   .errors{
     color: #f44336;
     font-size: 17px;
     font-weight: 600;
     margin-bottom: 17px;
   }
+
   .btn__add{
     margin: 37px auto;
     display: table;
@@ -298,6 +300,20 @@
     font-size: 20px;
     line-height: normal;
   }
+
   .post__description{
     position: relative;
+  }
+
+  .discussion-bottom {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .discussion-tag-selection {
+    width: 50%;
+  }
+
+  .discussion-tag-text::placeholder {
+    color: pink;
   }
