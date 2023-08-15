@@ -15,6 +15,7 @@ import Discussion from './components/Discussion/Discussion'
 import Post from './components/Discussion/Post'
 import { PostProvider } from './contexts/PostContext'
 import CreatePost from './components/Discussion/CreatePost'
+import Test from './components/Test'
 
 import './App.css'
 
@@ -35,6 +36,8 @@ function App() {
         <Route path="discussion" element={<Discussion />} />
         <Route path="posts/:id" element={<PostProvider><Post /></PostProvider>} />
         <Route path="discussion/create" element={<CreatePost />} />
+
+        <Route path="test" element={<Test />} />
       </Routes>
     </>
   )

@@ -4,11 +4,11 @@ import { Button, Chip } from "@mui/material"
 
 // import { useAsync } from "../../hooks/useAsync"
 // import { getPosts } from "../../services/posts"
-import { loadAllTags } from "../../services/course-service"
+import { loadAllTags } from "../services/course-service"
 
-import '../../assets/css/test.css'
+import '../assets/css/test.css'
 
-const Discussion = () => {
+const Test = () => {
     // const { loading, error, value: posts } = useAsync(getPosts)
     const loading = false
     const error = false
@@ -73,4 +73,4 @@ const Discussion = () => {
     )
 }
 
-export default Discussion
+export default Test
