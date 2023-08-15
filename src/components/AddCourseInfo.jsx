@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { Container, Button, TextField, Autocomplete, Stack } from "@mui/material"
 import UploadFileIcon from "@mui/icons-material/UploadFile"
 
+import { loadAllTags } from "../services/course-service"
+
 import '../assets/css/courseinfo.css'
 
 const AddCourseInfo = () => {
@@ -14,6 +16,10 @@ const AddCourseInfo = () => {
     const [img, setImg] = useState()
 
     useEffect(() => {
+        loadAllTags().then((res) => {
+            console.log(res)
+        }).catch(e => console.log(e))
+
         const { courseName, desc, img } = location.state || {}
         if(courseName && desc){
             setCourseName(courseName)

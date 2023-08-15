@@ -5,6 +5,8 @@ import ReactQuill from "react-quill"
 import EditorToolbar, { modules, formats } from "./EditorToolbar"
 import "react-quill/dist/quill.snow.css"
 
+import { loadAllTags } from "../../services/course-service"
+
 import "../../assets/css/createpost.css"
 
 const CreatePost = () => {
@@ -27,6 +29,12 @@ const CreatePost = () => {
     body: '',
     tags: [],
   })
+
+  useEffect(() => {
+    loadAllTags().then((res) => {
+        console.log(res)
+    }).catch(e => console.log(e))
+  }, [])
 
   const onChangeValue = (e) => {
     setuserInfo({
