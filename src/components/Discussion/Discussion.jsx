@@ -6,7 +6,7 @@ import { Button, Chip } from "@mui/material"
 // import { getPosts } from "../../services/posts"
 import { loadAllTags } from "../../services/course-service"
 
-import '../../assets/css/test.css'
+import '../../assets/css/discussion.css'
 
 const Discussion = () => {
     // const { loading, error, value: posts } = useAsync(getPosts)

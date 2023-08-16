@@ -15,11 +15,12 @@ import Discussion from './components/Discussion/Discussion'
 import Post from './components/Discussion/Post'
 import { PostProvider } from './contexts/PostContext'
 import CreatePost from './components/Discussion/CreatePost'
+import Register from './components/Auth/Register'
 import Test from './components/Test'
 
 import './App.css'
 
-function App() {
+const App = () => {
   return (
     <>
       <Navbar />
@@ -36,6 +37,7 @@ function App() {
         <Route path="discussion" element={<Discussion />} />
         <Route path="posts/:id" element={<PostProvider><Post /></PostProvider>} />
         <Route path="discussion/create" element={<CreatePost />} />
+        <Route path="register" element={<Register />} />
 
         <Route path="test" element={<Test />} />
       </Routes>
