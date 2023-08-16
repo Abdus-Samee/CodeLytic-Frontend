@@ -16,6 +16,7 @@ import Post from './components/Discussion/Post'
 import { PostProvider } from './contexts/PostContext'
 import CreatePost from './components/Discussion/CreatePost'
 import Register from './components/Auth/Register'
+import Login from './components/Auth/Login'
 import Test from './components/Test'
 
 import './App.css'
@@ -38,6 +39,7 @@ const App = () => {
         <Route path="posts/:id" element={<PostProvider><Post /></PostProvider>} />
         <Route path="discussion/create" element={<CreatePost />} />
         <Route path="register" element={<Register />} />
+        <Route path="login" element={<Login />} />
 
         <Route path="test" element={<Test />} />
       </Routes>

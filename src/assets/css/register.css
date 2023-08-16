@@ -131,15 +131,16 @@
     position: relative;
     width: inherit;
     height: inherit;
-    background-color: #ffffff;
-    box-shadow: 0 5px 10px -2px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    background-color: #17141D;
+    box-shadow: -1rem 0 3rem #000;
+    /* box-shadow: 0 5px 10px -2px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.3); */
   }
   
   .c-form__toggle {
     width: inherit;
     height: inherit;
     font-size: 18px;
-    color: #333333;
+    color: #fff;
     cursor: pointer;
     transition: 0.2s;
     display: flex;
@@ -200,7 +201,8 @@
     height: 90%;
     border: 0;
     outline: 0;
-    color: #333333;
+    color: #fff;
+    background: #17141D;
     box-sizing: border-box;
     cursor: pointer;
   }
@@ -208,7 +210,8 @@
     font-size: 10px;
     top: -4px;
     transform: translateY(0);
-    color: #333333;
+    color: #ffcc00;
+    /* color: #333333; */
   }
   .c-form__input:focus ~ .c-form__border,
   .c-form__input:focus ~ .c-form__next, .c-form__input:not(:placeholder-shown) ~ .c-form__border,

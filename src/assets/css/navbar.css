@@ -73,7 +73,7 @@ nav {
 	margin-left: 25rem;
 }
 
-.logout-link {
+.login-link {
 	/* padding-left: auto; */
 	margin-right: -30rem;
 	margin-left: 28rem;
@@ -90,7 +90,7 @@ img {
 		opacity: 1;
 	}
 	
-	.logout-link {
+	.login-link {
 		margin-right: 28rem;
 		/* margin-left: -25rem; */
 	}
