@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-
-const fs = require("fs")
+import { writeFileSync } from 'fs'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,7 +13,7 @@ export default defineConfig({
         /* /index.html 200
         `;
 
-        fs.writeFileSync('dist/_redirects', redirectsContent);
+        writeFileSync('dist/_redirects', redirectsContent);
       },
     },
   ],
