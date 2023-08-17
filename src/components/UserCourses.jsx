@@ -26,12 +26,12 @@ const UserCourses = () => {
         },
     ];
 
-    const editCourseInfo = () => {
-        navigate('/create/course', {
+    const editCourse = () => {
+        const courseId = 3
+        navigate(`/course/${courseId}`, {
             state: {
                 courseName,
-                desc,
-                img
+                userId,
             }
         })
     }
@@ -60,9 +60,7 @@ const UserCourses = () => {
                                     <h3><span>{course.desc}</span></h3>
                                 </div>
                                 <div class="actionBtn">
-                                    <button onClick={editCourseInfo}>Edit Course Info</button>
-                                    <button onClick={addLecture}>Add Lecture</button>
-                                    <button onClick={addQuiz}>Add Quiz</button>
+                                    <button onClick={editCourse}>Edit Course</button>
                                 </div>
                             </div>
                         </div>

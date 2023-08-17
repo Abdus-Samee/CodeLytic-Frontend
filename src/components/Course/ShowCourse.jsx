@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useLocation, useNavigate } from "react-router-dom"
-import { Container, Divider, Button, Chip} from '@mui/material'
+import { Container, Divider, Button, Chip, Modal, Box} from '@mui/material'
 
 import Subsection from './Subsection'
 
@@ -21,10 +21,29 @@ const styleTitleDiv = {
     alignItems: 'center',
 }
 
+const styleModal = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'orange',
+    border: '2px solid #000',
+    borderRadius: '10px',
+    boxShadow: 24,
+    p: 4,
+  }
+
     const ShowCourse = () => {
         const params = useParams()
         const location = useLocation()
         const navigate = useNavigate()
+
+        const [isOpen, setIsOpen] = useState(false)
+        const [subsection, setSubsection] = useState('')
+        
+        const handleOpen = () => setIsOpen(true)
+        const handleClose = () => setIsOpen(false)
 
         const courseId = params.courseId  
         const { coursename, userId } = location.state
@@ -117,6 +136,24 @@ const styleTitleDiv = {
         })
     }
 
+    const handleSubsectionCreate = () => {
+        if (subsection === '') {
+            alert('Subsection name cannot be empty')
+            return
+        }
+        course.subsections.push({
+            id: course.subsections.length + 1,
+            name: subsection,
+            lecture: [],
+            quiz: {
+                id: course.subsections.length + 1,
+                questions: []
+            }
+        })
+        setSubsection('')
+        handleClose()
+    }
+
     return (
         <Container sx={styleContainer} className="course-info">
             <img src={course.icon} alt={course.title} />
@@ -130,9 +167,21 @@ const styleTitleDiv = {
             <p className="course-description">{course.description}</p>
             <Divider variant="middle" color="pink" />
             <Subsection course={course} />
-            <Button variant="contained" color="secondary">
+            <Button variant="contained" color="secondary" onClick={handleOpen}>
                 Add Subsection
             </Button>
+            <Modal
+                open={isOpen}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={styleModal}>
+                  <h1 id="modal-modal-title">Create Subsection</h1>
+                  <input className='modal-input' type='text' value={subsection} placeholder='Subsection Name' onChange={(e) => setSubsection(e.target.value)} required/>
+                  <button className='modal-button' onClick={handleSubsectionCreate}>Create</button>
+                </Box>
+            </Modal>
         </Container>
     )
 }
