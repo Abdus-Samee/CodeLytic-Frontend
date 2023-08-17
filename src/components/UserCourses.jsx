@@ -1,4 +1,5 @@
 import { useParams, useLocation, useNavigate } from "react-router-dom"
+import { Container } from "@mui/material"
 
 import "../assets/css/profile.css"
 
@@ -45,21 +46,21 @@ const UserCourses = () => {
     }
 
     return (
-        <div>
-            <h3>User {userId} Courses</h3>
-            <div class="card-container">
-                {courses.map((course) => (
-                    <div class="card">
-                        <div class="imgBx">
+        <Container>
+            <h3 style={{ marginTop: '2vh', color: '#BEADFA',}}>Courses Created</h3>
+            <div className="profile-card-container">
+                {courses.map((course, k) => (
+                    <div key={k} className="profile-card">
+                        <div className="imgBx">
                             <img src={course.img} />
                         </div>
-                        <div class="content">
-                            <div class="details">
+                        <div className="profile-content">
+                            <div className="profile-details">
                                 <h2>{course.courseName}</h2>
-                                <div class="data">
+                                <div className="profile-data">
                                     <h3><span>{course.desc}</span></h3>
                                 </div>
-                                <div class="actionBtn">
+                                <div className="profile-actionBtn">
                                     <button onClick={editCourse}>Edit Course</button>
                                 </div>
                             </div>
@@ -67,7 +68,7 @@ const UserCourses = () => {
                     </div>
                 ))}
             </div>
-        </div>
+        </Container>
     )
 }
 

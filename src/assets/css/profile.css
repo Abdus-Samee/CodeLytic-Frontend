@@ -1,13 +1,17 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900');
 
-.card-container {
+.profile-card-container {
   display: flex;
-  justify-content: left;
+  justify-content: space-around;
+  margin-top: 5rem;
+  padding-top: 1vh;
+  padding-bottom: 1vh;
   /* background: linear-gradient(45deg, #fbda61, #ff5acd); */
-  align-items: center;
-  min-height: 95vh;
+  border: 1px solid #FE7BE5;
+  min-height: 50vh;
 }
- .card-container .card {
+
+.profile-card-container .profile-card {
   position: relative;
   width: 350px;
   height: 250px;
@@ -16,10 +20,12 @@
   box-shadow: 0 0 35px 80px rgba(0, 0, 0, 0.15);
   transition: 0.5s;
 }
- .card:hover {
+ 
+.profile-card:hover {
   height: 400px;
 }
- .card .imgBx {
+
+.profile-card .imgBx {
   position: absolute;
   left: 50%;
   top: -50px;
@@ -33,11 +39,12 @@
   transition: 0.5s;
 }
 
- .card:hover .imgBx {
+.profile-card:hover .imgBx {
   width: 220px;
-  height: 220px;
+  height: 210px;
 }
- .imgBx img {
+ 
+.imgBx img {
   top: 0;
   left: 0;
   width: 100%;
@@ -45,8 +52,7 @@
   object-fit: fill;
 }
 
-
- .card .content {
+.profile-card .profile-content {
     position: relative;
     width: 100%; 
     height: 100%;
@@ -54,63 +60,72 @@
     justify-content: space-evenly;
     align-items: flex-end;
     overflow: hidden;
-  }
- .card .content .details {
+}
+ 
+.profile-card .profile-content .profile-details {
   position: absolute;
-  padding: 40px;
+  padding: 45px;
   text-align: center;
   width : 100%;
   transition: 0.5s;
   transform : translateY(110px);
 }
- .card:hover .content .details {
+ 
+.profile-card:hover .profile-content .profile-details {
   transform : translateY(40px);
 }
- .card .content .details h2 {
-font-size: 1.25em;
-font-weight: 600; 
-color: #555; 
-line-height: 1.2em;
+ 
+.profile-card .profile-content .profile-details h2 {
+  font-size: 1.25em;
+  font-weight: 600; 
+  color: #555; 
+  line-height: 1.2em;
 }
 
- .card .content .details h2 span {
+.profile-card .profile-content .profile-details h2 span {
   font-size: 0.75em;
   font-weight: 500;
   opacity: 0.5;
 }
- .card .content .details .data {
-display: flex;
-justify-content:space-evenly; 
-margin: 20px 0;
+ 
+.profile-card .profile-content .profile-details .profile-data {
+  display: flex;
+  justify-content:space-evenly; 
+  /* margin: 30px 0; */
+  /* margin-bottom: 3rem; */
+  padding-top: 2vh;
+  margin-top: 2rem;
 }
- .card .content .details .data h3 {
+
+.profile-card .profile-content .profile-details .profile-data h3 {
   font-size: 1em;
   color: #555;
   line-height: 1.2em;
   font-weight: 600;
 }
 
- .card .content .details .data h3 span {
+.profile-card .profile-content .profile-details .profile-data h3 span {
   font-size: 0.85em;
   font-weight: 800;
   opacity: 0.7;
 }
 
- .card .content .details .actionBtn {
-display: flex;
-justify-content: space-evenly;
-/* gap: 20px; */
+.profile-card .profile-content .profile-details .profile-actionBtn {
+  display: flex;
+  justify-content: space-evenly;
+  /* gap: 20px; */
 }
 
- .card .content .details .actionBtn button {
-margin: 0 10px;
-padding: 0px 20px;
-border-radius: 30px;
-border: none;
-outline: none;
-font-size: 1em;
-font-weight: 500;
-background: #ff5f95;
-color: #fff;
-cursor: pointer;
+.profile-card .profile-content .profile-details .profile-actionBtn button {
+  margin: 0 10px;
+  margin-top: 0.5vh;
+  padding: 0px 20px;
+  border-radius: 30px;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  font-weight: 500;
+  background: #ff5f95;
+  color: #fff;
+  cursor: pointer;
 }
