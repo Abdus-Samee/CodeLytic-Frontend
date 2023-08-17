@@ -124,25 +124,7 @@ const ShowLecture = () => {
               </Box>
             </React.Fragment>
             <br />
-            <Typography variant="h6">Quizzes</Typography>
-            <Divider />
             <br />
-            <Grid container spacing={2}>
-              {quizzes.map((o, i) => (
-                <Grid key={i} item xs={3}>
-                  <Card sx={{ minWidth: 275 }} key={i}>
-                    <CardContent>
-                      <Typography variant="h5" component="div">
-                        {o.title}
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button size="small">Learn More</Button>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
           </div>
         </Box>
       </Container>

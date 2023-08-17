@@ -11,6 +11,7 @@ import Navbar from './components/Navbar'
 import Progress from './components/Progress'
 import ShowCourse from './components/Course/ShowCourse'
 import AddCourseQuiz from './components/Content/Quiz/AddCourseQuiz'
+import QuizView from './components/Content/Quiz/QuizView'
 import Discussion from './components/Discussion/Discussion'
 import Post from './components/Discussion/Post'
 import { PostProvider } from './contexts/PostContext'
@@ -35,6 +36,7 @@ const App = () => {
         <Route path="progress" element={<Progress />} />
         <Route path="course/:courseId" exact element={<ShowCourse />} />
         <Route path="course/:courseId/subsection/:subId" element={<ShowLecture />} />
+        <Route path="quiz/:quizId" element={<QuizView />} />
         <Route path="discussion" element={<Discussion />} />
         <Route path="posts/:id" element={<PostProvider><Post /></PostProvider>} />
         <Route path="discussion/create" element={<CreatePost />} />

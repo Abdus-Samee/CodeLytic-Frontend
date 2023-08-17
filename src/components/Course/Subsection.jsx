@@ -21,6 +21,13 @@ const Subsection = ({ course }) => {
     })
   }
 
+  const handleQuizClick = () => {
+    //get quiz id
+    const id = 1
+
+    navigate(`/quiz/${id}`)
+  }
+
   return (
     <div className="ag-format-container">
       <div className="ag-courses_box">
@@ -70,7 +77,7 @@ const Subsection = ({ course }) => {
                 </AccordionSummary>
                 <AccordionDetails>
                   {o.quiz ? (
-                    <Button variant="outlined" size="small">
+                    <Button variant="outlined" size="small" onClick={() => handleQuizClick()}>
                       Show
                     </Button>
                   ) : (
