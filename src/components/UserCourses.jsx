@@ -68,6 +68,7 @@ const UserCourses = () => {
                     </div>
                 ))}
             </div>
+            <h3 style={{ marginTop: '2vh', color: '#BEADFA',}}>Courses Enrolled</h3>
         </Container>
     )
 }

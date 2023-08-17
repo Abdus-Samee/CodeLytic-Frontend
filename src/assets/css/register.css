@@ -131,11 +131,47 @@
     position: relative;
     width: inherit;
     height: inherit;
-    background-color: #17141D;
+    background: #FF4B2B;
     box-shadow: -1rem 0 3rem #000;
     /* box-shadow: 0 5px 10px -2px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.3); */
+    border-radius: 0; /* Start with no border radius */
+    transition: 0.3s;
   }
+
+  .c-form:hover {
+    border-radius: 20px;
+    background: #fff;
+    /* background: #DE7525; */
+  }
+
   
+/* Apply transition to border-radius for each edge on hover */
+.c-form:hover::before,
+.c-form:hover::after,
+.c-form:hover::before,
+.c-form:hover::after {
+    border-radius: 0;
+    transition: border-radius 0.3s;
+}
+
+/* Gradually adjust border-radius for each side on hover */
+.c-form:hover::before {
+    border-top-left-radius: 20px;
+}
+
+.c-form:hover::after {
+    border-top-right-radius: 20px;
+}
+
+.c-form:hover::before {
+    border-bottom-left-radius: 20px;
+}
+
+.c-form:hover::after {
+    border-bottom-right-radius: 20px;
+}
+  
+  /* the text Register */
   .c-form__toggle {
     width: inherit;
     height: inherit;
@@ -147,6 +183,11 @@
     align-items: center;
     justify-content: center;
   }
+
+  .c-form__toggle:hover {
+    color: #FF4B2B;
+    font-weight: 600;
+  }
   
   .c-form__toggleIcon {
     display: inline-block;
@@ -155,11 +196,20 @@
     width: 15px;
     height: 17px;
   }
+
+  /* the icon after Register */
   .c-form__toggleIcon::before, .c-form__toggleIcon::after {
     content: "";
     position: absolute;
-    background-color: #565656;
+    background-color: #fff;
   }
+
+  /* New style to change color on hover */
+  .c-form:hover .c-form__toggleIcon::before,
+  .c-form:hover .c-form__toggleIcon::after {
+      background-color: #FF4B2B; /* Change to the desired color */
+  }
+  
   .c-form__toggleIcon::before {
     left: 50%;
     transform: translateX(-50%);
@@ -167,6 +217,7 @@
     height: 9px;
     border-radius: 50%;
   }
+
   .c-form__toggleIcon::after {
     bottom: 0;
     width: 100%;
@@ -201,18 +252,24 @@
     height: 90%;
     border: 0;
     outline: 0;
-    color: #fff;
-    background: #17141D;
+    color: inherit;
+    background: inherit;
     box-sizing: border-box;
     cursor: pointer;
   }
+
+  .c-form__input:hover {
+    background: inherit;
+    color: #FF4B2B;
+  }
+
   .c-form__input:focus ~ .c-form__groupLabel, .c-form__input:not(:placeholder-shown) ~ .c-form__groupLabel {
     font-size: 10px;
     top: -4px;
     transform: translateY(0);
-    color: #ffcc00;
-    /* color: #333333; */
+    color: #362FD9;
   }
+
   .c-form__input:focus ~ .c-form__border,
   .c-form__input:focus ~ .c-form__next, .c-form__input:not(:placeholder-shown) ~ .c-form__border,
   .c-form__input:not(:placeholder-shown) ~ .c-form__next {
@@ -227,6 +284,7 @@
     top: 50%;
     transform: translateY(-50%);
     transition: 0.2s;
+    color: #17141D;
   }
   
   .c-form__border {
@@ -234,7 +292,7 @@
     width: 0;
     height: 3px;
     color: #3E3063;
-    background-color: currentColor;
+    /* background-color: currentColor; */
     transition: 1s 0.2s ease-out;
   }
   
