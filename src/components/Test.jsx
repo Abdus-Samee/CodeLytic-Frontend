@@ -8,6 +8,7 @@ const Test = () => {
     const [progress, setProgress] = useState(0)
     const [period, setPeriod] = useState(0)
     const [current, setCurrent] = useState(0)
+    const [answers, setAnswers] = useState({})
     const navigate = useNavigate()
 
     const quiz = [
@@ -80,19 +81,39 @@ const Test = () => {
         console.log('period', p)
     }, [])
 
+    const handleRadioClick = (value) => {
+        setAnswers(prevAnswers => {
+            return {
+                ...prevAnswers,
+                [current]: value
+            }
+        })
+        console.log(answers)
+    }
+
     const handleNextClick = () => {
-        setProgress(progress + period)
-        setCurrent(current + 1)
-        if (progress > 100) {
+        const newProgress = progress + period
+        const newCurrent = current + 1
+
+        if (newProgress > 100) {
             setProgress(0)
+            setCurrent(0)
+        } else {
+            setProgress(newProgress)
+            setCurrent(newCurrent)
         }
     }
 
     const handleBackClick = () => {
-        setProgress(progress - period)
-        setCurrent(current - 1)
-        if (progress < 0) {
-            setProgress(0)
+        const newProgress = progress - period;
+        const newCurrent = current - 1;
+
+        if (newProgress < 0) {
+            setProgress(0);
+            setCurrent(0);
+        } else {
+            setProgress(newProgress);
+            setCurrent(newCurrent);
         }
     }
 
@@ -109,13 +130,14 @@ const Test = () => {
                     aria-labelledby="demo-radio-buttons-group-label"
                     defaultValue=""
                     name="radio-buttons-group"
+                    onChange={(e) => {handleRadioClick(e.target.value)}}
                 >
                     {quiz[current].options.map((option, index) => (
                         <FormControlLabel
                             className="quiz-option"
                             key={index}
                             value={option}
-                            control={<Radio />}
+                            control={<Radio checked={answers[current]===option? true : false} />}
                             label={option}
                         />
                     ))}
