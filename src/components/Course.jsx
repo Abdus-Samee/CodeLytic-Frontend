@@ -10,6 +10,8 @@ import { loadAllCourses, loadAllTags, loadSingleCourse } from "../services/cours
 import "../assets/css/course.css"
 
 const Course = () => {
+  const [selectedCourse, setSelectedCourse] = useState('')
+  const [searchTags, setSearchTags] = useState([])
   const navigate = useNavigate()
 
   const courses = [
@@ -20,16 +22,16 @@ const Course = () => {
       author: 'A. Samee',
       img: '',
       premium: false,
-      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
+      tags: ['sorting', 'dfs', 'bfs', 'graph',],
     },
     {
       id: 2,
       date: 'Aug 10, 2023',
-      coursename: 'Sorting',
+      coursename: 'Number Theory',
       author: 'A. Samee',
       img: '',
       premium: true,
-      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
+      tags: ['number theory', 'implementation'],
     },
     {
       id: 3,
@@ -56,7 +58,7 @@ const Course = () => {
       author: 'A. Samee',
       img: '',
       premium: true,
-      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
+      tags: ['sorting', 'dfs', 'number theory', 'graph', 'implementation'],
     },
     {
       id: 6,
@@ -83,7 +85,7 @@ const Course = () => {
       author: 'A. Samee',
       img: '',
       premium: false,
-      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
+      tags: ['sorting', 'number theory', 'bfs', 'graph', 'implementation'],
     },
     {
       id: 9,
@@ -133,16 +135,48 @@ const Course = () => {
         state: {
           coursename,
           userId
-      }
-  })
-}
-}
+        } 
+      })
+    }
+  }
+
+  const handleTagClick = (tagName) => {
+    if (!searchTags.includes(tagName)){
+      setSearchTags(prevTags => [...prevTags, tagName])
+    }
+  }
+
+  const handleTagRemove = (tagName) => {
+    setSearchTags(prevTags => prevTags.filter(tag => tag !== tagName))
+  }
+
+  const isSearchEmpty = selectedCourse === '' && searchTags.length === 0
+
+  const filteredCourses = isSearchEmpty
+    ? courses
+    : courses.filter((course) =>
+        (course.coursename.toLowerCase().includes(selectedCourse.toLowerCase()) || selectedCourse === '') &&
+        (searchTags.length === 0 || course.tags.some((tag) => searchTags.includes(tag)))
+      )
+
+  const handleSearch = (value) => {
+    setSelectedCourse(value)
+  }
 
   return (
     <div>
-    <Search />
-    <section className="card-list">
-        {courses.map((obj, idx) => (
+      <Search handleSearch={handleSearch} />
+      {searchTags.length > 0 &&
+        <div className="searched-tags">
+          {searchTags.map((tagName, i) => (
+            <a key={i} onClick={() => handleTagRemove(tagName)}>
+              {tagName}
+            </a>
+          ))}
+        </div>
+      }
+      <section className="card-list">
+        {filteredCourses.map((obj, idx) => (
           <article key={idx} className="card">
             <header className="card-header">
               <p>{obj.date}</p>
@@ -167,16 +201,16 @@ const Course = () => {
               </div>
             </div>
             <div className="tags">
-              {obj.tags.map((k, i) => (
-                <a key={i} href="#">
-                  {k}
+              {obj.tags.map((tagName, i) => (
+                <a key={i} onClick={() => handleTagClick(tagName)}>
+                  {tagName}
                 </a>
               ))}
             </div>
           </article>
         ))}
       </section>
-      </div>
+    </div>
   )
 }
 
