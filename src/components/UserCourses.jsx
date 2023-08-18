@@ -1,40 +1,45 @@
+import { useEffect, useState } from "react"
 import { useParams, useLocation, useNavigate } from "react-router-dom"
-import { Container } from "@mui/material"
+import { Container, CircularProgress } from "@mui/material"
+
+import { loadAllCourses } from "../services/course-service"
 
 import "../assets/css/profile.css"
 
 const UserCourses = () => {
+    const [courses, setCourses] = useState([])
+    const [loading, setLoading] = useState(true)
+
     const params = useParams()
     const location = useLocation()
     const navigate = useNavigate()
     const userId = params.id
-    const { courseName, desc, img } = location.state
-    const courses = [
-        {
-            courseName: "Dynamic Programming",
-            img: "img1.jpg",
-            desc: "Learn the art of solving dynamic programming problems.",
-        },
-        {
-            courseName: "Searching",
-            img: "img2.jpg",
-            desc: "Master various searching algorithms and techniques.",
-        },
-        {
-            courseName: "Sorting",
-            img: "img3.jpg",
-            desc: "Dive into the world of sorting algorithms and their implementations.",
-        },
-    ];
+    const author = 'John Doe'
+    // const { courseName, desc, img } = location.state
+
+    useEffect(() => {
+        loadAllCourses().then((res) => {
+            setCourses(res.filter(course => course.author === author))
+            setLoading(false)
+        }).catch(e => console.log(e))
+    }, [])
 
     const editCourse = () => {
         const courseId = 3
         navigate(`/course/${courseId}`, {
             state: {
-                courseName,
+                courseName: 'Course Name',
                 userId,
             }
         })
+    }
+
+    const truncateText = (text, length=50) => {
+        if (text.length <= length) {
+          return text;
+        }
+      
+        return text.substr(0, length) + '\u2026'
     }
 
     const addLecture = () => {
@@ -49,16 +54,17 @@ const UserCourses = () => {
         <Container>
             <h3 style={{ marginTop: '2vh', color: '#BEADFA',}}>Courses Created</h3>
             <div className="profile-card-container">
+                {loading && <CircularProgress style={{ color: 'pink', margin: '0 auto', }} />}
                 {courses.map((course, k) => (
                     <div key={k} className="profile-card">
                         <div className="imgBx">
-                            <img src={course.img} />
+                            <img src={course.icon} />
                         </div>
                         <div className="profile-content">
                             <div className="profile-details">
-                                <h2>{course.courseName}</h2>
+                                <h2>{course.title}</h2>
                                 <div className="profile-data">
-                                    <h3><span>{course.desc}</span></h3>
+                                    <h3><span>{truncateText(course.description)}</span></h3>
                                 </div>
                                 <div className="profile-actionBtn">
                                     <button onClick={editCourse}>Edit Course</button>
@@ -69,6 +75,10 @@ const UserCourses = () => {
                 ))}
             </div>
             <h3 style={{ marginTop: '2vh', color: '#BEADFA',}}>Courses Enrolled</h3>
+            <div className="profile-card-container">
+                {loading && <CircularProgress style={{ color: 'pink', margin: '0 auto', }} />}
+                <p>No courses enrolled...</p>
+            </div>
         </Container>
     )
 }

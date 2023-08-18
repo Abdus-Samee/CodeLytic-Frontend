@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Link, useNavigate } from 'react-router-dom'
-import { Card, CardContent, Typography, Button, Container } from "@mui/material"
+import { CircularProgress } from "@mui/material"
 import LockIcon from '@mui/icons-material/Lock'
 
 import Search from "./Search"
@@ -10,119 +10,20 @@ import { loadAllCourses, loadAllTags, loadSingleCourse } from "../services/cours
 import "../assets/css/course.css"
 
 const Course = () => {
+  const [courses, setCourses] = useState([])
+  // const [filteredCourses, setFilteredCourses] = useState([])
   const [selectedCourse, setSelectedCourse] = useState('')
   const [searchTags, setSearchTags] = useState([])
-  const navigate = useNavigate()
+  const [loading, setLoading] = useState(true)
 
-  const courses = [
-    {
-      id: 1,
-      date: 'Aug 10, 2023',
-      coursename: 'Sorting first',
-      author: 'A. Samee',
-      img: '',
-      premium: false,
-      tags: ['sorting', 'dfs', 'bfs', 'graph',],
-    },
-    {
-      id: 2,
-      date: 'Aug 10, 2023',
-      coursename: 'Number Theory',
-      author: 'A. Samee',
-      img: '',
-      premium: true,
-      tags: ['number theory', 'implementation'],
-    },
-    {
-      id: 3,
-      date: 'Aug 10, 2023',
-      coursename: 'Sorting',
-      author: 'A. Samee',
-      img: '',
-      premium: false,
-      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
-    },
-    {
-      id: 4,
-      date: 'Aug 10, 2023',
-      coursename: 'Sorting',
-      author: 'A. Samee',
-      img: '',
-      premium: false,
-      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
-    },
-    {
-      id: 5,
-      date: 'Aug 10, 2023',
-      coursename: 'Sorting',
-      author: 'A. Samee',
-      img: '',
-      premium: true,
-      tags: ['sorting', 'dfs', 'number theory', 'graph', 'implementation'],
-    },
-    {
-      id: 6,
-      date: 'Aug 10, 2023',
-      coursename: 'Sorting',
-      author: 'A. Samee',
-      img: '',
-      premium: false,
-      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
-    },
-    {
-      id: 7,
-      date: 'Aug 10, 2023',
-      coursename: 'Sorting',
-      author: 'A. Samee',
-      img: '',
-      premium: true,
-      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
-    },
-    {
-      id: 8,
-      date: 'Aug 10, 2023',
-      coursename: 'Sorting',
-      author: 'A. Samee',
-      img: '',
-      premium: false,
-      tags: ['sorting', 'number theory', 'bfs', 'graph', 'implementation'],
-    },
-    {
-      id: 9,
-      date: 'Aug 10, 2023',
-      coursename: 'Sorting',
-      author: 'A. Samee',
-      img: '',
-      premium: false,
-      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
-    },
-    {
-      id: 10,
-      date: 'Aug 10, 2023',
-      coursename: 'Sorting last',
-      author: 'A. Samee',
-      img: '',
-      premium: true,
-      tags: ['sorting', 'dfs', 'bfs', 'graph', 'implementation'],
-    },
-  ];
+  const navigate = useNavigate()
 
   useEffect(() => {
     loadAllCourses().then((res) => {
-      console.log(res)
+      setCourses(res)
+      // setFilteredCourses(res)
+      setLoading(false)
     }).catch((e) => console.log(e))
-
-    loadSingleCourse(3).then((res) => {
-      console.log(res)
-    }).catch(e => console.log(e))
-
-    loadAllTags().then((res) => {
-      console.log(res)
-    }).catch(e => console.log(e))
-
-    // fetch("https://b809-103-94-134-4.ngrok-free.app/course/")
-    //         .then(response => response.json())
-    //         .then(data => console.log(data))
   }, [])
 
   const handleShowCourse = (courseId,premium) => {
@@ -130,7 +31,7 @@ const Course = () => {
       const userId = 1;
       //find the coursename with corresponding courseId
       const course = courses.find(course => course.id === courseId)
-      const coursename = course.name
+      const coursename = course.title
       navigate(`/course/${courseId}`,{
         state: {
           coursename,
@@ -146,21 +47,34 @@ const Course = () => {
     }
   }
 
-  const handleTagRemove = (tagName) => {
-    setSearchTags(prevTags => prevTags.filter(tag => tag !== tagName))
+  const updateFilteredCourses = () => {
+    const isSearchEmpty = selectedCourse === '' && searchTags.length === 0
+
+    if (isSearchEmpty) {
+      setFilteredCourses(courses)
+    } else {
+      setFilteredCourses(courses.filter((course) =>
+        (course.title.toLowerCase().includes(selectedCourse.toLowerCase()) || selectedCourse === '') &&
+        (searchTags.length === 0 || course.tags?.some((tag) => searchTags.includes(tag)))
+      ))
+    }
   }
 
   const isSearchEmpty = selectedCourse === '' && searchTags.length === 0
 
-  const filteredCourses = isSearchEmpty
-    ? courses
-    : courses.filter((course) =>
-        (course.coursename.toLowerCase().includes(selectedCourse.toLowerCase()) || selectedCourse === '') &&
-        (searchTags.length === 0 || course.tags.some((tag) => searchTags.includes(tag)))
-      )
+  const filteredCourses = isSearchEmpty ? courses : courses.filter((course) =>
+    (course.title.toLowerCase().includes(selectedCourse.toLowerCase()) || selectedCourse === '') &&
+    (searchTags.length === 0 || course.tags?.some((tag) => searchTags.includes(tag)))
+  )
+
+  const handleTagRemove = (tagName) => {
+    setSearchTags(prevTags => prevTags.filter(tag => tag !== tagName))
+    // updateFilteredCourses()
+  }
 
   const handleSearch = (value) => {
     setSelectedCourse(value)
+    // updateFilteredCourses()
   }
 
   return (
@@ -175,41 +89,43 @@ const Course = () => {
           ))}
         </div>
       }
-      <section className="card-list">
-        {filteredCourses.map((obj, idx) => (
-          <article key={idx} className="card">
-            <header className="card-header">
-              <p>{obj.date}</p>
-              <h2 onClick={() => handleShowCourse(obj.id, obj.premium)}>{obj.coursename}</h2>
-            </header>
+      {loading ? <CircularProgress style={{ color: 'pink', marginLeft: '48%', }} /> :
+        <section className="card-list">
+          {filteredCourses?.map((obj, idx) => (
+            <article key={idx} className="card">
+              <header className="card-header">
+                {/**<p>{obj.date}</p>**/}
+                <h2 onClick={() => handleShowCourse(obj.id, obj.premium)}>{obj.title}</h2>
+              </header>
 
-            <div className="card-author">
-              {obj.premium && (
-                <>
-                  <div className="author-avatar" style={{ paddingLeft: '.8vw'}}>
-                    <LockIcon fontSize="large" />
-                  </div>
-                  <svg className="half-circle" viewBox="0 0 106 57">
-                    <path d="M102 4c0 27.1-21.9 49-49 49S4 31.1 4 4"></path>
-                  </svg>
-                </>
-              )}
+              <div className="card-author">
+                {obj.premium && (
+                  <>
+                    <div className="author-avatar" style={{ paddingLeft: '.8vw'}}>
+                      <LockIcon fontSize="large" />
+                    </div>
+                    <svg className="half-circle" viewBox="0 0 106 57">
+                      <path d="M102 4c0 27.1-21.9 49-49 49S4 31.1 4 4"></path>
+                    </svg>
+                  </>
+                )}
 
-              <div className="author-name">
-                <div className="author-name-prefix">Author</div>
-                {obj.author}
+                <div className="author-name">
+                  <div className="author-name-prefix">Author</div>
+                  {obj.author}
+                </div>
               </div>
-            </div>
-            <div className="tags">
-              {obj.tags.map((tagName, i) => (
-                <a key={i} onClick={() => handleTagClick(tagName)}>
-                  {tagName}
-                </a>
-              ))}
-            </div>
-          </article>
-        ))}
-      </section>
+              <div className="tags">
+                {obj?.tags?.map((tagName, i) => (
+                  <a key={i} onClick={() => handleTagClick(tagName)}>
+                    {tagName}
+                  </a>
+                ))}
+              </div>
+            </article>
+          ))}
+        </section>
+      }
     </div>
   )
 }

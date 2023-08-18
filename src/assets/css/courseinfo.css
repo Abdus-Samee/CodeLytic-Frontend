@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 .App {
-  height: 87vh;
+  min-height: 87vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,7 +20,7 @@
   margin-left: 5vw;
   margin-top: 1vh;
   max-width: 1000px;
-  max-height: 85vh;
+  min-height: 85vh;
   width: 100vw;
   display:flex;
   background: linear-gradient(90deg, #201c29, #201c29 1px, #17141d 0, #17141d);

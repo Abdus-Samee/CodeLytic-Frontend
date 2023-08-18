@@ -1,9 +1,12 @@
 import { useState, useEffect, useContext } from "react"
 import { useNavigate, useLocation } from 'react-router-dom'
-import { Container, Button, TextField, Autocomplete, Stack } from "@mui/material"
+import { Container, Button, TextField, Autocomplete, CircularProgress } from "@mui/material"
 import UploadFileIcon from "@mui/icons-material/UploadFile"
+import { storage } from "../services/firebase"
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
+import { v4 } from "uuid"
 
-import { loadAllTags } from "../services/course-service"
+import { loadAllTags, createCourse } from "../services/course-service"
 
 import '../assets/css/courseinfo.css'
 
@@ -13,11 +16,16 @@ const AddCourseInfo = () => {
     const location = useLocation()
     const [courseName, setCourseName] = useState("")
     const [desc, setDesc] = useState("")
-    const [img, setImg] = useState()
+    const [tags, setTags] = useState([])
+    const [selectedTags, setSelectedTags] = useState([])
+    const [selectedTagIds, setSelectedTagIds] = useState([])
+    const [img, setImg] = useState(null) //for display
+    const [file, setFile] = useState(null) //for upload to firebase
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         loadAllTags().then((res) => {
-            console.log(res)
+            setTags(res)
         }).catch(e => console.log(e))
 
         const { courseName, desc, img } = location.state || {}
@@ -29,30 +37,64 @@ const AddCourseInfo = () => {
         if(img) setImg(img)
     }, [])
 
-    const tags = [
-        { label: 'sorting' },
-        { label: 'graph' },
-        { label: 'dfs' },
-        { label: 'bfs' },
-        { label: 'searching' },
-        { label: 'dp' },
-        { label: 'recursion' },
-    ]
+    const handleTagChange = (event, value) => {
+        setSelectedTags(value)
+        setSelectedTagIds(value.map(tag => tag.id))
+    }
 
     const handleImageUpload = (e) => {
         setImg(URL.createObjectURL(e.target.files[0]))
+        setFile(e.target.files[0])
+    }
+
+    const uploadImageToFirebase = () => {
+        
     }
 
     const handleCreateCourse = () => {
-        const userId = 1;
+        const author = 'John Doe';
 
-        navigate(`/user/${userId}`, {
-            state: {
-                courseName,
-                desc,
-                img
+        if(!courseName || !desc || !selectedTagIds.length){
+            alert('Please fill all the fields')
+            return
+        }
+
+        if(file){
+            const imageRef = ref(storage, `courses/${file.name}-${v4()}`)
+            setLoading(true)
+            uploadBytes(imageRef, file).then(() => {
+                getDownloadURL(imageRef).then((url) => {
+                    setLoading(false)
+                    
+                    const createdCourse = {
+                        author: author,
+                        title: courseName,
+                        icon: url,
+                        description: desc,
+                        tagIds: selectedTagIds,
+                    }
+
+                    callCreateCourse(createdCourse)
+                })
+            })
+        }else{
+            const createdCourse = {
+                author: author,
+                title: courseName,
+                icon: '',
+                description: desc,
+                tagIds: selectedTagIds,
             }
-        })
+
+            callCreateCourse(createdCourse)
+        }
+    }
+
+    const callCreateCourse = (createdCourse) => {
+        createCourse(createdCourse).then((res) => {
+            console.log('Create course: ', res)
+            navigate('/user')
+        }).catch(e => console.log('Create course ', e))
     }
 
     const textFieldInputLabelProps = {
@@ -104,8 +146,10 @@ const AddCourseInfo = () => {
                             multiple
                             id="tags-outlined"
                             options={tags}
-                            getOptionLabel={(option) => option.label}
+                            getOptionLabel={(option) => option.name}
                             filterSelectedOptions
+                            value={selectedTags}
+                            onChange={handleTagChange}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
@@ -124,6 +168,7 @@ const AddCourseInfo = () => {
                         Upload Image
                         <input type="file" accept="image/*" hidden onChange={handleImageUpload} />
                     </Button>
+                    {loading && <CircularProgress style={{ margin: '0 auto', color: 'pink', }} />}
                 </div>
             </div>
         </Container>

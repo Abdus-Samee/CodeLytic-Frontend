@@ -11,3 +11,7 @@ export const loadSingleCourse = (courseId) => {
 export const loadAllTags = () => {
     return myAxios.get('/tags').then(res => res.data)
 }
+
+export const createCourse = (course) => {
+    return myAxios.post('/course', course).then(res => res.data)
+}

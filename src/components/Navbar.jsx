@@ -29,7 +29,7 @@ function Navbar() {
 				<NavLink to="progress">Progress</NavLink>
 				<NavLink to="discussion">Discussion</NavLink>
 				<NavLink to="register" className="register-link">Register</NavLink>
-				<NavLink to={`user/${userId}`} state={{ courseName, desc, img }} className="profile-link">Profile</NavLink>	
+				<NavLink to="user" className="profile-link">Profile</NavLink>	
 				<NavLink to="login" className="login-link">LogIn</NavLink>
 				<button
 					className="nav-btn nav-close-btn"
