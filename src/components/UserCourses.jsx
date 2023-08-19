@@ -2,11 +2,12 @@ import { useEffect, useState } from "react"
 import { useParams, useLocation, useNavigate } from "react-router-dom"
 import { Container, CircularProgress } from "@mui/material"
 
-import { loadAllCourses } from "../services/course-service"
+import { loadAllCourses, loadCourseByAuthor } from "../services/course-service"
+import { getUser } from "../services/user-service"
 
 import "../assets/css/profile.css"
 
-const UserCourses = () => {
+const UserCourses = ({ token }) => {
     const [courses, setCourses] = useState([])
     const [loading, setLoading] = useState(true)
 
@@ -18,7 +19,7 @@ const UserCourses = () => {
     // const { courseName, desc, img } = location.state
 
     useEffect(() => {
-        const token = localStorage.getItem('codelytic-token')
+        // const token = localStorage.getItem('codelytic-token')
 
         if(!token){
             navigate('/login')
@@ -26,11 +27,21 @@ const UserCourses = () => {
         }
 
         //pass to backend to get user details
+        getUser().then((res) => {
+            console.log("User: ", res)
+        }).catch(e => console.log(e))
 
-        loadAllCourses().then((res) => {
-            setCourses(res.filter(course => course.author === author))
+        loadCourseByAuthor().then((res) => {
+            setCourses(res)
             setLoading(false)
         }).catch(e => console.log(e))
+
+        // loadAllCourses().then((res) => {
+        //     setCourses(res.filter(course => course.author === author))
+        //     setLoading(false)
+        // }).catch(e => console.log(e))
+
+
     }, [])
 
     const editCourse = () => {

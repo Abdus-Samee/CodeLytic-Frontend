@@ -9,7 +9,7 @@ import ListContainer from "./ListContainer"
 
 import "../assets/css/coursecontent.css"
 
-const AddCourseContent = () => {
+const AddCourseContent = ({ token }) => {
     const location = useLocation()
     const navigate = useNavigate()
     const [items, setItems] = useState([])
@@ -20,6 +20,10 @@ const AddCourseContent = () => {
     ]
 
     useEffect(() => {
+        if(!token){
+            navigate('/login')
+        }
+        
         // const userDataItems = (userData['items'] === undefined)? [] : userData['items']
         const { propItems } = location.state || {}
         if(propItems) setItems(propItems)

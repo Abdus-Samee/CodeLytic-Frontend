@@ -9,7 +9,7 @@ import { loadAllTags } from "../../services/course-service"
 
 import "../../assets/css/createpost.css"
 
-const CreatePost = () => {
+const CreatePost = ({ token }) => {
   const navigate = useNavigate()
 
   const tags = [
@@ -31,6 +31,10 @@ const CreatePost = () => {
   })
 
   useEffect(() => {
+    if(!token){
+      navigate('/login')
+    }
+    
     loadAllTags().then((res) => {
         console.log(res)
     }).catch(e => console.log(e))

@@ -34,7 +34,7 @@ const styleModal = {
     p: 4,
   }
 
-    const ShowCourse = () => {
+    const ShowCourse = ({ token }) => {
         const params = useParams()
         const location = useLocation()
         const navigate = useNavigate()

@@ -61,13 +61,13 @@ nav {
 	align-items: center;
 }
 
-.register-link {
+.profile-link {
 	/* padding-left: auto; */
 	margin-right: -22rem;
 	margin-left: 22rem;
 }
 
-.profile-link {
+.register-link {
 	/* padding-left: auto; */
 	margin-right: -25rem;
 	margin-left: 25rem;
@@ -95,12 +95,12 @@ img {
 		/* margin-left: -25rem; */
 	}
 	
-	.profile-link {
+	.register-link {
 		margin-right: 25rem;
 		/* margin-left: -25rem; */
 	}
 	
-	.register-link {
+	.profile-link {
 		margin-right: 22rem;
 		/* margin-left: -25rem; */
 	}

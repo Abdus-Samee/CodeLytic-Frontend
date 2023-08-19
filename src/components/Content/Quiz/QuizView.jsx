@@ -4,7 +4,7 @@ import { Button, Divider, FormControlLabel, LinearProgress, RadioGroup, Radio, T
 
 import '../../../assets/css/quizview.css'
 
-const QuizView = () => {
+const QuizView = ({ token }) => {
     const [progress, setProgress] = useState(0)
     const [period, setPeriod] = useState(0)
     const [current, setCurrent] = useState(0)
@@ -75,6 +75,10 @@ const QuizView = () => {
     ]
 
     useEffect(() => {
+        if(!token){
+            navigate('/login')
+        }
+        
         const l = quiz.length
         const p = 100 / l
         setPeriod(p)

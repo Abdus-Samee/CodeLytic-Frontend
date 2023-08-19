@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { CircularProgress } from "@mui/material"
 
 import { authenticateUser } from "../../services/user-service"
 
 import '../../assets/css/login.css'
 
-const Login = () => {
+const Login = ({ setToken }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [loading, setLoading] = useState(false)
+
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -20,6 +23,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        setLoading(true)
 
         if(!email || !password){
             alert('Please fill all the fields')
@@ -32,7 +36,8 @@ const Login = () => {
         }
 
         authenticateUser(user).then((res) => {
-            localStorage.setItem('codelytic-token', res.token)
+            setToken(res.token)
+            setLoading(false)
             navigate('/user')
             // if(res.status === 200){
             //     localStorage.setItem('codelytic-token', res.data.token)
@@ -55,6 +60,7 @@ const Login = () => {
                     <input type="email" className="auth-input" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
                     <input type="password" className="auth-input" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                     <button type="submit" className="auth-btn">Sign In</button>
+                    {loading && <CircularProgress style={{ color: '#FF4B2B', margin: '0 auto', padding: '1vh' }} />}
                 </form>
             </div>
             <div class="overlay-container">

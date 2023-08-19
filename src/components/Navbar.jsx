@@ -4,7 +4,7 @@ import { FaBars, FaTimes } from "react-icons/fa"
 
 import "../assets/css/navbar.css"
 
-function Navbar() {
+function Navbar({ token, handleLogout}) {
 	const navRef = useRef();
 
 	const showNavbar = () => {
@@ -12,11 +12,6 @@ function Navbar() {
 			"responsive_nav"
 		)
 	}
-
-	const userId = 1
-	const courseName = 'Dynamic Programming'
-	const desc = 'Dp'
-	const img = ''
 
 	return (
 		<header>
@@ -28,9 +23,18 @@ function Navbar() {
 				<NavLink to="create/course">Create Course</NavLink>
 				<NavLink to="progress">Progress</NavLink>
 				<NavLink to="discussion">Discussion</NavLink>
-				<NavLink to="register" className="register-link">Register</NavLink>
-				<NavLink to="user" className="profile-link">Profile</NavLink>	
-				<NavLink to="login" className="login-link">LogIn</NavLink>
+				{token && (
+					<>
+						<NavLink to="user" className="register-link">Profile</NavLink>
+						<NavLink to="courses" className="login-link" onClick={handleLogout}>Logout</NavLink>
+					</>
+				)}
+				{!token && (
+					<>
+						<NavLink to="register" className="register-link">Register</NavLink>
+						<NavLink to="login" className="login-link">LogIn</NavLink>
+					</>
+				)}	
 				<button
 					className="nav-btn nav-close-btn"
 					onClick={showNavbar}>

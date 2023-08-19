@@ -79,17 +79,18 @@ const Course = () => {
 
   return (
     <div>
-      <Search handleSearch={handleSearch} />
-      {searchTags.length > 0 &&
-        <div className="searched-tags">
-          {searchTags.map((tagName, i) => (
-            <a key={i} onClick={() => handleTagRemove(tagName)}>
-              {tagName}
-            </a>
-          ))}
-        </div>
-      }
-      {loading ? <CircularProgress style={{ color: 'pink', marginLeft: '48%', }} /> :
+      {loading ? <CircularProgress style={{ color: 'pink', marginLeft: '50vw', marginTop: '48vh' }} /> :
+      <>
+        <Search handleSearch={handleSearch} />
+        {searchTags.length > 0 &&
+          <div className="searched-tags">
+            {searchTags.map((tagName, i) => (
+              <a key={i} onClick={() => handleTagRemove(tagName)}>
+                {tagName}
+              </a>
+            ))}
+          </div>
+        }
         <section className="card-list">
           {filteredCourses?.map((obj, idx) => (
             <article key={idx} className="card">
@@ -125,6 +126,7 @@ const Course = () => {
             </article>
           ))}
         </section>
+      </>
       }
     </div>
   )

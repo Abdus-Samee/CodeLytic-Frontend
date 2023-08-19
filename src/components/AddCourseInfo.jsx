@@ -10,7 +10,7 @@ import { loadAllTags, createCourse } from "../services/course-service"
 
 import '../assets/css/courseinfo.css'
 
-const AddCourseInfo = () => {
+const AddCourseInfo = ({ token }) => {
     // const { setCurrentStep, userData, setUserData } = useContext(multiStepContext)
     const navigate = useNavigate()
     const location = useLocation()
@@ -24,6 +24,10 @@ const AddCourseInfo = () => {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
+        if(!token){
+            navigate('/login')
+        }
+        
         loadAllTags().then((res) => {
             setTags(res)
         }).catch(e => console.log(e))

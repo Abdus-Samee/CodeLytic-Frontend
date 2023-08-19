@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
    Grid,  Container, TextField, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Divider, Typography,
    Snackbar
@@ -9,7 +9,7 @@ import ImmutableOption from './ImmutableOption'
 import MutableOption from './MutableOption'
 import QuizCard from './QuizCard'
 
-const AddCourseQuiz = () => {
+const AddCourseQuiz = ({ token }) => {
   const [quiz, setQuiz] = useState([])
   const [qs, setQs] = useState('')
   const [ans, setAns] = useState('')
@@ -17,6 +17,12 @@ const AddCourseQuiz = () => {
   const [warning, setWarning] = useState('')
   const [editQuestion, setEditQuestion] = useState(false)
   const [editIdx, setEditIdx] = useState(-1)
+
+  useEffect(() => {
+    if(!token){
+      navigate('/login')
+    }
+  }, [])
 
   // add an option to the list of options
   const handleOptionAddition = (option) => {

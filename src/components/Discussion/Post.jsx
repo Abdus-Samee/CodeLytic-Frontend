@@ -8,7 +8,7 @@ import { CommentList } from "./CommentList"
 
 import "../../assets/css/discussion-post.css"
 
-const Post = () => {
+const Post = ({ token }) => {
   const { post, rootComments, createLocalComment } = usePost()
 
   const loading = false
@@ -48,11 +48,11 @@ const Post = () => {
       </Box>
       <h3 className="comments-title">Comments</h3>
       <section>
-        <CommentForm
+        {token && <CommentForm
           loading={loading}
           error={error}
           onSubmit={onCommentCreate}
-        />
+        />}
         {rootComments != null && rootComments.length > 0 && (
           <div className="mt-4">
             <CommentList comments={rootComments} />
