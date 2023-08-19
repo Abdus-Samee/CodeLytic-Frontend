@@ -19,3 +19,7 @@ export const loadAllTags = () => {
 export const createCourse = (course) => {
     return myAxios.post('/course', course).then(res => res.data)
 }
+
+export const createSubsection = (courseId, subsection) => {
+    return myAxios.post(`/course/subsection/${courseId}`, subsection).then(res => res.data)
+}

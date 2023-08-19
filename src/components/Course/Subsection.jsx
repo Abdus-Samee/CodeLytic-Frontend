@@ -42,7 +42,7 @@ const Subsection = ({ course }) => {
 
               <div className="ag-courses-item_title">{o.name}</div>
 
-              {o.lecture.count !== 0 && (
+              {o.lectures.count !== 0 && (
                 <Accordion className="lecture">
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -52,7 +52,7 @@ const Subsection = ({ course }) => {
                     <Typography>Lecture</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    {o.lecture.map((i, k) => (
+                    {o.lectures.map((i, k) => (
                       <Accordion key={k}>
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
