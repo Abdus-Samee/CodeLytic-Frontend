@@ -14,10 +14,19 @@ const UserCourses = () => {
     const location = useLocation()
     const navigate = useNavigate()
     const userId = params.id
-    const author = 'John Doe'
+    const author = 'string@string'
     // const { courseName, desc, img } = location.state
 
     useEffect(() => {
+        const token = localStorage.getItem('codelytic-token')
+
+        if(!token){
+            navigate('/login')
+            // return
+        }
+
+        //pass to backend to get user details
+
         loadAllCourses().then((res) => {
             setCourses(res.filter(course => course.author === author))
             setLoading(false)

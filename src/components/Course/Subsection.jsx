@@ -21,6 +21,10 @@ const Subsection = ({ course }) => {
     })
   }
 
+  const handleAddLecture = () => {
+    navigate('/create/course-content')
+  }
+
   const handleQuizClick = () => {
     //get quiz id
     const id = 1
@@ -63,7 +67,7 @@ const Subsection = ({ course }) => {
                         </AccordionDetails>
                       </Accordion>
                     ))}
-                    <Button>Add Lecture</Button>
+                    <Button onClick={handleAddLecture}>Add Lecture</Button>
                   </AccordionDetails>
                 </Accordion>
               )}
