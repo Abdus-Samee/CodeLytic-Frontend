@@ -4,6 +4,10 @@ export const authenticateUser = (user) => {
     return myAxios.post('/authenticate', user).then(res => res.data)
 }
 
+export const registerUser = (user) => {
+    return myAxios.post('/user/register', user).then(res => res.data)
+}
+
 export const getUser = (headers) => {
     // console.log("headers: ", headers)
 

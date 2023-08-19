@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
+import { registerUser } from "../../services/user-service"
+
 import '../../assets/css/register.css'
 
 const Register = () => {
-    const [username, setUsername] = useState('')
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
@@ -14,11 +16,22 @@ const Register = () => {
     }, [])
 
     const handleRegister = () => {
-        console.log('username: ', username, 'email: ', email, 'password: ', password)
+        const user = {
+            name,
+            email,
+            password
+        }
+
+        console.log('name: ', name, 'email: ', email, 'password: ', password)
         //take some time before navigating to /
-        setTimeout(() => {
-            navigate('/courses')
-        }, 2000)
+        // setTimeout(() => {
+        //     navigate('/courses')
+        // }, 2000)
+
+        registerUser(user).then((res) => {
+            console.log(res)
+            navigate('/login')
+        }).catch(e => console.log(e))
     }
 
     return (
@@ -38,7 +51,7 @@ const Register = () => {
                                 id="username"
                                 class="c-form__input"
                                 placeholder=" "
-                                onChange={(e) => setUsername(e.target.value)}
+                                onChange={(e) => setName(e.target.value)}
                                 pattern="[^\s]+"
                                 required
                             />
