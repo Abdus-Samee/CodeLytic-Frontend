@@ -57,7 +57,7 @@ const AddCourseContent = ({ token }) => {
             val = []
         }
         else if(type === "Heading") key = "h1"
-        else if(type === "Sub-Heading") key = "h3"
+        else if(type === "Sub-Heading") key = "h2"
 
         // const p = items
         // p.push({[key]:val})
@@ -159,7 +159,7 @@ const AddCourseContent = ({ token }) => {
                                      />
                                 </div>
                             }
-                            {obj.key==="h3" && 
+                            {obj.key==="h2" && 
                                 <div>
                                     <TextField fullWidth size="small" margin="normal" value={obj.val} 
                                         onChange={(e) => handleContentChange(e.target.value, idx)} variant="outlined" color="primary" 

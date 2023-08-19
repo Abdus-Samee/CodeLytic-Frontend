@@ -8,7 +8,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import '../../assets/css/subsection.css'
 
-const Subsection = ({ course }) => {
+const Subsection = ({ course, isAuthor }) => {
   const navigate = useNavigate()
 
   const handleLectureClick = (o, i) => {
@@ -25,11 +25,16 @@ const Subsection = ({ course }) => {
     navigate('/create/course-content')
   }
 
-  const handleQuizClick = () => {
+  const handleQuizClick = (id) => {
     //get quiz id
-    const id = 1
+    // const id = 1
+    // console.log('selected quiz', id)
 
     navigate(`/quiz/${id}`)
+  }
+
+  const handleAddQuiz = () => {
+    navigate('/create/course-quiz')
   }
 
   return (
@@ -53,21 +58,9 @@ const Subsection = ({ course }) => {
                   </AccordionSummary>
                   <AccordionDetails>
                     {o.lectures.map((i, k) => (
-                      <Accordion key={k}>
-                        <AccordionSummary
-                          expandIcon={<ExpandMoreIcon />}
-                          aria-controls="panel1a-content"
-                          id="panel1a-header"
-                        >
-                          <Typography>{i.title}</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <Typography>{i.body}</Typography>
-                          <Button onClick={() => handleLectureClick(o.id, k)}>Show</Button>
-                        </AccordionDetails>
-                      </Accordion>
+                      <Button key={k} className="show-lec-btn" onClick={() => handleLectureClick(i.id, k)}>{i.title}</Button>
                     ))}
-                    <Button onClick={handleAddLecture}>Add Lecture</Button>
+                    {isAuthor && <Button onClick={handleAddLecture}>Add Lecture</Button>}
                   </AccordionDetails>
                 </Accordion>
               )}
@@ -81,11 +74,13 @@ const Subsection = ({ course }) => {
                 </AccordionSummary>
                 <AccordionDetails>
                   {o.quiz ? (
-                    <Button variant="outlined" size="small" onClick={() => handleQuizClick()}>
+                    <Button variant="outlined" size="small" onClick={() => handleQuizClick(o.quiz.id)}>
                       Show
                     </Button>
                   ) : (
-                    <Button variant="contained">Add Quiz</Button>
+                    <>
+                    {isAuthor && <Button variant="contained" onClick={handleAddQuiz}>Add Quiz</Button>}
+                    </>
                   )}
                 </AccordionDetails>
               </Accordion>

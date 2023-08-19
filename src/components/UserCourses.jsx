@@ -14,8 +14,7 @@ const UserCourses = ({ token }) => {
     const params = useParams()
     const location = useLocation()
     const navigate = useNavigate()
-    const userId = params.id
-    const author = 'string@string'
+    // const userId = params.id
     // const { courseName, desc, img } = location.state
 
     useEffect(() => {
@@ -25,13 +24,18 @@ const UserCourses = ({ token }) => {
             navigate('/login')
             // return
         }
+        
+        const customHeaders = {
+            Authorization: 'Bearer ' + token,
+        }
 
         //pass to backend to get user details
-        getUser().then((res) => {
-            console.log("User: ", res)
-        }).catch(e => console.log(e))
+        // getUser(customHeaders).then((res) => {
+        //     console.log("User: ", res)
+        // }).catch(e => console.log(e))
 
-        loadCourseByAuthor().then((res) => {
+
+        loadCourseByAuthor(customHeaders).then((res) => {
             setCourses(res)
             setLoading(false)
         }).catch(e => console.log(e))
@@ -44,12 +48,11 @@ const UserCourses = ({ token }) => {
 
     }, [])
 
-    const editCourse = () => {
-        const courseId = 3
+    const editCourse = (courseId) => {
         navigate(`/course/${courseId}`, {
             state: {
                 courseName: 'Course Name',
-                userId,
+                // userId,
             }
         })
     }
@@ -60,14 +63,6 @@ const UserCourses = ({ token }) => {
         }
       
         return text.substr(0, length) + '\u2026'
-    }
-
-    const addLecture = () => {
-        navigate('/create/course-content')
-    }
-
-    const addQuiz = () => {
-        navigate('/create/course-quiz')
     }
 
     return (
@@ -87,7 +82,7 @@ const UserCourses = ({ token }) => {
                                     <h3><span>{truncateText(course.description)}</span></h3>
                                 </div>
                                 <div className="profile-actionBtn">
-                                    <button onClick={editCourse}>Edit Course</button>
+                                    <button onClick={() => editCourse(course.id)}>Edit Course</button>
                                 </div>
                             </div>
                         </div>

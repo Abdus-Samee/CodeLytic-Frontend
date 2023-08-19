@@ -14,6 +14,11 @@
     z-index: 2;
     position: relative;
   }
+
+  .show-lec-btn {
+    display: block;
+    width: 100%;
+  }
   
   .quiz {
     z-index: 2;

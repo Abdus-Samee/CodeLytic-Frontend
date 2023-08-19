@@ -27,8 +27,12 @@ const AddCourseInfo = ({ token }) => {
         if(!token){
             navigate('/login')
         }
+
+        const customHeaders = {
+            Authorization: 'Bearer ' + token,
+        }
         
-        loadAllTags().then((res) => {
+        loadAllTags(customHeaders).then((res) => {
             setTags(res)
         }).catch(e => console.log(e))
 
@@ -56,7 +60,7 @@ const AddCourseInfo = ({ token }) => {
     }
 
     const handleCreateCourse = () => {
-        const author = 'John Doe';
+        const author = localStorage.getItem('codelytic-user');
 
         if(!courseName || !desc || !selectedTagIds.length){
             alert('Please fill all the fields')
@@ -78,6 +82,8 @@ const AddCourseInfo = ({ token }) => {
                         tagIds: selectedTagIds,
                     }
 
+                    console.log('Create course: before api', createdCourse)
+
                     callCreateCourse(createdCourse)
                 })
             })
@@ -90,12 +96,18 @@ const AddCourseInfo = ({ token }) => {
                 tagIds: selectedTagIds,
             }
 
+            console.log('Create course: before api', createdCourse)
+
             callCreateCourse(createdCourse)
         }
     }
 
     const callCreateCourse = (createdCourse) => {
-        createCourse(createdCourse).then((res) => {
+        const customHeaders = {
+            Authorization: 'Bearer ' + token,
+        }
+
+        createCourse(createdCourse, customHeaders).then((res) => {
             console.log('Create course: ', res)
             navigate('/user')
         }).catch(e => console.log('Create course ', e))

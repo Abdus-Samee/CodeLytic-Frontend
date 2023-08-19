@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
    Grid,  Container, TextField, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Divider, Typography,
    Snackbar
@@ -17,6 +18,8 @@ const AddCourseQuiz = ({ token }) => {
   const [warning, setWarning] = useState('')
   const [editQuestion, setEditQuestion] = useState(false)
   const [editIdx, setEditIdx] = useState(-1)
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     if(!token){

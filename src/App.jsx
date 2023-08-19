@@ -29,6 +29,7 @@ const App = () => {
 
   const clearToken = () => {
     setToken('')
+    localStorage.setItem('codelytic-user', null)
   }
 
   return (
@@ -51,7 +52,7 @@ const App = () => {
         <Route path="register" element={<Register />} />
         <Route path="login" element={<Login setToken={setToken} />} />
 
-        <Route path="test" element={<Test />} />
+        <Route path="test" element={<Test token={token} />} />
       </Routes>
     </>
   )

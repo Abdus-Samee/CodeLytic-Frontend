@@ -8,18 +8,47 @@ export const loadSingleCourse = (courseId) => {
     return myAxios.get(`/course/${courseId}`).then(res => res.data)
 }
 
-export const loadCourseByAuthor = () => {
-    return myAxios.get('/course/by-author').then(res => res.data)
+export const loadCourseByAuthor = (headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
+    }
+    
+    return myAxios.get('/course/by-author', config).then(res => res.data)
 }
 
-export const loadAllTags = () => {
-    return myAxios.get('/tags').then(res => res.data)
+export const loadAllTags = (headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
+    }
+
+    return myAxios.get('/tags', config).then(res => res.data)
 }
 
-export const createCourse = (course) => {
-    return myAxios.post('/course', course).then(res => res.data)
+export const createCourse = (course, headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
+    }
+
+    return myAxios.post('/course', course, config).then(res => res.data)
 }
 
 export const createSubsection = (courseId, subsection) => {
     return myAxios.post(`/course/subsection/${courseId}`, subsection).then(res => res.data)
+}
+
+export const loadSingleLecture = (lectureId) => {
+    return myAxios.get(`/course/lecture/${lectureId}`).then(res => res.data)
+}
+
+export const loadQuiz = (quizId) => {
+    return myAxios.get(`/course/quiz/${quizId}`).then(res => res.data)
 }

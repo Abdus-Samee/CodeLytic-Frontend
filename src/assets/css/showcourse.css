@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap');
+
 .course-description {
     padding: 2vh;
 }
@@ -30,14 +32,28 @@
 
 #subsection-modal-title {
     color: #000;
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 2vh;
 }
 
-#subsection-modal-input {
-    font-size: 17px;
+.subsection-modal-input {
+    /* font-size: 17px; */
     padding: 16px;
+    margin-bottom: 2vh;
+    border: 1px solid purple;
+    border-radius: 5px;
+    font-family: 'DM Mono', monospace;
 }
 
-#subsection-modal-button {
-    margin-top: 2vh;
+.subsection-modal-input:focus {
+    border: 1px solid #FF4B2B;
+}
+
+.subsection-modal-button {
     width: 50%;
+    font-family: 'DM Mono', monospace;
+}
+
+.course-tag-chip {
+    background: linear-gradient(90deg, #ff8a00, #e52e71);    
 }

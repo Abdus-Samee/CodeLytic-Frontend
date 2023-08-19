@@ -31,6 +31,8 @@ const styleModal = {
     width: 400,
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
     bgcolor: 'orange',
     border: '2px solid #000',
     borderRadius: '10px',
@@ -44,13 +46,21 @@ const styleModal = {
         const [subsectionLoading, setSubsectionLoading] = useState(false)
         const [subsection, setSubsection] = useState('')
         const [isOpen, setIsOpen] = useState(false)
+        const [isAuthor, setIsAuthor] = useState(false)
 
         const params = useParams()
         const location = useLocation()
         const navigate = useNavigate()
 
         
-        const handleOpen = () => setIsOpen(true)
+        const handleOpen = () => {
+            if(!token){
+                navigate('/login')
+            }
+
+            setIsOpen(true)
+        }
+
         const handleClose = () => setIsOpen(false)
 
         const courseId = params.courseId  
@@ -60,6 +70,7 @@ const styleModal = {
         useEffect(() => {
             loadSingleCourse(courseId).then((res) => {
                 setCourse(res)
+                if(res.author === localStorage.getItem('codelytic-user')) setIsAuthor(true)
                 setLoading(false)
             }).catch((e) => console.log(e))
         }, [])
@@ -190,36 +201,39 @@ const styleModal = {
 
     return (
         <Container sx={styleContainer} className="course-info">
-            {loading ? <CircularProgress /> : 
+            {loading ? <CircularProgress style={{ color: 'pink', marginLeft: '50%', }} /> : 
             <>
-            <img src={course.icon} alt={course.title} className="course-image" />
-            <div style={styleTitleDiv}>
-                <h1 className="course-title">{course.title}</h1>
-                <div className="info">
-                    <span>Created by: {course.author}</span>
-                    <Chip className="chip" label="Edit Info" onClick={handleEditInfo} />
+                <img src={course.icon} alt={course.title} className="course-image" />
+                <div style={styleTitleDiv}>
+                    <h1 className="course-title">{course.title}</h1>
+                    <div className="info">
+                        <span>Created by: {course.author}</span>
+                        {isAuthor && <Chip className="chip" label="Edit Info" onClick={handleEditInfo} />}
+                    </div>
                 </div>
-            </div>
-            <p className="course-description">{course.description}</p>
-            <Divider variant="middle" color="pink" />
-            <Subsection course={course} />
-            <Button variant="contained" color="secondary" onClick={handleOpen}>
-                Add Subsection
-            </Button>
-            <Modal
-                open={isOpen}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={styleModal}>
-                  <h1 id="subsection-modal-title">Create Subsection</h1>
-                  <input className='subsection-modal-input' type='text' value={subsection} placeholder='Subsection Name' onChange={(e) => setSubsection(e.target.value)} required/>
-                  <button className='subsection-modal-button' onClick={handleSubsectionCreate}>Create</button>
-                  {subsectionLoading && <CircularProgress style={{ color: 'pink', }} />}
-                </Box>
-            </Modal>
-        </>}
+                <p className="course-description">{course.description}</p>
+                <div className="show-course-tags">
+                    {course.tags && course.tags.map((tag, index) => <Chip key={index} className="course-tag-chip" label={tag} />)}
+                </div>
+                <Divider variant="middle" color="pink" />
+                <Subsection course={course} isAuthor={isAuthor} />
+                {isAuthor && <Button variant="contained" color="secondary" onClick={handleOpen}>
+                    Add Subsection
+                </Button>}
+                <Modal
+                    open={isOpen}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={styleModal}>
+                    <h1 id="subsection-modal-title">Create Subsection</h1>
+                    <input className='subsection-modal-input' type='text' value={subsection} placeholder='Subsection Name' onChange={(e) => setSubsection(e.target.value)} required/>
+                    <Button className='subsection-modal-button' variant="contained" size="small"  onClick={handleSubsectionCreate}>Create</Button>
+                    {subsectionLoading && <CircularProgress style={{ color: 'pink', }} />}
+                    </Box>
+                </Modal>
+            </>}
         </Container>
     )
 }
