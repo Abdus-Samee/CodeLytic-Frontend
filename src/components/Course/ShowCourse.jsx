@@ -156,7 +156,8 @@ const styleModal = {
             state: {
                 courseName: course.title,
                 desc: course.description,
-                img: course.icon
+                img: course.icon,
+                selectTags: course.tags,
             }
         })
     }
@@ -176,7 +177,7 @@ const styleModal = {
                         ...prevCourse.subsections,
                         {
                             id: res.subsectionId,
-                            name: subsection,
+                            name: subsection, 
                             lectures: [],
                             quiz: null
                         }

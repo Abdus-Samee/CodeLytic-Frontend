@@ -25,7 +25,7 @@ const ImmutableOption = ({
           <TextField
             value={val}
             onChange={(e) => setVal(e.target.value)}
-            style={{ width: '40vw' }}
+            style={{ background: 'white', width: '40vw' }}
           />
           <Button onClick={handleOptionChange}>Update</Button>
         </>

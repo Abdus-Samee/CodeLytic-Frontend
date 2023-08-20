@@ -1,16 +1,44 @@
-export const getPosts = () => {
-    const posts = [
-        {id: 1, title: "Post 1", body: "This is the body of post 1", tags: ["tag1", "tag2"]},
-        {id: 2, title: "Post 2", body: "This is the body of post 2<br/>This is the heading<br/>This is the subheading<br/>More text"},
-        {id: 3, title: "Post 3", body: "This is the body of post 3", tags: ["tag1", "tag2"]},
-        {id: 4, title: "Post 4", body: "This is the body of post 4", tags: ["tag1", "tag2"]},
-        {id: 5, title: "Post 5", body: "This is the body of post 5", tags: ["tag1", "tag2"]},
-    ]
+import { myAxios } from './helper'
 
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(posts)
-        }, 1000)
+export const loadAllPosts = () => {
+    return myAxios.get('/post').then(res => res.data)
+}
+
+export const loadSinglePost = (id) => {
+    return myAxios.get(`/post/${id}`).then(res => res.data)
+}
+
+export const createPost = (post, headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
     }
-    )
+
+    return myAxios.post('/post', post, config).then(res => res.data)
+}
+
+export const createComment = (comment, headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
+    }
+
+    return myAxios.post('/comment', comment, config).then(res => res.data)
+}
+
+export const updateComment = (commentId, comment, headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
+    }
+
+    console.log('HEADERS>>>>>>', config.headers)
+
+    return myAxios.put(`/comment/${commentId}`, comment, config).then(res => res.data)
 }

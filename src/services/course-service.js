@@ -52,3 +52,16 @@ export const loadSingleLecture = (lectureId) => {
 export const loadQuiz = (quizId) => {
     return myAxios.get(`/course/quiz/${quizId}`).then(res => res.data)
 }
+
+export const createQuiz = (quiz, sid, headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
+    }
+
+    console.log(quiz)
+
+    return myAxios.post(`/course/quiz/${sid}`, quiz, config).then(res => res.data)
+}

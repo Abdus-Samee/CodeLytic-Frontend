@@ -32,11 +32,24 @@ const AddCourseInfo = ({ token }) => {
             Authorization: 'Bearer ' + token,
         }
         
+        const { courseName, desc, img, selectTags } = location.state || {}
+
         loadAllTags(customHeaders).then((res) => {
             setTags(res)
+            //take tag ids having name in selectTags
+            const selected = res.filter(tag => {
+                if(selectTags.includes(tag.name)){
+                    return tag.id
+                }
+            })
+            // console.log('selected: ', selected)
+            const gg = selected.map(tag => tag.id)
+            const mb = selected.map(tag => tag.name)
+            console.log('selectedTagIds: ', mb)
+            setSelectedTagIds(gg)
+            setSelectedTags(mb)
         }).catch(e => console.log(e))
 
-        const { courseName, desc, img } = location.state || {}
         if(courseName && desc){
             setCourseName(courseName)
             setDesc(desc)

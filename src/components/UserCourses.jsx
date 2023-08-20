@@ -89,11 +89,11 @@ const UserCourses = ({ token }) => {
                     </div>
                 ))}
             </div>
-            <h3 style={{ marginTop: '2vh', color: '#BEADFA',}}>Courses Enrolled</h3>
+            {/**<h3 style={{ marginTop: '2vh', color: '#BEADFA',}}>Courses Enrolled</h3>
             <div className="profile-card-container">
                 {loading && <CircularProgress style={{ color: 'pink', margin: '0 auto', }} />}
                 <p>No courses enrolled...</p>
-            </div>
+                </div>**/}
         </Container>
     )
 }

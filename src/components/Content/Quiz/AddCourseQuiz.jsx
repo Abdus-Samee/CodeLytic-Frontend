@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import {
    Grid,  Container, TextField, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Divider, Typography,
    Snackbar
@@ -10,7 +10,10 @@ import ImmutableOption from './ImmutableOption'
 import MutableOption from './MutableOption'
 import QuizCard from './QuizCard'
 
+import { createQuiz } from '../../../services/course-service'
+
 const AddCourseQuiz = ({ token }) => {
+  const [sid, setSid] = useState('')
   const [quiz, setQuiz] = useState([])
   const [qs, setQs] = useState('')
   const [ans, setAns] = useState('')
@@ -20,11 +23,15 @@ const AddCourseQuiz = ({ token }) => {
   const [editIdx, setEditIdx] = useState(-1)
 
   const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
     if(!token){
       navigate('/login')
     }
+
+    const { sid } = location.state || {}
+    if(sid) setSid(sid)
   }, [])
 
   // add an option to the list of options
@@ -50,7 +57,7 @@ const AddCourseQuiz = ({ token }) => {
   const handleEditQuestion = (i) => {
     const q = quiz[i]
     setQs(q.question)
-    setAns(q.ans)
+    setAns(q.answer)
     setOptions(q.options)
     setEditQuestion(true)
     setEditIdx(i)
@@ -61,7 +68,7 @@ const AddCourseQuiz = ({ token }) => {
     const res = quiz.map((obj, idx) => {
       if (idx === editIdx) {
         obj.question = qs
-        obj.ans = ans
+        obj.answer = ans
         obj.options = options
       }
 
@@ -95,7 +102,7 @@ const AddCourseQuiz = ({ token }) => {
         if(options.length === 0) setWarning(prev => prev+'\n'+'No options have been added!')
         if(ans === '') setWarning(prev => prev+'\n'+'No answer has been assigned!')
     }else if(!warning){
-        if(!editQuestion) setQuiz((prev) => [...prev, { question: qs, ans: ans, options: options }])
+        if(!editQuestion) setQuiz((prev) => [...prev, { question: qs, answer: ans, options: options }])
         else{
             editHelper()
             setEditQuestion(false)
@@ -111,7 +118,31 @@ const AddCourseQuiz = ({ token }) => {
 
   // submit the quiz
   const proceed = () => {
+    // const editedOptions = [
+    //   ...options.map((obj) => {
+    //     return obj.option
+    //   }),
+    // ]
 
+    const quizData = {
+      questions: [
+        ...quiz.map((obj) => {
+          return {
+            question: obj.question,
+            options: [...obj.options.map((o) => o.option)],
+            answer: obj.answer,
+          }
+        }),
+      ],
+    }
+
+    const customHeaders = {
+      Authorization: 'Bearer ' + token,
+    }
+
+    createQuiz(quizData, sid, customHeaders).then((res) => {
+      navigate(-1)
+    }).catch(e => console.log(e))
   }
 
   const handleSnackbarClose = () => {
@@ -141,6 +172,7 @@ const AddCourseQuiz = ({ token }) => {
                     minRows={4}
                     value={qs}
                     onChange={(e) => setQs(e.target.value)}
+                    sx={{ bgcolor: 'white', }}
                     fullWidth
                 />
 
@@ -148,7 +180,7 @@ const AddCourseQuiz = ({ token }) => {
                     <FormControl>
                     <FormLabel
                         id="demo-radio-buttons-group-label"
-                        style={{ marginTop: '1vh' }}
+                        style={{ color: 'pink', marginTop: '1vh' }}
                     >
                         Options
                     </FormLabel>
@@ -162,7 +194,7 @@ const AddCourseQuiz = ({ token }) => {
                         <FormControlLabel
                             key={idx}
                             value={obj.option}
-                            control={<Radio />}
+                            control={<Radio sx={{ color: 'white', }} />}
                             label={
                             <ImmutableOption
                                 idx={idx}

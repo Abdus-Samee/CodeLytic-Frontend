@@ -4,7 +4,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 const QuizCard = ({ sl, obj, handleEditQuestion }) => {
-  const { question, ans, options } = obj
+  const { question, answer, options } = obj
 
   const handleEdit = () => {
     handleEditQuestion(sl - 1)
@@ -43,7 +43,7 @@ const QuizCard = ({ sl, obj, handleEditQuestion }) => {
                     key={i}
                     disabled
                     control={
-                      <Radio checked={d.option === ans ? true : false} />
+                      <Radio checked={d.option === answer ? true : false} />
                     }
                     label={d.option}
                   />

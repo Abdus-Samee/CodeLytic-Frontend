@@ -33,8 +33,12 @@ const Subsection = ({ course, isAuthor }) => {
     navigate(`/quiz/${id}`)
   }
 
-  const handleAddQuiz = () => {
-    navigate('/create/course-quiz')
+  const handleAddQuiz = (sid) => {
+    navigate('/create/course-quiz', {
+      state: {
+        sid
+      }
+    })
   }
 
   return (
@@ -79,7 +83,7 @@ const Subsection = ({ course, isAuthor }) => {
                     </Button>
                   ) : (
                     <>
-                    {isAuthor && <Button variant="contained" onClick={handleAddQuiz}>Add Quiz</Button>}
+                    {isAuthor && <Button variant="contained" onClick={() => handleAddQuiz(o.id)}>Add Quiz</Button>}
                     </>
                   )}
                 </AccordionDetails>

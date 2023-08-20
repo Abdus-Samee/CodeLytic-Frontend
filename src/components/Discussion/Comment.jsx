@@ -12,6 +12,8 @@ import { useState } from "react"
 // } from "../../services/comments"
 import { CommentForm } from "./CommentForm"
 
+import { updateComment } from "../../services/posts"
+
 const dateFormatter = new Intl.DateTimeFormat(undefined, {
   dateStyle: "medium",
   timeStyle: "short",
@@ -19,28 +21,31 @@ const dateFormatter = new Intl.DateTimeFormat(undefined, {
 
 export function Comment({
   id,
-  message,
-  user,
-  createdAt,
-  likeCount,
-  likedByMe,
+  content,
+  parentComment,
+  childComments
 }) {
+  const [commentContent, setCommentContent] = useState(content)
   const [areChildrenHidden, setAreChildrenHidden] = useState(false)
   const [isReplying, setIsReplying] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
-  const {
-    post,
-    getReplies,
-    createLocalComment,
-    updateLocalComment,
-    deleteLocalComment,
-    toggleLocalCommentLike,
-  } = usePost()
+
+  const token = localStorage.getItem('codelytic-token')
+
+  // const {
+  //   post,
+  //   getReplies,
+  //   createLocalComment,
+  //   updateLocalComment,
+  //   deleteLocalComment,
+  //   toggleLocalCommentLike,
+  // } = usePost()
+
 //   const createCommentFn = useAsyncFn(createComment)
 //   const updateCommentFn = useAsyncFn(updateComment)
 //   const deleteCommentFn = useAsyncFn(deleteComment)
 //   const toggleCommentLikeFn = useAsyncFn(toggleCommentLike)
-  const childComments = getReplies(id)
+  // const childComments = getReplies(id)
   const currentUser = { id: 1, name: "Test User" }
 
 //   function onCommentReply(message) {
@@ -67,8 +72,14 @@ export function Comment({
 //   }
 
   const onCommentUpdate = (message) => {
-    setIsEditing(false)
-    updateLocalComment(id, message)
+    const headers = {
+      Authorization: 'Bearer ' + token,
+    }
+
+    updateComment(id, message, headers).then((res) => {
+      setIsEditing(false)
+      setCommentContent(message)
+    }).catch(e => console.log(e))
   }
 
 //   function onCommentDelete() {
@@ -95,33 +106,31 @@ export function Comment({
     <>
       <div className="comment">
         <div className="header">
-          <span className="name">{user.name}</span>
+          {/**<span className="name">{user.name}</span>**/}
           <span className="date">
-            {dateFormatter.format(Date.parse(createdAt))}
+            {/**dateFormatter.format(Date.parse(createdAt))**/}
           </span>
         </div>
         {isEditing ? (
           <CommentForm
             autoFocus
-            initialValue={message}
+            initialValue={commentContent}
             onSubmit={onCommentUpdate}
             loading={false}
             // error={updateCommentFn.error}
             error={false}
           />
         ) : (
-          <div className="message">{message}</div>
+          <div className="message">{commentContent}</div>
         )}
         <div className="footer">
-          <IconBtn
+          {/**<IconBtn
             onClick={onToggleCommentLike}
             // disabled={toggleCommentLikeFn.loading}
             disabled={false}
-            Icon={likedByMe ? FaHeart : FaRegHeart}
-            aria-label={likedByMe ? "Unlike" : "Like"}
-          >
-            {likeCount}
-          </IconBtn>
+            // Icon={likedByMe ? FaHeart : FaRegHeart}
+            // aria-label={likedByMe ? "Unlike" : "Like"}
+        />**/}
           <IconBtn
             onClick={() => setIsReplying(prev => !prev)}
             isActive={isReplying}
@@ -174,12 +183,6 @@ export function Comment({
               <CommentList comments={childComments} />
             </div>
           </div>
-          <button
-            className={`btn mt-1 ${!areChildrenHidden ? "hide" : ""}`}
-            onClick={() => setAreChildrenHidden(false)}
-          >
-            Show Replies
-          </button>
         </>
       )}
     </>

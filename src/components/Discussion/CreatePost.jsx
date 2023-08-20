@@ -8,26 +8,30 @@ import "react-quill/dist/quill.snow.css"
 import { loadAllTags } from "../../services/course-service"
 
 import "../../assets/css/createpost.css"
+import { createPost } from "../../services/posts"
 
 const CreatePost = ({ token }) => {
+  const [loading, setLoading] = useState(false)
+  const [tags, setTags] = useState([])
+
   const navigate = useNavigate()
 
-  const tags = [
-    { label: 'sorting' },
-    { label: 'graph' },
-    { label: 'dfs' },
-    { label: 'bfs' },
-    { label: 'searching' },
-    { label: 'dp' },
-    { label: 'recursion' },
-  ]
+  // const tags = [
+  //   { label: 'sorting' },
+  //   { label: 'graph' },
+  //   { label: 'dfs' },
+  //   { label: 'bfs' },
+  //   { label: 'searching' },
+  //   { label: 'dp' },
+  //   { label: 'recursion' },
+  // ]
 
   const [view, setView] = useState("create")
   const [isError, setError] = useState(null)
   const [userInfo, setuserInfo] = useState({
     title: '',
-    body: '',
-    tags: [],
+    content: '',
+    tagIds: [],
   })
 
   useEffect(() => {
@@ -36,7 +40,8 @@ const CreatePost = ({ token }) => {
     }
     
     loadAllTags().then((res) => {
-        console.log(res)
+        // console.log(res)
+        setTags(res)
     }).catch(e => console.log(e))
   }, [])
 
@@ -49,7 +54,7 @@ const CreatePost = ({ token }) => {
 
   const onbody = (value) => {
     setuserInfo({ ...userInfo,
-      body:value
+      content:value
     })
   }
 
@@ -59,7 +64,7 @@ const CreatePost = ({ token }) => {
 
   const handleTagSelection = (val) => {
     setuserInfo({ ...userInfo,
-        tags: val
+        tagIds: val
     })
   }
   
@@ -88,14 +93,28 @@ const CreatePost = ({ token }) => {
     if(userInfo.title.length === 0){
         setError('Required, Add title')
         return
-    }else if(userInfo.body.length === 0){
+    }else if(userInfo.content.length === 0){
         setError('Required, Add body')
         return
     }
 
+    //make tagIds an array of only strings
+    const tagGG = userInfo.tagIds.map(tag => tag.label)
+    const tagIds = tags.filter(tag => tagGG.includes(tag.label)).map(tag => tag.id)
+    userInfo.tagIds = tagIds
+
     console.log("Post:", userInfo)
-    navigate('/discussion')
-  } 
+
+    const customHeaders = {
+      Authorization: 'Bearer ' + token,
+    }
+
+    // setLoading(true)
+
+    createPost(userInfo, customHeaders).then((res) => {
+      navigate('/discussion')
+    }).catch(e => console.log(e))
+  }
 
 return ( 
 <>
@@ -127,7 +146,7 @@ return (
                             <EditorToolbar toolbarId={'t1'}/>
                             <ReactQuill
                                 theme="snow"
-                                value={userInfo.body}
+                                value={userInfo.content}
                                 onChange={onbody}
                                 placeholder={"Write something awesome..."}
                                 modules={modules('t1')}
@@ -142,7 +161,7 @@ return (
                                     multiple
                                     id="discussion-tags-outlined"
                                     options={tags}
-                                    getOptionLabel={(option) => option.label}
+                                    getOptionLabel={(option) => option.name}
                                     filterSelectedOptions
                                     PaperComponent={({ children }) => (
                                       <Paper style={{ background: "#445069" }}>{children}</Paper>
@@ -166,7 +185,7 @@ return (
         </div>) : (
         <div className="discussion-app">
             <div className="container">
-                <div className="row" dangerouslySetInnerHTML={{ __html: userInfo.body }}></div>
+                <div className="row" dangerouslySetInnerHTML={{ __html: userInfo.content }}></div>
             </div>
         </div>
     )}

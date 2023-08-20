@@ -46,8 +46,8 @@ const App = () => {
         <Route path="course/:courseId" exact element={<ShowCourse token={token} />} />
         <Route path="course/:courseId/subsection/:subId" element={<ShowLecture />} />
         <Route path="quiz/:quizId" element={<QuizView token={token} />} />
-        <Route path="discussion" element={<Discussion />} />
-        <Route path="posts/:id" element={<PostProvider><Post token={token} /></PostProvider>} />
+        <Route path="discussion" element={<Discussion token={token} />} />
+        <Route path="posts/:id" element={<Post token={token} />} />
         <Route path="discussion/create" element={<CreatePost token={token} />} />
         <Route path="register" element={<Register />} />
         <Route path="login" element={<Login setToken={setToken} />} />
