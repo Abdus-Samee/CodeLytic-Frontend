@@ -31,7 +31,7 @@ const AddCourseInfo = ({ token }) => {
         const customHeaders = {
             Authorization: 'Bearer ' + token,
         }
-        
+        console.log(customHeaders);
         const { courseName, desc, img, selectTags } = location.state || {}
 
         loadAllTags(customHeaders).then((res) => {

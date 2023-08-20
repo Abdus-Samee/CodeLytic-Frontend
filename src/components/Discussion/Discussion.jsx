@@ -31,8 +31,10 @@ const Discussion = ({ token }) => {
             setPosts(res)
             setLoading(false)
         }).catch(e => console.log(e))
-
-        loadAllTags().then((res) => {
+        const customHeaders = {
+            Authorization: 'Bearer ' + token,
+        }
+        loadAllTags(customHeaders).then((res) => {
             console.log(res)
         }).catch(e => console.log(e))
     }, [])
