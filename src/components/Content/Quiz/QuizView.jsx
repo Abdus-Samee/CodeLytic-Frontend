@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { Button, Divider, FormControlLabel, LinearProgress, RadioGroup, Radio, Typography, CircularProgress } from "@mui/material"
 
 import { loadQuiz } from "../../../services/course-service"
+import transition from "../../../transition"
 
 import '../../../assets/css/quizview.css'
 
@@ -205,4 +206,4 @@ const QuizView = ({ token }) => {
     )
 }
 
-export default QuizView
+export default transition(QuizView)

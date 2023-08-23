@@ -11,6 +11,7 @@ import MutableOption from './MutableOption'
 import QuizCard from './QuizCard'
 
 import { createQuiz } from '../../../services/course-service'
+import transition from '../../../transition'
 
 const AddCourseQuiz = ({ token }) => {
   const [sid, setSid] = useState('')
@@ -262,4 +263,4 @@ const AddCourseQuiz = ({ token }) => {
   )
 }
 
-export default AddCourseQuiz
+export default transition(AddCourseQuiz)

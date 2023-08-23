@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { CircularProgress } from "@mui/material"
 
 import { authenticateUser } from "../../services/user-service"
+import transition from "../../transition"
 
 import '../../assets/css/login.css'
 
@@ -77,4 +78,4 @@ const Login = ({ setToken }) => {
     )
 }
 
-export default Login
+export default transition(Login)

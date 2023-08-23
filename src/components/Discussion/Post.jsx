@@ -2,13 +2,13 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Container, Box, Paper } from "@mui/material"
 
-import { loadSinglePost, createComment } from "../../services/posts"
-
-import { usePost } from "../../contexts/PostContext"
-import { useAsyncFn } from "../../hooks/useAsync"
-// import { createComment } from "../../services/comments"
 import { CommentForm } from "./CommentForm"
 import { CommentList } from "./CommentList"
+
+import { loadSinglePost, createComment } from "../../services/posts"
+import transition from "../../transition"
+
+// import { createComment } from "../../services/comments"
 
 import "../../assets/css/discussion-post.css"
 
@@ -110,4 +110,4 @@ const Post = ({ token }) => {
   )
 }
 
-export default Post
+export default transition(Post)

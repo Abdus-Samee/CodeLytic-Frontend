@@ -5,6 +5,7 @@ import { Container, Divider, Button, Chip, Modal, Box, CircularProgress } from '
 import Subsection from './Subsection'
 
 import { loadSingleCourse, createSubsection } from '../../services/course-service'
+import transition from "../../transition"
 
 import "../../assets/css/showcourse.css"
 
@@ -241,4 +242,4 @@ const styleModal = {
     )
 }
 
-export default ShowCourse
+export default transition(ShowCourse)

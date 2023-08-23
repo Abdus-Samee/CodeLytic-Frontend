@@ -5,3 +5,52 @@ body {
   color: white;
   font-family: 'DM Mono', monospace;
 }
+
+.slide-in {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: #0f0f0f;
+  transform-origin: bottom;
+}
+
+.slide-out {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: #0f0f0f;
+  transform-origin: top;
+}
+
+//make slide-right and slide-left classes for horizontal sliding
+.slide-right {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: #17141D;
+  transform-origin: right;
+}
+
+.slide-left {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #17141D;
+  transform-origin: left;
+}
+
+.fade-in {
+  opacity: 0;
+}
+
+.fade-out {
+  opacity: 1;
+}

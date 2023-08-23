@@ -7,6 +7,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
 import { v4 } from "uuid"
 
 import { loadAllTags, createCourse } from "../services/course-service"
+import transition from "../transition"
 
 import '../assets/css/courseinfo.css'
 
@@ -200,4 +201,4 @@ const AddCourseInfo = ({ token }) => {
     )
 }
 
-export default AddCourseInfo
+export default transition(AddCourseInfo)

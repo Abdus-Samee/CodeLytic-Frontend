@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import transition from '../../../transition'
+
 import '../../../assets/css/showlecturecontent.css'
 
 const LectureContent = ({ content }) => {
@@ -29,4 +31,4 @@ const LectureContent = ({ content }) => {
     )
 }
 
-export default LectureContent
+export default transition(LectureContent)

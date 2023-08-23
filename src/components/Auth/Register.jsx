@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import { registerUser } from "../../services/user-service"
+import transition from "../../transition"
 
 import '../../assets/css/register.css'
 
@@ -104,4 +105,4 @@ const Register = () => {
     )
 }
 
-export default Register
+export default transition(Register)

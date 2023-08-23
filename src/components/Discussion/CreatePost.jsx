@@ -9,6 +9,7 @@ import { loadAllTags } from "../../services/course-service"
 
 import "../../assets/css/createpost.css"
 import { createPost } from "../../services/posts"
+import transition from "../../transition"
 
 const CreatePost = ({ token }) => {
   const [loading, setLoading] = useState(false)
@@ -38,6 +39,8 @@ const CreatePost = ({ token }) => {
     if(!token){
       navigate('/login')
     }
+
+    console.log('token', token)
     
     loadAllTags().then((res) => {
         // console.log(res)
@@ -192,4 +195,4 @@ return (
 </>
 )
 }
-export default CreatePost
+export default transition(CreatePost)

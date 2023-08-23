@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Button, Chip, Skeleton, CircularProgress, Typography } from "@mui/material"
+import { motion } from "framer-motion"
 
-// import { useAsync } from "../../hooks/useAsync"
-// import { getPosts } from "../../services/posts"
+
 import { loadAllTags } from "../../services/course-service"
 import { loadAllPosts } from "../../services/posts"
 
 import PostSkeleton from "./PostSkeleton"
+import transition from "../../transition"
 
 import '../../assets/css/discussion.css'
 
@@ -61,7 +62,7 @@ const Discussion = ({ token }) => {
     }
 
     return (
-        <div className="discussion-container">
+        <motion.div className="discussion-container" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{ duration: 1}}>
             <div className="discussion-sidebar">
                 <input type="text" placeholder="Search for tags.." className="discussion-search-bar" />
                 {token && <Button variant="contained" size="small" color="secondary" onClick={handleCreate}>Create</Button>}
@@ -86,7 +87,7 @@ const Discussion = ({ token }) => {
                     </>
                 }
             </div>
-        </div>
+        </motion.div>
     )
 }
 

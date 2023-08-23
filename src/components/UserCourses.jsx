@@ -4,6 +4,7 @@ import { Container, CircularProgress } from "@mui/material"
 
 import { loadAllCourses, loadCourseByAuthor } from "../services/course-service"
 import { getUser } from "../services/user-service"
+import transition from "../transition"
 
 import "../assets/css/profile.css"
 
@@ -99,4 +100,4 @@ const UserCourses = ({ token }) => {
     )
 }
 
-export default UserCourses
+export default transition(UserCourses)

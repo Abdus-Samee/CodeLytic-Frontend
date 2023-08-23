@@ -19,6 +19,7 @@ import CreatePost from './components/Discussion/CreatePost'
 import Register from './components/Auth/Register'
 import Login from './components/Auth/Login'
 import Test from './components/Test'
+import { AnimatePresence } from 'framer-motion'
 
 import useToken from './hooks/useToken'
 
@@ -35,25 +36,27 @@ const App = () => {
   return (
     <>
       <Navbar token={token} handleLogout={clearToken} />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="courses" element={<Course />} />
-        <Route path="create/course" element={<AddCourseInfo token={token} />} />
-        <Route path="user" element={<UserCourses token={token} />} />
-        <Route path="create/course-content" element={<AddCourseContent token={token} />} />
-        <Route path="create/course-quiz" element={<AddCourseQuiz token={token} />} />
-        <Route path="progress" element={<Progress token={token} />} />
-        <Route path="course/:courseId" exact element={<ShowCourse token={token} />} />
-        <Route path="course/:courseId/subsection/:subId" element={<ShowLecture />} />
-        <Route path="quiz/:quizId" element={<QuizView token={token} />} />
-        <Route path="discussion" element={<Discussion token={token} />} />
-        <Route path="posts/:id" element={<Post token={token} />} />
-        <Route path="discussion/create" element={<CreatePost token={token} />} />
-        <Route path="register" element={<Register />} />
-        <Route path="login" element={<Login setToken={setToken} />} />
+      <AnimatePresence mode="wait">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="courses" element={<Course />} />
+          <Route path="create/course" element={<AddCourseInfo token={token} />} />
+          <Route path="user" element={<UserCourses token={token} />} />
+          <Route path="create/course-content" element={<AddCourseContent token={token} />} />
+          <Route path="create/course-quiz" element={<AddCourseQuiz token={token} />} />
+          <Route path="progress" element={<Progress token={token} />} />
+          <Route path="course/:courseId" exact element={<ShowCourse token={token} />} />
+          <Route path="course/:courseId/subsection/:subId" element={<ShowLecture />} />
+          <Route path="quiz/:quizId" element={<QuizView token={token} />} />
+          <Route path="discussion" element={<Discussion token={token} />} />
+          <Route path="posts/:id" element={<Post token={token} />} />
+          <Route path="discussion/create" element={<CreatePost token={token} />} />
+          <Route path="register" element={<Register />} />
+          <Route path="login" element={<Login setToken={setToken} />} />
 
-        <Route path="test" element={<Test token={token} />} />
-      </Routes>
+          <Route path="test" element={<Test token={token} />} />
+        </Routes>
+      </AnimatePresence>
     </>
   )
 }

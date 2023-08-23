@@ -6,6 +6,7 @@ import LockIcon from '@mui/icons-material/Lock'
 import Search from "./Search"
 
 import { loadAllCourses, loadAllTags, loadSingleCourse } from "../services/course-service"
+import transition from "../transition"
 
 import "../assets/css/course.css"
 
@@ -133,4 +134,4 @@ const Course = () => {
   )
 }
 
-export default Course
+export default transition(Course)

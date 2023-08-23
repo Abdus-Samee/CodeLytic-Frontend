@@ -7,6 +7,8 @@ import ImageContainer from "./ImageContainer"
 import AnchorContainer from "./AnchorContainer"
 import ListContainer from "./ListContainer"
 
+import transition from "../transition"
+
 import "../assets/css/coursecontent.css"
 
 const AddCourseContent = ({ token }) => {
@@ -189,4 +191,4 @@ const AddCourseContent = ({ token }) => {
     )
 }
 
-export default AddCourseContent
+export default transition(AddCourseContent)
