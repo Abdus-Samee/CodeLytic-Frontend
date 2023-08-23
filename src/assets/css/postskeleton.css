@@ -1,0 +1,16 @@
+.post-card {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    margin-bottom: 1vh;
+}
+
+.post-heading {
+    display: flex;
+    justify-content: space-between;
+}
+
+.post-tags span {
+    padding: 0.2rem 0.85rem 0.25rem;
+    position: relative;
+}

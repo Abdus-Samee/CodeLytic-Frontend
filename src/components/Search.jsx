@@ -22,7 +22,7 @@ const Search = ({handleSearch}) => {
                 required
                 onChange={(e) => handleInputChange(e.target.value)}
             />
-            <span class="caret"></span>
+            <span className="caret"></span>
         </form>
     )
 }

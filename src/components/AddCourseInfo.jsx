@@ -21,6 +21,7 @@ const AddCourseInfo = ({ token }) => {
     const [selectedTagIds, setSelectedTagIds] = useState([])
     const [img, setImg] = useState(null) //for display
     const [file, setFile] = useState(null) //for upload to firebase
+    
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -36,18 +37,17 @@ const AddCourseInfo = ({ token }) => {
 
         loadAllTags(customHeaders).then((res) => {
             setTags(res)
-            //take tag ids having name in selectTags
+
             const selected = res.filter(tag => {
                 if(selectTags.includes(tag.name)){
                     return tag.id
                 }
             })
-            // console.log('selected: ', selected)
-            const gg = selected.map(tag => tag.id)
-            const mb = selected.map(tag => tag.name)
-            console.log('selectedTagIds: ', mb)
-            setSelectedTagIds(gg)
-            setSelectedTags(mb)
+
+            const filteredTagsIds = selected.map(tag => tag.id)
+
+            setSelectedTagIds(filteredTagsIds)
+            setSelectedTags(selected)
         }).catch(e => console.log(e))
 
         if(courseName && desc){
@@ -68,12 +68,9 @@ const AddCourseInfo = ({ token }) => {
         setFile(e.target.files[0])
     }
 
-    const uploadImageToFirebase = () => {
-        
-    }
-
     const handleCreateCourse = () => {
-        const author = localStorage.getItem('codelytic-user');
+        const storedUser = localStorage.getItem('codelytic-user')
+        const user = JSON.parse(storedUser)      
 
         if(!courseName || !desc || !selectedTagIds.length){
             alert('Please fill all the fields')
@@ -85,10 +82,9 @@ const AddCourseInfo = ({ token }) => {
             setLoading(true)
             uploadBytes(imageRef, file).then(() => {
                 getDownloadURL(imageRef).then((url) => {
-                    setLoading(false)
+                    // setLoading(false)
                     
                     const createdCourse = {
-                        author: author,
                         title: courseName,
                         icon: url,
                         description: desc,
@@ -102,7 +98,6 @@ const AddCourseInfo = ({ token }) => {
             })
         }else{
             const createdCourse = {
-                author: author,
                 title: courseName,
                 icon: '',
                 description: desc,
@@ -122,12 +117,13 @@ const AddCourseInfo = ({ token }) => {
 
         createCourse(createdCourse, customHeaders).then((res) => {
             console.log('Create course: ', res)
+            setLoading(false)
             navigate('/user')
         }).catch(e => console.log('Create course ', e))
     }
 
     const textFieldInputLabelProps = {
-        style: { color: '#f0e69b'},
+        style: { color: '#f0e69b', },
         shrink: true,
     }
 
@@ -174,10 +170,10 @@ const AddCourseInfo = ({ token }) => {
                         <Autocomplete
                             multiple
                             id="tags-outlined"
+                            value={selectedTags}
                             options={tags}
                             getOptionLabel={(option) => option.name}
                             filterSelectedOptions
-                            value={selectedTags}
                             onChange={handleTagChange}
                             renderInput={(params) => (
                                 <TextField

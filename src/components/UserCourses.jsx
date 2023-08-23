@@ -30,9 +30,10 @@ const UserCourses = ({ token }) => {
         }
 
         //pass to backend to get user details
-        // getUser(customHeaders).then((res) => {
-        //     console.log("User: ", res)
-        // }).catch(e => console.log(e))
+        getUser(customHeaders).then((res) => {
+            // console.log("User: ", res)
+            localStorage.setItem('codelytic-user', JSON.stringify(res))
+        }).catch(e => console.log(e))
 
 
         loadCourseByAuthor(customHeaders).then((res) => {
@@ -69,7 +70,7 @@ const UserCourses = ({ token }) => {
         <Container>
             <h3 style={{ marginTop: '2vh', color: '#BEADFA',}}>Courses Created</h3>
             <div className="profile-card-container">
-                {loading && <CircularProgress style={{ color: 'pink', margin: '0 auto', }} />}
+                {loading && <CircularProgress style={{ color: 'pink', margin: '0 auto', marginTop: '20vh', }} />}
                 {courses.map((course, k) => (
                     <div key={k} className="profile-card">
                         <div className="imgBx">

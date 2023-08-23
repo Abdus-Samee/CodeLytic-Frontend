@@ -70,7 +70,9 @@ const styleModal = {
         useEffect(() => {
             loadSingleCourse(courseId).then((res) => {
                 setCourse(res)
-                if(res.author === localStorage.getItem('codelytic-user')) setIsAuthor(true)
+                const storedUser = localStorage.getItem('codelytic-user')
+                const user = JSON.parse(storedUser)
+                if(res.author === user.email) setIsAuthor(true)
                 setLoading(false)
             }).catch((e) => console.log(e))
         }, [])
@@ -214,11 +216,11 @@ const styleModal = {
                 </div>
                 <p className="course-description">{course.description}</p>
                 <div className="show-course-tags">
-                    {course.tags && course.tags.map((tag, index) => <Chip key={index} className="course-tag-chip" label={tag} />)}
+                    {course.tags && course.tags.map((tag, index) => <a key={index} className="course-tag-chip">{tag}</a>)}
                 </div>
                 <Divider variant="middle" color="pink" />
-                <Subsection course={course} isAuthor={isAuthor} />
-                {isAuthor && <Button variant="contained" color="secondary" onClick={handleOpen}>
+                {course.subsections.length > 0 && <Subsection course={course} isAuthor={isAuthor} />}
+                {isAuthor && <Button variant="contained" color="secondary" style={{ marginTop: '1vh', }} onClick={handleOpen}>
                     Add Subsection
                 </Button>}
                 <Modal

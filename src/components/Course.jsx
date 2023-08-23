@@ -19,6 +19,12 @@ const Course = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
+    const storedUser = localStorage.getItem('codelytic-user')
+    if(storedUser){
+      const user = JSON.parse(storedUser)
+      console.log(user)
+    }
+    
     loadAllCourses().then((res) => {
       setCourses(res)
       // setFilteredCourses(res)
