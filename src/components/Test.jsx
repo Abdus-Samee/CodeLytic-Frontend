@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useNavigate } from "react-router-dom"
-import { storage } from "../services/firebase"
 import { ResponsiveCalendar } from "@nivo/calendar"
+import { motion } from "framer-motion"
 
-// import '../assets/css/test.css'
+import '../assets/css/test.css'
 
 const Test = ({ token }) => {
-    // const [data, setData] = useState([])
+    const [width, setWidth] = useState(0)
+    const carousel = useRef()
 
     const data = [
         {
@@ -39,34 +40,40 @@ const Test = ({ token }) => {
           },
     ]
 
+    const ongoingCourses = [
+      {
+        title: 'Basic Graph Theory',
+        body: 'Learn the basics of graph theory',
+        author: 'John Doe',
+      },
+      {
+        title: 'Dynamic Programming',
+        body: 'Learn the basics of dynamic programming',
+        author: 'John Doe',
+      },
+      {
+        title: 'Number Theory',
+        body: 'Learn the basics of number theory',
+        author: 'Rick & Morty',
+      },
+      {
+        title: 'String Algorithms',
+        body: 'Learn the basics of string algorithms',
+        author: 'Trudy',
+      },
+      {
+        title: 'Discrete Mathematics',
+        body: 'Learn the basics of discrete mathematics',
+        author: 'Eve',
+      },
+    ]
+
     const navigate = useNavigate()
 
-    // const colours = ["#333440", "#333440", "#00E4429", "#006D32", "#26A641", "#39D353",]
-    // const ticks = ["Loss", 0, 5, 10, 15, 20]
-    // const colorScale = ({ value }) => {
-    //     if(value < 0 || value === "Loss"){
-    //         return colours[0]
-    //     }
-
-    //     if(value === 0){
-    //         return colours[1]
-    //     }
-        
-    //     for(let i = 2; i < ticks.length; i++){
-    //         if(value < ticks[i]){
-    //             return colours[i]
-    //         }
-    //     }
-
-    //     console.log(value)
-    //     return colours[colours.length - 1]
-    // }
-    // colorScale.ticks = () => ticks
-
     const colors = [
-        "#ff0000",
-        "rgba(255, 255, 255, 0.5)",
-        "#00E4429",
+        "#333440",
+        "#333440",
+        "#0E4429",
         "#006D32",
         "#26A641",
         "#39D353",
@@ -94,27 +101,40 @@ const Test = ({ token }) => {
         if(!token){
             navigate('/login')
         }
+
+        setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth)
     
         const customHeaders = {
             Authorization: 'Bearer ' + token,
         }
-
-        // let tempData = []
-        // for(let i = 0; i < 30; i++){
-        //     let tempObj = {}
-        //     //sequentially assign dates in format YYYY-MM-DD changing months and days
-        //     tempObj.day = '2023-08-' + (i + 1).toString()
-        //     tempObj.value = Math.floor(Math.random() * 100)
-        //     tempData.push(tempObj)
-        // }
-        // setData(tempData)
-
-        // console.log(tempData)
     }, [])
     
     return (
         <div className="" style={{ height: '100vh', }}>
-            <h3>Testing User Progress...</h3>
+            <motion.div ref={carousel} className="carousel" whileTap={{ cursor: "grabbing", }}>
+              <h3 className="ongoing-carousel-header">Ongoing Courses</h3>
+              <motion.div drag="x" dragConstraints={{ right: 0, left: -width, }} className="inner-carousel">
+                {ongoingCourses.map((course, index) => (
+                  <motion.div className="item" key={index}>
+                    <article className="ongoing-card">
+                      <header className="ongoing-card-header">
+                        <h2>{course.title}</h2>
+                        <div>
+                          <div className="progress-4"></div>
+                          70%
+                        </div>
+                      </header>
+                      <div className="ongoing-card-author">
+                        <div className="ongoing-author-name">
+                          <div className="ongoing-author-name-prefix">Author</div>
+                          <p>{course.author}</p>
+                        </div>
+                      </div>
+                    </article>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </motion.div>
             <div style={{ height: '50vh', width: '70vw', }}>
                 <ResponsiveCalendar
                     data={data}
@@ -127,7 +147,7 @@ const Test = ({ token }) => {
                     dayBorderWidth={2}
                     dayBorderColor="#17141D"
                     tooltip={({ day, value, color }) => (
-                        <strong style={{ color }}>
+                        <strong style={{ color: 'white', }}>
                             {value}: {color}
                         </strong>
                     )}
