@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
-import transition from "../transition"
+import transition from "../../transition"
 
 const Progress = ({ token }) => {
     const navigate = useNavigate()
