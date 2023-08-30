@@ -88,6 +88,14 @@
     cursor: pointer;
 }
 
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    width: 70%;
+    padding-top: 1rem;
+    border: 1px solid #333440;
+}
+
 .post-tags span {
     font-style: normal;
     font-weight: 700;
@@ -111,5 +119,4 @@
     box-decoration-break: slice;
     background-clip: text;
     border-color: white;
-    cursor: pointer;
-  }
+}

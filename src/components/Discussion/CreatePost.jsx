@@ -1,19 +1,23 @@
 import { useCallback, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Autocomplete, TextField, Paper } from "@mui/material"
+import { Autocomplete, TextField, Paper, CircularProgress, Button } from "@mui/material"
 import ReactQuill from "react-quill"
 import EditorToolbar, { modules, formats } from "./EditorToolbar"
 import "react-quill/dist/quill.snow.css"
+import { storage } from "../../services/firebase"
+import { ref, uploadBytes, getDownloadURL, uploadString, getStorage } from "firebase/storage"
+import { v4 } from "uuid"
 
 import { loadAllTags } from "../../services/course-service"
-
-import "../../assets/css/createpost.css"
 import { createPost } from "../../services/posts"
 import transition from "../../transition"
+
+import "../../assets/css/createpost.css"
 
 const CreatePost = ({ token }) => {
   const [loading, setLoading] = useState(false)
   const [tags, setTags] = useState([])
+  const [selectedTags, setSelectedTags] = useState([])
 
   const navigate = useNavigate()
 
@@ -41,10 +45,14 @@ const CreatePost = ({ token }) => {
     }
 
     console.log('token', token)
+
+    const customHeaders = {
+      Authorization: 'Bearer ' + token,
+    }
     
-    loadAllTags().then((res) => {
-        // console.log(res)
+    loadAllTags(customHeaders).then((res) => {
         setTags(res)
+        console.log("tags:", res)
     }).catch(e => console.log(e))
   }, [])
 
@@ -66,31 +74,15 @@ const CreatePost = ({ token }) => {
   }
 
   const handleTagSelection = (val) => {
-    setuserInfo({ ...userInfo,
-        tagIds: val
-    })
+    // setuserInfo({ ...userInfo,
+    //     tags: val
+    // })
+
+    setSelectedTags(val)
+    //stores in the form of (id, name)
   }
   
-  const addDetails = async (event) => {
-    // try {
-    //   event.preventDefault()
-    //   event.persist()
-    //   if(userInfo.description.length < 50){
-    //     setError('Required, Add description minimum length 50 characters')
-    //     return
-    //   }
-    //   axios.post(`http://localhost:8080/addArticle`, {
-    //     title: userInfo.title,
-    //     description: userInfo.description,
-    //     information: userInfo.information,
-    //   })
-    //   .then(res => {
-    //     if(res.data.success === true){
-    //       history.push('/')
-    //     }
-    //   })
-    // } catch (error) { throw error}    
-    
+  const addDetails = async (event) => {    
     event.preventDefault()
 
     if(userInfo.title.length === 0){
@@ -102,21 +94,48 @@ const CreatePost = ({ token }) => {
     }
 
     //make tagIds an array of only strings
-    const tagGG = userInfo.tagIds.map(tag => tag.label)
-    const tagIds = tags.filter(tag => tagGG.includes(tag.label)).map(tag => tag.id)
+    // const tagGG = userInfo.tagIds.map(tag => tag.name)
+    // const tagIds = tags.filter(tag => tagGG.includes(tag.name)).map(tag => tag.id)
+    // userInfo.tagIds = tagIds
+
+    const tagIds = selectedTags.map(tag => tag.id)
     userInfo.tagIds = tagIds
 
     console.log("Post:", userInfo)
+
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(userInfo.content, 'text/html')
+    const images = doc.querySelectorAll('img')
+
+    const urls = Array.from(images).map(img => img.src)
+    console.log("urls:", urls)
+
+    //wait until uploading all urls
+    const uploadPromises = urls.map(url => {
+      const imageRef = ref(storage, `posts/${v4()}`)
+      return uploadString(imageRef, url, 'data_url')
+    })
+
+    const uploadedUrls = await Promise.all(uploadPromises)
+    console.log("uploadedUrls:", uploadedUrls)
+
+    setError('')
+    setLoading(true)
+    // return
 
     const customHeaders = {
       Authorization: 'Bearer ' + token,
     }
 
-    // setLoading(true)
 
     createPost(userInfo, customHeaders).then((res) => {
+      setLoading(false)
       navigate('/discussion')
-    }).catch(e => console.log(e))
+    }).catch(e => {
+      console.log(e)
+      setLoading(false)
+      setError('Something went wrong, please try again')
+    })
   }
 
 return ( 
@@ -163,6 +182,7 @@ return (
                                 <Autocomplete
                                     multiple
                                     id="discussion-tags-outlined"
+                                    value={selectedTags}
                                     options={tags}
                                     getOptionLabel={(option) => option.name}
                                     filterSelectedOptions
@@ -179,7 +199,26 @@ return (
                                     )}
                                 />
                             </div>
-                            <button id="discussion-btn" type="submit" className="btn btn__theme">Submit</button>
+                            <button 
+                              id="discussion-btn" 
+                              type="submit" 
+                              disabled={loading} 
+                              className="btn btn__theme" 
+                              style={{ 
+                                position: 'relative', 
+                                cursor: loading ? 'default' : 'pointer',
+                                opacity: loading ? '0.7' : '1',
+                              }}
+                            >
+                              Submit
+                            </button>
+                            {loading && 
+                              <CircularProgress 
+                                size={24} 
+                                color="secondary"
+                                style={{ position: 'absolute', top: '85%', left: '84%', }} 
+                              />
+                            }                         
                         </div> 
                     </div> 
                     </form>
@@ -188,7 +227,19 @@ return (
         </div>) : (
         <div className="discussion-app">
             <div className="container">
-                <div className="row" dangerouslySetInnerHTML={{ __html: userInfo.content }}></div>
+                <div className="row preview-title">
+                  {userInfo.title ? <h1>{userInfo.title}</h1> : <h1>No title added... :(</h1>}
+                </div>
+                {userInfo.content ? (
+                  <div className="row preview-content" dangerouslySetInnerHTML={{ __html: userInfo.content }}></div>
+                ) : (
+                  <div className="row preview-content">No content added... :(</div>
+                )}
+                <div className="row preview-post-tags">
+                    {selectedTags.map((tag, idx) => (
+                        <span key={idx}>{tag.name}</span>
+                    ))}
+                </div>
             </div>
         </div>
     )}

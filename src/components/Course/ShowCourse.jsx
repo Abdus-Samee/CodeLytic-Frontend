@@ -165,14 +165,26 @@ const styleModal = {
         })
     }
 
+    const handleSubsectionChange = (val) => {
+        setSubsection(val)
+    }
+
     const handleSubsectionCreate = () => {
+        if(!token){
+            navigate('/login')
+        }
+
         if (subsection === '') {
             alert('Subsection name cannot be empty')
             return
         }
 
+        const customHeaders = {
+            Authorization: 'Bearer ' + token,
+        }
+
         setSubsectionLoading(true)
-        createSubsection(courseId, subsection).then((res) => {
+        createSubsection(courseId, subsection, customHeaders).then((res) => {
             setCourse(prevCourse => {
                 return {
                     ...prevCourse,
@@ -232,7 +244,7 @@ const styleModal = {
                 >
                     <Box sx={styleModal}>
                     <h1 id="subsection-modal-title">Create Subsection</h1>
-                    <input className='subsection-modal-input' type='text' value={subsection} placeholder='Subsection Name' onChange={(e) => setSubsection(e.target.value)} required/>
+                    <input className='subsection-modal-input' type='text' value={subsection} placeholder='Subsection Name' onChange={(e) => handleSubsectionChange(e.target.value)} required/>
                     <Button className='subsection-modal-button' variant="contained" size="small"  onClick={handleSubsectionCreate}>Create</Button>
                     {subsectionLoading && <CircularProgress style={{ color: 'pink', }} />}
                     </Box>

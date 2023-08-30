@@ -7,9 +7,14 @@ import AccordionDetails from '@mui/material/AccordionDetails'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import '../../assets/css/subsection.css'
+import { useEffect } from "react"
 
 const Subsection = ({ course, isAuthor }) => {
   const navigate = useNavigate()
+
+  useEffect(() => {
+    console.log('course', course)
+  }, [])
 
   const handleLectureClick = (o, i) => {
     console.log('selected lec', i)

@@ -41,8 +41,17 @@ export const createCourse = (course, headers) => {
     return myAxios.post('/course', course, config).then(res => res.data)
 }
 
-export const createSubsection = (courseId, subsection) => {
-    return myAxios.post(`/course/subsection/${courseId}`, subsection).then(res => res.data)
+export const createSubsection = (courseId, subsection, headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
+    }
+
+    console.log("Getting subsection:", subsection)
+
+    return myAxios.post(`/course/subsection/${courseId}`, subsection, config).then(res => res.data)
 }
 
 export const loadSingleLecture = (lectureId) => {

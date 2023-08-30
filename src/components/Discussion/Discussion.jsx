@@ -76,7 +76,7 @@ const Discussion = ({ token }) => {
                                 <h2>{post.title}</h2>
                                 <Chip label={`${post.comments.length} comments`} variant="contained" sx={{ color: '#fff', bgcolor: '#252B48', }} />
                             </div>
-                            <p style={{ marginBottom: '0.5vh', }}>Author Name</p>
+                            {/**<p style={{ marginBottom: '0.5vh', }}>Author Name</p>**/}
                             <div className="post-tags">
                                 {post.tags.map((tag, idx) => (
                                     <span key={idx} onClick={() => console.log(tag)}>{tag.name}</span>
