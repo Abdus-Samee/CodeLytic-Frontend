@@ -73,7 +73,7 @@ const styleModal = {
                 setCourse(res)
                 const storedUser = localStorage.getItem('codelytic-user')
                 const user = JSON.parse(storedUser)
-                if(res.author === user.email) setIsAuthor(true)
+                if(res.author === user?.email) setIsAuthor(true)
                 setLoading(false)
             }).catch((e) => console.log(e))
         }, [])
@@ -181,6 +181,7 @@ const styleModal = {
 
         const customHeaders = {
             Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
         }
 
         setSubsectionLoading(true)
@@ -203,16 +204,6 @@ const styleModal = {
             setSubsection('')
             handleClose()
         }).catch((e) => console.log(e))
-
-        // course.subsections.push({
-        //     id: course.subsections.length + 1,
-        //     name: subsection,
-        //     lecture: [],
-        //     quiz: {
-        //         id: course.subsections.length + 1,
-        //         questions: []
-        //     }
-        // })
     }
 
     return (
