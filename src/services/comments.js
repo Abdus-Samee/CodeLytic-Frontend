@@ -1,17 +1,6 @@
 // import { makeRequest } from "./makeRequest"
 import { useState, useMemo } from "react"
 
-const [comments, setComments] = useState([])
-
-const commentsByParentId = useMemo(() => {
-    const group = {}
-    comments.forEach(comment => {
-        group[comment.parentId] ||= []
-        group[comment.parentId].push(comment)
-    })
-    return group
-}, [comments])
-
 export function createComment({ postId, message, parentId }) {
     // setComments(prevComments => {
     //     return [message, ...prevComments]
@@ -30,8 +19,8 @@ export function updateComment({ postId, message, id }) {
   })
 }
 
-export function deleteComment({ postId, id }) {
-  return makeRequest(`posts/${postId}/comments/${id}`, {
+export function deleteComment(commentId) {
+  return makeRequest(`comment/${commentId}`, {
     method: "DELETE",
   })
 }

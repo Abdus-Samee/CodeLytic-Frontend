@@ -1,18 +1,12 @@
 import { IconBtn } from "./IconBtn"
 import { FaEdit, FaHeart, FaRegHeart, FaReply, FaTrash } from "react-icons/fa"
-import { usePost } from "../../contexts/PostContext"
+import { useNavigate } from "react-router-dom"
 import { CommentList } from "./CommentList"
-import { useState } from "react"
-// import { useAsyncFn } from "../../hooks/useAsync"
-// import {
-//   createComment,
-//   deleteComment,
-//   toggleCommentLike,
-//   updateComment,
-// } from "../../services/comments"
+import { useState, useEffect } from "react"
+
 import { CommentForm } from "./CommentForm"
 
-import { updateComment } from "../../services/posts"
+import { createComment, updateComment, deleteComment } from "../../services/posts"
 
 const dateFormatter = new Intl.DateTimeFormat(undefined, {
   dateStyle: "medium",
@@ -23,7 +17,8 @@ export function Comment({
   id,
   content,
   parentComment,
-  childComments
+  childComments,
+  postId
 }) {
   const [commentContent, setCommentContent] = useState(content)
   const [areChildrenHidden, setAreChildrenHidden] = useState(false)
@@ -31,22 +26,8 @@ export function Comment({
   const [isEditing, setIsEditing] = useState(false)
 
   const token = localStorage.getItem('codelytic-token')
-
-  // const {
-  //   post,
-  //   getReplies,
-  //   createLocalComment,
-  //   updateLocalComment,
-  //   deleteLocalComment,
-  //   toggleLocalCommentLike,
-  // } = usePost()
-
-//   const createCommentFn = useAsyncFn(createComment)
-//   const updateCommentFn = useAsyncFn(updateComment)
-//   const deleteCommentFn = useAsyncFn(deleteComment)
-//   const toggleCommentLikeFn = useAsyncFn(toggleCommentLike)
-  // const childComments = getReplies(id)
-  const currentUser = { id: 1, name: "Test User" }
+  const currentUser = JSON.parse(localStorage.getItem('codelytic-user'))
+  const navigate = useNavigate()
 
 //   function onCommentReply(message) {
 //     return createCommentFn
@@ -58,8 +39,23 @@ export function Comment({
 //   }
 
   const onCommentReply = (message) => {
-    setIsReplying(false)
-    createLocalComment({ id: id+1, message, user: { id: 1, name: "Test User" }, createdAt: new Date(), likeCount: 0, likedByMe: false, parentId: id })
+    const comment = {
+      content: message,
+      parentCommentId: id,
+      postId: postId
+    }
+
+    const customHeaders = {
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json',
+    }
+
+    console.log('Comment', comment)
+
+    createComment(comment, customHeaders).then((res) => {
+      setIsReplying(false)
+      childComments.push(res)
+    }).catch(e => console.log(e))
   }
 
 //   function onCommentUpdate(message) {
@@ -72,8 +68,13 @@ export function Comment({
 //   }
 
   const onCommentUpdate = (message) => {
+    if(!token){
+      navigate('/login')
+    }
+
     const headers = {
       Authorization: 'Bearer ' + token,
+      'Content-Type': 'application/json',
     }
 
     updateComment(id, message, headers).then((res) => {
@@ -82,14 +83,15 @@ export function Comment({
     }).catch(e => console.log(e))
   }
 
-//   function onCommentDelete() {
-//     return deleteCommentFn
-//       .execute({ postId: post.id, id })
-//       .then(comment => deleteLocalComment(comment.id))
-//   }
-
   const onCommentDelete = () => {
-    deleteLocalComment(id)
+    const headers = {
+      Authorization: 'Bearer ' + token,
+    }
+
+    deleteComment(id, headers).then((res) => {
+      console.log('Comment Deleted', res)
+      window.location.reload()
+    }).catch(e => console.log(e))
   }
 
 //   function onToggleCommentLike() {
@@ -131,13 +133,15 @@ export function Comment({
             // Icon={likedByMe ? FaHeart : FaRegHeart}
             // aria-label={likedByMe ? "Unlike" : "Like"}
         />**/}
-          <IconBtn
-            onClick={() => setIsReplying(prev => !prev)}
-            isActive={isReplying}
-            Icon={FaReply}
-            aria-label={isReplying ? "Cancel Reply" : "Reply"}
-          />
-          {currentUser.id === 1 && (
+          {token && 
+            <IconBtn
+              onClick={() => setIsReplying(prev => !prev)}
+              isActive={isReplying}
+              Icon={FaReply}
+              aria-label={isReplying ? "Cancel Reply" : "Reply"}
+            />
+          }
+          {currentUser?.id && (
             <>
               <IconBtn
                 onClick={() => setIsEditing(prev => !prev)}
@@ -180,7 +184,7 @@ export function Comment({
               onClick={() => setAreChildrenHidden(true)}
             />
             <div className="nested-comments">
-              <CommentList comments={childComments} />
+              <CommentList comments={childComments} postId={postId} />
             </div>
           </div>
         </>

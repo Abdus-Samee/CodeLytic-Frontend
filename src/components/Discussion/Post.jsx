@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { Container, Box, Paper } from "@mui/material"
+import { Container, Box, Paper, CircularProgress } from "@mui/material"
 
 import { CommentForm } from "./CommentForm"
 import { CommentList } from "./CommentList"
@@ -17,7 +17,7 @@ const Post = ({ token }) => {
   const [post, setPost] = useState({})
   const [rootComments, setRootComments] = useState([{}])
   const [comments, setComments] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
   const { id } = useParams()
@@ -25,15 +25,15 @@ const Post = ({ token }) => {
   useEffect(() => {
     loadSinglePost(id).then((res) => {
       setPost(res)
-      setLoading(false)
-
+      
       if (res?.comments == null) return
-
+      
       setComments(res.comments)
-
+      
       const rootComments = res.comments.filter(comment => comment.parentComment == null)
       setRootComments(rootComments)
-
+      
+      setLoading(false)
       // if (res?.comments == null) return
       // setComments(res.comments)
     }).catch(e => console.log(e))
@@ -70,42 +70,56 @@ const Post = ({ token }) => {
     })
   }
 
+  const deleteLocalComment = (commentId) => {
+    setComments(prevComments => {
+      return prevComments.filter(comment => comment.id !== commentId)
+    })
+
+    setRootComments(prevComments => {
+      return prevComments.filter(comment => comment.id !== commentId)
+    })
+  }
+
   return (
     <Container>
-      <h1 className="post-title">{post.title}</h1>
-      <Box
-        sx={{
-          display: 'flex',
-          '& > :not(style)': {
-            m: 1,
-          },
-        }}
-      >
-        <Paper
-          elevation={12}
-          sx={{
-            background: '#1F1E23',
-            color: '#ffffff',
-            padding: 1,
-            width: '100%'
-          }}
-        >
-          <div dangerouslySetInnerHTML={{ __html: post.content}}></div>
-        </Paper>
-      </Box>
-      <h3 className="comments-title">Comments</h3>
-      <section>
-        {token && <CommentForm
-          loading={loading}
-          error={error}
-          onSubmit={onCommentCreate}
-        />}
-        {rootComments != null && rootComments.length > 0 && (
-          <div className="mt-4">
-            <CommentList comments={rootComments} />
-          </div>
-        )}
-      </section>
+      {loading ? <CircularProgress color="secondary" style={{ marginLeft: '48%', marginTop: '25%', }} /> : 
+        <>
+          <h1 className="post-title">{post.title}</h1>
+          <Box
+            sx={{
+              display: 'flex',
+              '& > :not(style)': {
+                m: 1,
+              },
+            }}
+          >
+            <Paper
+              elevation={12}
+              sx={{
+                background: '#1F1E23',
+                color: '#ffffff',
+                padding: 1,
+                width: '100%'
+              }}
+            >
+              <div dangerouslySetInnerHTML={{ __html: post.content}}></div>
+            </Paper>
+          </Box>
+          <h3 className="comments-title">Comments</h3>
+          <section>
+            {token && <CommentForm
+              loading={loading}
+              error={error}
+              onSubmit={onCommentCreate}
+            />}
+            {rootComments != null && rootComments.length > 0 && (
+              <div className="mt-4">
+                <CommentList comments={rootComments} postId={id} />
+              </div>
+            )}
+          </section>
+        </>
+      }
     </Container>
   )
 }

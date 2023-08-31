@@ -38,7 +38,17 @@ export const updateComment = (commentId, comment, headers) => {
         },
     }
 
-    console.log('HEADERS>>>>>>', config.headers)
-
+    // console.log('Update comment', comment)
     return myAxios.put(`/comment/${commentId}`, comment, config).then(res => res.data)
+}
+
+export const deleteComment = (commentId, headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
+    }
+
+    return myAxios.delete(`/comment/${commentId}`, config, headers).then(res => res.data)
 }
