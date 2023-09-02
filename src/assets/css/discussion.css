@@ -119,4 +119,5 @@
     box-decoration-break: slice;
     background-clip: text;
     border-color: white;
+    cursor: pointer;
 }

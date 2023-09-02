@@ -34,21 +34,23 @@ const Discussion = ({ token }) => {
     useEffect(() => {
         loadAllPosts().then((res) => {
             setPosts(res)
+            // console.log("Res", res)
             setLoading(false)
         }).catch(e => console.log(e))
-        const customHeaders = {
-            Authorization: 'Bearer ' + token,
-        }
-        loadAllTags(customHeaders).then((res) => {
-            console.log(res)
-        }).catch(e => console.log(e))
+
+        // const customHeaders = {
+        //     Authorization: 'Bearer ' + token,
+        // }
+        // loadAllTags(customHeaders).then((res) => {
+        //     console.log(res)
+        // }).catch(e => console.log(e))
     }, [])
 
     const isSearchEmpty = searchPost === '' && searchTags.length === 0
 
     const filteredPosts = isSearchEmpty ? posts : posts.filter((post) =>
         (post.title.toLowerCase().includes(searchPost.toLowerCase()) || searchPost === '') &&
-        (searchTags.length === 0 || post.tags?.some((tag) => searchTags.includes(tag.name)))
+        (searchTags.length === 0 || post.tags?.some((tag) => searchTags.includes(tag)))
     )
 
     const handleCreate = () => {
@@ -109,8 +111,8 @@ const Discussion = ({ token }) => {
                             </div>
                             {/**<p style={{ marginBottom: '0.5vh', }}>Author Name</p>**/}
                             <div className="post-tags">
-                                {post.tags.map((tag, idx) => (
-                                    <span key={idx} onClick={() => handleTagClick(tag.name)}>{tag.name}</span>
+                                {post.tags?.map((tag, idx) => (
+                                    <span key={idx} onClick={() => handleTagClick(tag)}>{tag}</span>
                                 ))}
                             </div>
                         </div>
