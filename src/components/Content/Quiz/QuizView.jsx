@@ -90,7 +90,11 @@ const QuizView = ({ token }) => {
             navigate('/login')
         }
 
-        loadQuiz(quizId).then((res) => {
+        const customHeaders = {
+            Authorization: `Bearer ${token}`
+        }
+
+        loadQuiz(quizId, customHeaders).then((res) => {
             setQuestions(res.questions)
 
             const l = res.questions.length

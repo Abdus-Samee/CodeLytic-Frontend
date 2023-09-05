@@ -47,7 +47,7 @@ const App = () => {
           <Route path="create/course-quiz" element={<AddCourseQuiz token={token} />} />
           <Route path="progress" element={<Progress token={token} />} />
           <Route path="course/:courseId" exact element={<ShowCourse token={token} />} />
-          <Route path="course/lectures/:lectureId" element={<LectureContent />} />
+          <Route path="course/lectures/:lectureId" element={<LectureContent token={token} />} />
           <Route path="quiz/:quizId" element={<QuizView token={token} />} />
           <Route path="discussion" element={<Discussion token={token} />} />
           <Route path="posts/:id" element={<Post token={token} />} />

@@ -7,7 +7,7 @@ import transition from '../../../transition'
 
 import '../../../assets/css/showlecturecontent.css'
 
-const LectureContent = ({ content }) => {
+const LectureContent = ({ token }) => {
     const [title, setTitle] = useState("")
     const [contentItems, setContentItems] = useState([])
     const [loading, setLoading] = useState(true)
@@ -34,6 +34,10 @@ const LectureContent = ({ content }) => {
         if(cid == undefined) navigate('/courses')
 
         else navigate(`/course/${cid}`)
+    }
+
+    const handleComplete = () => {
+        
     }
 
     return (
@@ -67,7 +71,7 @@ const LectureContent = ({ content }) => {
                         ))}
                     </div>
                     <div className="lec-btns">
-                        <Button variant="contained" style={{ marginRight: '1vw', }}>Complete</Button>
+                        {token && <Button variant="contained" style={{ marginRight: '1vw', }} onClick={handleComplete}>Complete</Button>}
                         <Button variant="contained" color="secondary" style={{ marginRight: '1vw', }}>Next</Button>
                     </div>
                 </>

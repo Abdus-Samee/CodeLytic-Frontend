@@ -62,7 +62,7 @@ export const createLecture = (lecture, sid, headers) => {
         },
     }
 
-    console.log(lecture)
+    // console.log(lecture)
 
     return myAxios.post(`/course/lecture/${sid}`, lecture, config).then(res => res.data)
 }
@@ -71,8 +71,15 @@ export const loadSingleLecture = (lectureId) => {
     return myAxios.get(`/course/lecture/${lectureId}`).then(res => res.data)
 }
 
-export const loadQuiz = (quizId) => {
-    return myAxios.get(`/course/quiz/${quizId}`).then(res => res.data)
+export const loadQuiz = (quizId, headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
+    }
+
+    return myAxios.get(`/course/quiz/${quizId}`, config).then(res => res.data)
 }
 
 export const createQuiz = (quiz, sid, headers) => {
@@ -83,7 +90,18 @@ export const createQuiz = (quiz, sid, headers) => {
         },
     }
 
-    console.log(quiz)
+    // console.log(quiz)
 
     return myAxios.post(`/course/quiz/${sid}`, quiz, config).then(res => res.data)
+}
+
+export const enrollCourse = (courseId, headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
+    }
+
+    return myAxios.post(`/course/${courseId}/enroll`, {}, config).then(res => res.data)
 }

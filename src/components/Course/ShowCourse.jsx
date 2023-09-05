@@ -4,7 +4,8 @@ import { Container, Divider, Button, Chip, Modal, Box, CircularProgress } from '
 
 import Subsection from './Subsection'
 
-import { loadSingleCourse, createSubsection } from '../../services/course-service'
+import { getUser } from '../../services/user-service'
+import { loadSingleCourse, createSubsection, enrollCourse } from '../../services/course-service'
 import transition from "../../transition"
 
 import "../../assets/css/showcourse.css"
@@ -43,11 +44,13 @@ const styleModal = {
 
     const ShowCourse = ({ token }) => {
         const [course, setCourse] = useState({})
+        const [isEnrolled, setIsEnrolled] = useState(false)
         const [loading, setLoading] = useState(true)
         const [subsectionLoading, setSubsectionLoading] = useState(false)
         const [subsection, setSubsection] = useState('')
         const [isOpen, setIsOpen] = useState(false)
         const [isAuthor, setIsAuthor] = useState(false)
+        const [enrollLoading, setEnrollLoading] = useState(false)
 
         const params = useParams()
         const location = useLocation()
@@ -73,7 +76,16 @@ const styleModal = {
                 setCourse(res)
                 const storedUser = localStorage.getItem('codelytic-user')
                 const user = JSON.parse(storedUser)
+
                 if(res.author === user?.email) setIsAuthor(true)
+                
+                if(user?.enrolledCourse.length > 0){
+                    user.enrolledCourse.forEach(course => {
+                        //course.id is number and courseId is string
+                        if(course.id === parseInt(courseId)) setIsEnrolled(true)
+                    })
+                }
+
                 setLoading(false)
             }).catch((e) => console.log(e))
         }, [])
@@ -169,6 +181,31 @@ const styleModal = {
         setSubsection(val)
     }
 
+    const handleEnroll = () => {
+        if(!token){
+            navigate('/login')
+        }
+
+        setEnrollLoading(true)
+
+        const customHeaders = {
+            Authorization: 'Bearer ' + token,
+        }
+
+        enrollCourse(courseId, customHeaders).then((res) => {
+            getUser(customHeaders).then((res) => {
+                localStorage.setItem('codelytic-user', JSON.stringify(res))
+                
+                if(res?.enrolledCourse){
+                    const enrolled = user.enrolledCourse.find(course => course.id === courseId)
+                    if(enrolled) setIsEnrolled(true)
+                }
+
+                setEnrollLoading(false)
+            }).catch(e => console.log(e))
+        }).catch((e) => console.log(e))
+    }
+
     const handleSubsectionCreate = () => {
         if(!token){
             navigate('/login')
@@ -226,7 +263,13 @@ const styleModal = {
                 {course.subsections.length > 0 && <Subsection course={course} isAuthor={isAuthor} />}
                 {isAuthor && <Button variant="contained" color="secondary" style={{ marginTop: '1vh', }} onClick={handleOpen}>
                     Add Subsection
+                    {enrollLoading && <CircularProgress color="secondary" />}
                 </Button>}
+                {!isAuthor && token && !isEnrolled &&
+                    <Button variant="contained" color="secondary" style={{ marginTop: '1vh', }} onClick={handleEnroll}>
+                        Enroll
+                    </Button>
+                }
                 <Modal
                     open={isOpen}
                     onClose={handleClose}
