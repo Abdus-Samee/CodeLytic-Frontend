@@ -16,6 +16,7 @@ const dateFormatter = new Intl.DateTimeFormat(undefined, {
 export function Comment({
   id,
   content,
+  author,
   parentComment,
   childComments,
   postId
@@ -108,7 +109,7 @@ export function Comment({
     <>
       <div className="comment">
         <div className="header">
-          {/**<span className="name">{user.name}</span>**/}
+          <span className="name" style={{ marginRight: '0', marginLeft: 'auto', }}>{author}</span>
           <span className="date">
             {/**dateFormatter.format(Date.parse(createdAt))**/}
           </span>

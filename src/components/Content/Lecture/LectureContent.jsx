@@ -1,33 +1,73 @@
 import { useEffect, useState } from 'react'
+import { useParams, useLocation, useNavigate } from 'react-router-dom'
 
+import { loadSingleLecture } from '../../../services/course-service'
 import transition from '../../../transition'
 
 import '../../../assets/css/showlecturecontent.css'
+import { Button, CircularProgress } from '@mui/material'
 
 const LectureContent = ({ content }) => {
+    const [title, setTitle] = useState("")
     const [contentItems, setContentItems] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    const params = useParams()
+    const location = useLocation()
+    const navigate = useNavigate()
+
+    const lid = params.lectureId
+    const { cid } = location.state || {}
 
     useEffect(() => {
-        let str = "[{key:'h1',val:'Graph: The Essence of Relationships'},{key:'h2',val:'Defining Graphs'},{key:'text',val:'Graphs provide a visual representation of connections between objects or entities. They are composed of vertices and edges that illustrate relationships and interactions.'},{key:'h2',val:'Types of Graphs'},{key:'text',val:'Graphs can be categorized as directed or undirected, based on the presence or absence of arrows on edges. Understanding these distinctions is crucial for grasping the broader applications of graph theory.'},{key:'h2',val:'Vertex and Edge'},{key:'text',val:'Vertices are the individual points in a graph, while edges connect pairs of vertices, signifying a relationship between them.'},{key:'h2',val:'Embracing Degrees'},{key:'text',val:'A vertexs degree is a measure of how many edges are connected to it. This concept is particularly significant in analyzing the connectivity and relationships within a graph.'},{key:'h2',val:'Graph Representation'},{key:'text',val:'There are different ways to represent graphs. One approach involves using an adjacency matrix, which presents the relationships between vertices in a matrix format. Alternatively, an adjacency list outlines the neighbors of each vertex.'}]"
-        str = str.replace(/(\bkey\b|val)/g, "'$&'")
-        // console.log('keyval single', str)
-        str = str.replaceAll("\"", "&quot;")
-        // console.log('quot', str)
-        str = str.replaceAll("'","\"")
-        // console.log(`${str}`)
-        setContentItems(JSON.parse(str))
+        loadSingleLecture(lid).then((res) => {
+            // console.log('Lecture: ', res)
+            setTitle(res.title)
+            const body = JSON.parse(res.body)
+            setContentItems(body)
+            setLoading(false)
+            console.log("Lec body:", body)
+        }).catch((err) => console.log(err))
     }, [])
 
+    const handleBack = () => {
+        if(cid == undefined) navigate('/courses')
+
+        else navigate(`/course/${cid}`)
+    }
+
     return (
-        <div className="display-lec-content">
-            {contentItems.map((o, k) => (
-                <div key={k} className="display-lec-content-item">
-                    {o.key === 'h1' && <h1>{o.val}</h1>}
-                    {o.key === 'h2' && <h2>{o.val}</h2>}
-                    {o.key === 'text' && <p>{o.val}</p>}
-                </div>
-            ))}
-        </div>
+        <>
+            {loading ? <CircularProgress style={{ color: 'pink', marginLeft: '48vw', marginTop: '40vh' }} /> :
+                <>
+                    <span className="lec-back" onClick={handleBack}>Back to course</span>
+                    <div className="lec-title">
+                        <h1>{title}</h1>
+                    </div>
+                    <div className="display-lec-content">
+                        {contentItems.map((o, k) => (
+                            <div key={k} className="display-lec-content-item">
+                                {o.key === 'h1' && <h1>{o.val}</h1>}
+                                {o.key === 'h2' && <h2>{o.val}</h2>}
+                                {o.key === 'text' && <p>{o.val}</p>}
+                                {o.key === 'a' && <a href={o.val[1]} className="lec-link">{o.val[0]}</a>}
+                                {o.key === 'ul' && 
+                                    <ul>
+                                        {o.val.map((item, key) => (
+                                            <li key={key}>{item}</li>
+                                        ))}
+                                    </ul>
+                                }
+                            </div>
+                        ))}
+                    </div>
+                    <div className="lec-btns">
+                        <Button variant="contained" style={{ marginRight: '1vw', }}>Complete</Button>
+                        <Button variant="contained" color="secondary" style={{ marginRight: '1vw', }}>Next</Button>
+                    </div>
+                </>
+            }
+        </>
     )
 }
 

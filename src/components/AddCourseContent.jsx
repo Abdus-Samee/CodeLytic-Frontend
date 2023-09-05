@@ -7,6 +7,7 @@ import ImageContainer from "./ImageContainer"
 import AnchorContainer from "./AnchorContainer"
 import ListContainer from "./ListContainer"
 
+import { createLecture } from "../services/course-service"
 import transition from "../transition"
 
 import "../assets/css/coursecontent.css"
@@ -14,7 +15,9 @@ import "../assets/css/coursecontent.css"
 const AddCourseContent = ({ token }) => {
     const location = useLocation()
     const navigate = useNavigate()
+    const [title, setTitle] = useState("")
     const [items, setItems] = useState([])
+    const [sid, setSid] = useState(null)
     // const { setCurrentStep, userData, setUserData } = useContext(multiStepContext)
 
     const contentItems = [
@@ -27,9 +30,9 @@ const AddCourseContent = ({ token }) => {
         }
         
         // const userDataItems = (userData['items'] === undefined)? [] : userData['items']
-        const { propItems } = location.state || {}
-        if(propItems) setItems(propItems)
-        // console.log("useeffect items", items)
+        const { sid } = location.state || {}
+        setSid(sid)
+        // console.log("useeffect", sid)
     }, [])
 
     const handleDragStart = (event, type) => {
@@ -129,16 +132,28 @@ const AddCourseContent = ({ token }) => {
     }
 
     const handleSubmitLecture = () => {
-        console.log("Lecture Content: ", items)
+        
+        const lecture = {
+            id: 0,
+            title: title,
+            body: JSON.stringify(items),
+            live: true,
+        }
 
-        const userId = 1;
+        console.log("Lecture Content: ", lecture)
 
-        // navigate(`/user/${userId}/courses`, {
-        //     state: {
-        //         courseName,
-        //         desc
-        //     }
-        // })
+        const customHeaders = {
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+        }
+
+        createLecture(lecture, sid, customHeaders).then(res => {
+            console.log(res)
+            navigate('/user')
+        }).catch(e => {
+            console.log(e)
+            alert("Error in creating lecture")
+        })
 
         // update subsection data `items` to database
         // navigate to user courses
@@ -148,6 +163,7 @@ const AddCourseContent = ({ token }) => {
         <div>
             <div className="box">
                 <div className="course-container" onDrop={handleDrop} onDragOver={allowDrop}>
+                    <TextField fullWidth size="small" margin="normal" value={title} placeholder="Enter title of Lecture" onChange={(e) => setTitle(e.target.value)} variant="outlined" color="primary" />
                     {items.map((obj, idx) => (
                         <div className="course-item" key={idx}>
                             {obj.key==="text" && <div><TextField fullWidth multiline rows={8} margin="normal" value={obj.val} onChange={(e) => handleContentChange(e.target.value, idx)} variant="outlined" color="secondary" /></div>}
@@ -183,7 +199,7 @@ const AddCourseContent = ({ token }) => {
                 </div>
                 </div>
             <div className="btn-submit">
-                <Button variant="contained" color="primary" onClick={print}>
+                <Button variant="contained" color="primary" onClick={handleSubmitLecture}>
                     Submit Lecture
                 </Button>
             </div>

@@ -7,6 +7,7 @@ import UserCourses from './components/UserCourses'
 import AddCourseContent from './components/AddCourseContent'
 import CreateCourse from './components/CreateCourse'
 import ShowLecture from './components/ShowLecture'
+import LectureContent from './components/Content/Lecture/LectureContent'
 import Navbar from './components/Navbar'
 import Progress from './components/Progress/Progress'
 import ShowCourse from './components/Course/ShowCourse'
@@ -46,7 +47,7 @@ const App = () => {
           <Route path="create/course-quiz" element={<AddCourseQuiz token={token} />} />
           <Route path="progress" element={<Progress token={token} />} />
           <Route path="course/:courseId" exact element={<ShowCourse token={token} />} />
-          <Route path="course/:courseId/subsection/:subId" element={<ShowLecture />} />
+          <Route path="course/lectures/:lectureId" element={<LectureContent />} />
           <Route path="quiz/:quizId" element={<QuizView token={token} />} />
           <Route path="discussion" element={<Discussion token={token} />} />
           <Route path="posts/:id" element={<Post token={token} />} />

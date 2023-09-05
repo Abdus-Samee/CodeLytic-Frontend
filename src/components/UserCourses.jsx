@@ -3,13 +3,14 @@ import { useParams, useLocation, useNavigate } from "react-router-dom"
 import { Container, CircularProgress } from "@mui/material"
 
 import { loadAllCourses, loadCourseByAuthor } from "../services/course-service"
-import { getUser } from "../services/user-service"
+import { getTotalComments, getUser } from "../services/user-service"
 import transition from "../transition"
 
 import "../assets/css/profile.css"
 
 const UserCourses = ({ token }) => {
     const [courses, setCourses] = useState([])
+    const [totalComments, setTotalComments] = useState(0)
     const [loading, setLoading] = useState(true)
 
     const params = useParams()
@@ -36,6 +37,10 @@ const UserCourses = ({ token }) => {
             localStorage.setItem('codelytic-user', JSON.stringify(res))
         }).catch(e => console.log(e))
 
+        getTotalComments(customHeaders).then((res) => {
+            console.log("Total comments: ", res['total-comments'])
+            setTotalComments(res['total-comments'])
+        }).catch(e => console.log(e))
 
         loadCourseByAuthor(customHeaders).then((res) => {
             setCourses(res)
@@ -69,6 +74,7 @@ const UserCourses = ({ token }) => {
 
     return (
         <Container>
+            <h3 style={{ marginTop: '2vh', color: '#BEADFA', }}>Total comments: {totalComments}</h3>
             <h3 style={{ marginTop: '2vh', color: '#BEADFA',}}>Courses Created</h3>
             <div className="profile-card-container">
                 {loading && <CircularProgress style={{ color: 'pink', margin: '0 auto', marginTop: '20vh', }} />}

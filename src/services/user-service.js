@@ -20,3 +20,14 @@ export const getUser = (headers) => {
 
     return myAxios.get('/user/', config).then(res => res.data)
 }
+
+export const getTotalComments = (headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
+    }
+
+    return myAxios.get('/user/comments', config).then(res => res.data)
+}

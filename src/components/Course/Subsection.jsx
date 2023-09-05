@@ -16,18 +16,21 @@ const Subsection = ({ course, isAuthor }) => {
     console.log('course', course)
   }, [])
 
-  const handleLectureClick = (o, i) => {
-    console.log('selected lec', i)
-    navigate(`/course/${course.id}/subsection/${o}`, {
+  const handleLectureClick = (lid) => {
+    console.log('selected lec', lid)
+    navigate(`/course/lectures/${lid}`, {
       state: {
-        coursename: course.title,
-        step: i,
-      },
+        cid: course.id
+      }
     })
   }
 
-  const handleAddLecture = () => {
-    navigate('/create/course-content')
+  const handleAddLecture = (sid) => {
+    navigate('/create/course-content', {
+      state: {
+        sid
+      }
+    })
   }
 
   const handleQuizClick = (id) => {
@@ -67,9 +70,9 @@ const Subsection = ({ course, isAuthor }) => {
                   </AccordionSummary>
                   <AccordionDetails>
                     {o.lectures.map((i, k) => (
-                      <Button key={k} className="show-lec-btn" onClick={() => handleLectureClick(i.id, k)}>{i.title}</Button>
+                      <Button key={k} className="show-lec-btn" onClick={() => handleLectureClick(i.id)}>{i.title}</Button>
                     ))}
-                    {isAuthor && <Button onClick={handleAddLecture}>Add Lecture</Button>}
+                    {isAuthor && <Button onClick={() => handleAddLecture(o.id)}>Add Lecture</Button>}
                   </AccordionDetails>
                 </Accordion>
               )}
