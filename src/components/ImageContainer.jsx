@@ -11,26 +11,29 @@ const ImageContainer = ({src, idx, handleImageAddition}) => {
     const handleDrop = (e) => {
         e.preventDefault()
         const imageFile = e.dataTransfer.files[0]
-        const reader = new FileReader()
+        
+        if(imageFile){
+            const reader = new FileReader()
 
-        reader.onload = () => {
-            setImageData(reader.result)
-            setShowSubmit(true)
+            reader.onload = () => {
+                setImageData(reader.result)
+                setShowSubmit(true)
+            }
+
+            reader.readAsDataURL(imageFile)
         }
-
-        reader.readAsDataURL(imageFile)
     }
 
     const handleFileSelect = (e) => {
         const imageFile = e.target.files[0]
-        const reader = new FileReader()
-
-        reader.onload = () => {
-            setImageData(reader.result)
-            setShowSubmit(true)
+        if (imageFile) {
+            const reader = new FileReader()
+            reader.onload = () => {
+                setImageData(reader.result)
+                setShowSubmit(true)
+            }
+            reader.readAsDataURL(imageFile)
         }
-
-        reader.readAsDataURL(imageFile)
     }
 
     const handleRemoveImage = () => {
@@ -56,12 +59,14 @@ const ImageContainer = ({src, idx, handleImageAddition}) => {
             className="img-container" 
             onDrop={handleDrop} 
             onDragOver={(e) => e.preventDefault()}
-            onClick={() => fileInputRef.current.click()}    
+            onClick={() => fileInputRef.current.click()} 
         >
             {imageData ? (
                 <img src={imageData} alt="Uploaded" />
             ) : (
-                <div className="drag-text">Drag & Drop or click to select an image</div>
+                <div className="drag-text">
+                    Drag & Drop or click to select an image
+                </div>
             )}
             {showSubmit && <button onClick={handleSubmit}>Submit</button>}
             {showSubmit && <button onClick={handleRemoveImage}>Remove</button>}
@@ -69,7 +74,7 @@ const ImageContainer = ({src, idx, handleImageAddition}) => {
                 type="file"
                 accept="image/*"
                 onClick={handleFileSelect}
-                ref={(input) => (fileInputRef.current = input)}
+                ref={fileInputRef}
                 style={{ display: 'none', }}
             />}
         </div>

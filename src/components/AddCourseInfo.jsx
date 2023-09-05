@@ -2,10 +2,10 @@ import { useState, useEffect, useContext } from "react"
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Container, Button, TextField, Autocomplete, CircularProgress } from "@mui/material"
 import UploadFileIcon from "@mui/icons-material/UploadFile"
-import { storage } from "../services/firebase"
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
 import { v4 } from "uuid"
 
+import { storage } from "../services/firebase"
 import { loadAllTags, createCourse } from "../services/course-service"
 import transition from "../transition"
 

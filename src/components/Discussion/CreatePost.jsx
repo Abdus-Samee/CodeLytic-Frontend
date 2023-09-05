@@ -3,15 +3,15 @@ import { useNavigate } from "react-router-dom"
 import { Autocomplete, TextField, Paper, CircularProgress, Button } from "@mui/material"
 import ReactQuill from "react-quill"
 import EditorToolbar, { modules, formats } from "./EditorToolbar"
-import "react-quill/dist/quill.snow.css"
-import { storage } from "../../services/firebase"
 import { ref, uploadBytes, getDownloadURL, uploadString, getStorage } from "firebase/storage"
 import { v4 } from "uuid"
 
+import { storage } from "../../services/firebase"
 import { loadAllTags } from "../../services/course-service"
 import { createPost } from "../../services/posts"
 import transition from "../../transition"
 
+import "react-quill/dist/quill.snow.css"
 import "../../assets/css/createpost.css"
 
 const CreatePost = ({ token }) => {

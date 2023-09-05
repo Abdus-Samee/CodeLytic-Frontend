@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useParams, useLocation, useNavigate } from 'react-router-dom'
+import { Button, CircularProgress } from '@mui/material'
 
 import { loadSingleLecture } from '../../../services/course-service'
 import transition from '../../../transition'
 
 import '../../../assets/css/showlecturecontent.css'
-import { Button, CircularProgress } from '@mui/material'
 
 const LectureContent = ({ content }) => {
     const [title, setTitle] = useState("")
@@ -41,22 +41,27 @@ const LectureContent = ({ content }) => {
             {loading ? <CircularProgress style={{ color: 'pink', marginLeft: '48vw', marginTop: '40vh' }} /> :
                 <>
                     <span className="lec-back" onClick={handleBack}>Back to course</span>
-                    <div className="lec-title">
-                        <h1>{title}</h1>
+                    <div className="">
+                        <h1 className="lec-title">{title}</h1>
                     </div>
                     <div className="display-lec-content">
                         {contentItems.map((o, k) => (
                             <div key={k} className="display-lec-content-item">
-                                {o.key === 'h1' && <h1>{o.val}</h1>}
-                                {o.key === 'h2' && <h2>{o.val}</h2>}
-                                {o.key === 'text' && <p>{o.val}</p>}
-                                {o.key === 'a' && <a href={o.val[1]} className="lec-link">{o.val[0]}</a>}
+                                {o.key === 'h1' && <h1 className="lec-heading">{o.val}</h1>}
+                                {o.key === 'h2' && <h2 className="lec-sub-heading">{o.val}</h2>}
+                                {o.key === 'text' && <p className="lec-text">{o.val}</p>}
+                                {o.key === 'a' && <a href={o.val[1]} target="_blank" className="lec-link">{o.val[0]}</a>}
                                 {o.key === 'ul' && 
-                                    <ul>
+                                    <ul className="lec-ul">
                                         {o.val.map((item, key) => (
                                             <li key={key}>{item}</li>
                                         ))}
                                     </ul>
+                                }
+                                {o.key === "img" && 
+                                    <div className="lec-img-container">
+                                        <img src={o.val} alt="Uploaded" className="lec-img" />
+                                    </div>
                                 }
                             </div>
                         ))}

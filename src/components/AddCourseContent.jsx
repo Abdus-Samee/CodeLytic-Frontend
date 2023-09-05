@@ -1,12 +1,14 @@
 import { useState, useEffect, useContext } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
-import { Button, TextField } from "@mui/material"
+import { Button, CircularProgress, TextField } from "@mui/material"
+import { ref, uploadBytes, getDownloadURL, uploadString, getStorage } from "firebase/storage"
+import { v4 } from "uuid"
 
-// import { multiStepContext } from "../StepContext"
 import ImageContainer from "./ImageContainer"
 import AnchorContainer from "./AnchorContainer"
 import ListContainer from "./ListContainer"
 
+import { storage } from "../services/firebase"
 import { createLecture } from "../services/course-service"
 import transition from "../transition"
 
@@ -18,6 +20,9 @@ const AddCourseContent = ({ token }) => {
     const [title, setTitle] = useState("")
     const [items, setItems] = useState([])
     const [sid, setSid] = useState(null)
+    const [imgRefs, setImgRefs] = useState([])
+    const [downloadUrls, setDownloadUrls] = useState([])
+    const [loading, setLoading] = useState(false)
     // const { setCurrentStep, userData, setUserData } = useContext(multiStepContext)
 
     const contentItems = [
@@ -66,6 +71,8 @@ const AddCourseContent = ({ token }) => {
 
         // const p = items
         // p.push({[key]:val})
+        if(key == "" && val == "") return
+
         setItems((current) => [...current, {'key': key, 'val': val}])
         // setUserData({...userData, "items": items})
         // console.log('data:', userData['items'])
@@ -131,32 +138,82 @@ const AddCourseContent = ({ token }) => {
         setItems(res)
     }
 
+    const uploadDataUrl = (dataUrl) => {
+        // console.log("uploading...", dataUrl)
+        const imageRef = ref(storage, `contents/${v4()}`)
+        setImgRefs(prev => [...prev, imageRef])
+
+        return uploadString(imageRef, dataUrl, 'data_url').then(() => {
+            return getDownloadURL(imageRef)
+        })
+    }
+
     const handleSubmitLecture = () => {
-        
-        const lecture = {
-            id: 0,
-            title: title,
-            body: JSON.stringify(items),
-            live: true,
-        }
-
-        console.log("Lecture Content: ", lecture)
-
+        setLoading(true)
+        const uploadPromises = []
+            
         const customHeaders = {
             Authorization: 'Bearer ' + token,
             'Content-Type': 'application/json',
         }
 
-        createLecture(lecture, sid, customHeaders).then(res => {
-            console.log(res)
-            navigate('/user')
-        }).catch(e => {
-            console.log(e)
-            alert("Error in creating lecture")
+        items.map(item => {
+            if(item.key === "img") uploadPromises.push(uploadDataUrl(item.val))
         })
 
-        // update subsection data `items` to database
-        // navigate to user courses
+        if(uploadPromises.length > 0){
+            Promise.all(uploadPromises).then((urls) => {
+                setLoading(false)
+                console.log("All uploads completed")
+
+                let imageIndex = 0
+                const changedItems = items.map((item, idx) => {
+                    if(item.key === "img"){
+                        item.val = urls[imageIndex]
+                        imageIndex += 1
+                    }
+
+                    return item
+                })
+
+                // console.log("Changed...", changedItems)
+                setItems(changedItems)
+
+                const lecture = {
+                    id: 0,
+                    title: title,
+                    body: JSON.stringify(items),
+                    live: true,
+                }
+        
+                console.log("Lecture Content: ", lecture)
+
+                createLecture(lecture, sid, customHeaders).then(res => {
+                    console.log(res)
+                    navigate('/user')
+                }).catch(e => {
+                    console.log(e)
+                    alert("Error in creating lecture")
+                })
+            }).catch((e) => console.log(e))
+        }else{
+            const lecture = {
+                id: 0,
+                title: title,
+                body: JSON.stringify(items),
+                live: true,
+            }
+    
+            console.log("Lecture Content: ", lecture)
+
+            createLecture(lecture, sid, customHeaders).then(res => {
+                console.log(res)
+                navigate('/user')
+            }).catch(e => {
+                console.log(e)
+                alert("Error in creating lecture")
+            })
+        }
     }
 
     return (
@@ -202,6 +259,7 @@ const AddCourseContent = ({ token }) => {
                 <Button variant="contained" color="primary" onClick={handleSubmitLecture}>
                     Submit Lecture
                 </Button>
+                {loading && <CircularProgress color="secondary" />}
             </div>
         </div>
     )

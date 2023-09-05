@@ -8,6 +8,12 @@
     margin-top: 1vh;
     padding: 1rem;
     color: #5765FF;
+    font-family: 'DM Mono', monospace;
+}
+
+.lec-heading {
+    font-family: 'DM Mono', monospace;
+    color: #BC7AF9;
 }
 
 .display-lec-content-item {
@@ -28,7 +34,20 @@
     cursor: pointer;
 }
 
+.lec-ul > li {
+    font-family: 'DM Mono', monospace;
+}
+
 .lec-link {
     color: #FF9B50;
     text-decoration: underline;
+}
+
+.lec-img-container {
+    width: 50%;
+    height: 50%;
+}
+
+.lec-img {
+    object-fit: contain;
 }
