@@ -7,7 +7,7 @@ import transition from "../../transition"
 import '../../assets/css/register.css'
 
 const Register = () => {
-    const [name, setName] = useState('')
+    const [role, setRole] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
@@ -18,12 +18,13 @@ const Register = () => {
 
     const handleRegister = () => {
         const user = {
-            name,
+            name: email,
             email,
+            role,
             password
         }
 
-        console.log('name: ', name, 'email: ', email, 'password: ', password)
+        console.log('role: ', role, 'email: ', email, 'password: ', password)
         //take some time before navigating to /
         // setTimeout(() => {
         //     navigate('/courses')
@@ -46,22 +47,27 @@ const Register = () => {
                 <div class="c-welcome">Welcome aboard!</div>
                 <form class="c-form" action="">
                     <div class="c-form__group">
-                        <label class="c-form__label" for="username">
-                            <input
+                        <label class="c-form__label" for="role">
+                            {/**select id="role" className="c-formn__input" style={{ width: '70%', }} onChange={(e) => setRole(e.target.value)}>
+                                <option value="USER">USER</option>
+                                <option value="CONTENT_CREATOR">CONTENT_CREATOR</option>
+                            </select>**/}
+                           <input
                                 type="text"
-                                id="username"
+                                id="role"
                                 class="c-form__input"
                                 placeholder=" "
-                                onChange={(e) => setName(e.target.value)}
+                                onChange={(e) => setRole(e.target.value)}
                                 pattern="[^\s]+"
                                 required
-                            />
+                            />  
                             <label class="c-form__next" for="progress2" role="button">
                                 <span class="c-form__nextIcon"></span>
                             </label>
-                            <span class="c-form__groupLabel">Create your username.</span>
+                            <span class="c-form__groupLabel">Select your role.</span>
                             <b class="c-form__border"></b>
                         </label>
+                        <p style={{ marginTop: '2vh', }}>Type USER or CONTENT_CREATOR</p>
                     </div>
                     <div class="c-form__group">
                         <label class="c-form__label" for="femail">

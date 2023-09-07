@@ -76,7 +76,7 @@ const Progress = ({ token }) => {
           body: 'Learn the basics of discrete mathematics',
           author: 'Eve',
         },
-      ]
+    ]
 
     const ticks = ["Loss", 0, 5, 10, 15]
 
@@ -90,19 +90,22 @@ const Progress = ({ token }) => {
     ]
 
     const colorScaleFn = (value) => {
-    if (value < 0 || value === "Loss") {
-        return colors[0]
+      if (value < 0 || value === "Loss") {
+          return colors[0]
+      }
+
+      if (value == 0) {
+          return colors[1]
+      }
+      
+      for (let i = 2; i < ticks.length; i++) {
+          if (value < ticks[i]) {
+          return colors[i]
+          }
+      }
+
+      return colors[colors.length - 1]
     }
-    if (value == 0) {
-        return colors[1]
-    }
-    for (let i = 2; i < ticks.length; i++) {
-        if (value < ticks[i]) {
-        return colors[i]
-        }
-    }
-    return colors[colors.length - 1]
-    };
 
     colorScaleFn.ticks = () => ticks
     
@@ -123,7 +126,7 @@ const Progress = ({ token }) => {
           <div style={{display:'flex', flexDirection:'row', justifyContent :'space-around'}}>
             <motion.div ref={carousel} className="carousel" whileTap={{ cursor: "grabbing", }}>
               <h3 className="ongoing-carousel-header">Ongoing Courses</h3>
-               <motion.div drag="x" dragConstraints={{ right: 0, left: -width, }} className="inner-carousel">
+               <motion.div drag="x" dragConstraints={{ left: -width/2, right: 0, }} className="inner-carousel">
                 {ongoingCourses.map((course, index) => (
                   <motion.div className="item" key={index} onClick={() => handleCourseClick(course.id)}>
                     <article className="ongoing-card">

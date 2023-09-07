@@ -1,10 +1,11 @@
-import { useRef } from "react"
+import { useEffect, useState, useRef } from "react"
 import { NavLink } from 'react-router-dom'
 import { FaBars, FaTimes } from "react-icons/fa"
 
 import "../assets/css/navbar.css"
 
 function Navbar({ token, handleLogout}) {
+	const [role, setRole] = useState('')
 	const navRef = useRef();
 
 	const showNavbar = () => {
@@ -13,6 +14,12 @@ function Navbar({ token, handleLogout}) {
 		)
 	}
 
+	useEffect(() => {
+		const user = JSON.parse(localStorage.getItem('codelytic-user'))
+		const { role } = user
+		setRole(role)
+	}, [])
+
 	return (
 		<header>
 			<NavLink to="/">
@@ -20,7 +27,7 @@ function Navbar({ token, handleLogout}) {
 			</NavLink>
 			<nav ref={navRef}>
 				<NavLink to="courses">Courses</NavLink>
-				<NavLink to="create/course">Create Course</NavLink>
+				{role === "CONTENT_CREATOR" && <NavLink to="create/course">Create Course</NavLink>}
 				<NavLink to="progress">Progress</NavLink>
 				<NavLink to="discussion">Discussion</NavLink>
 				{token && (

@@ -193,6 +193,7 @@ const AddCourseContent = ({ token }) => {
                     navigate('/user')
                 }).catch(e => {
                     console.log(e)
+                    setLoading(false)
                     alert("Error in creating lecture")
                 })
             }).catch((e) => console.log(e))

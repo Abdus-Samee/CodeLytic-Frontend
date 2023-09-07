@@ -30,6 +30,12 @@ const AddCourseInfo = ({ token }) => {
             navigate('/login')
         }
 
+        const user = JSON.parse(localStorage.getItem('codelytic-user'))
+        const { role } = user
+        if(role !== 'CONTENT_CREATOR'){
+            navigate('/user')
+        }
+
         const customHeaders = {
             Authorization: 'Bearer ' + token,
         }

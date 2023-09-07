@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { completeLecture, loadSingleLecture } from '../../../services/course-service'
+import { getCourseProgress } from '../../../services/user-service'
 import transition from '../../../transition'
 
 import '../../../assets/css/showlecturecontent.css'
@@ -10,7 +11,10 @@ import '../../../assets/css/showlecturecontent.css'
 const LectureContent = ({ token }) => {
     const [title, setTitle] = useState("")
     const [contentItems, setContentItems] = useState([])
+    const [isComplete, setIsComplete] = useState(false)
     const [loading, setLoading] = useState(true)
+    const [completeAction, setCompleteAction] = useState(false)
+    const [nextAction, setNextAction] = useState(false)
 
     const params = useParams()
     const location = useLocation()
@@ -27,6 +31,27 @@ const LectureContent = ({ token }) => {
             setContentItems(body)
             setLoading(false)
             console.log("Lec body:", body)
+
+            const customHeaders = {
+                Authorization: 'Bearer ' + token,
+            }
+
+            getCourseProgress(cid, customHeaders).then((res) => {
+                // console.log("Course progress: ", res)
+                const { subsectionsProgresses } = res
+                subsectionsProgresses.forEach((o) => {
+                    //find if there is a key of cid in o.lectures(an object)
+                    console.log("Lectures: ", o.lectures)
+                    if(o.lectures){
+                        if(o.lectures[lid] !== undefined){
+                            setIsComplete(true)
+                            // if(o.lectures[cid][lid] !== undefined){
+                            //     setIsComplete(o.lectures[cid][lid])
+                            // }
+                        }
+                    }
+                })
+            }).catch((err) => console.log(err))
         }).catch((err) => console.log(err))
     }, [])
 
@@ -37,10 +62,20 @@ const LectureContent = ({ token }) => {
     }
 
     const handleComplete = () => {
+        setCompleteAction(true)
         completeLecture(cid, sid, lid).then((res) => {
+            setCompleteAction(false)
             console.log(res)
             navigate(`/course/${cid}`)
         }).catch((err) => console.log(err))        
+    }
+
+    const handleNext = () => {
+        setNextAction(true)
+        //wait 3s
+        setTimeout(() => {
+            setNextAction(false)
+        }, 3000)
     }
 
     return (
@@ -74,8 +109,10 @@ const LectureContent = ({ token }) => {
                         ))}
                     </div>
                     <div className="lec-btns">
-                        {token && <Button variant="contained" style={{ marginRight: '1vw', }} onClick={handleComplete}>Complete</Button>}
-                        <Button variant="contained" color="secondary" style={{ marginRight: '1vw', }}>Next</Button>
+                        {token && !isComplete && <Button variant="contained" disabled={nextAction} style={{ marginRight: '1vw', }} onClick={handleComplete}>Complete</Button>}
+                        <Button variant="contained" color="secondary" disabled={completeAction} style={{ marginRight: '1vw', }} onClick={handleNext}>Next</Button>
+                        {nextAction && <CircularProgress style={{ color: 'pink', marginTop: '0', marginBottom: '-1vh' }} />}
+                        {completeAction && <CircularProgress style={{ color: 'pink', marginTop: '0', marginBottom: '-1vh' }} />}
                     </div>
                 </>
             }

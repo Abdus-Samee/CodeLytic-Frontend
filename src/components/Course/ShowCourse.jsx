@@ -122,7 +122,7 @@ const styleModal = {
                 localStorage.setItem('codelytic-user', JSON.stringify(res))
                 
                 if(res?.enrolledCourse){
-                    const enrolled = user.enrolledCourse.find(course => course.id === courseId)
+                    const enrolled = res.enrolledCourse.find(course => course.id === courseId)
                     if(enrolled) setIsEnrolled(true)
                 }
 
@@ -188,12 +188,14 @@ const styleModal = {
                 {course.subsections.length > 0 && <Subsection course={course} isAuthor={isAuthor} />}
                 {isAuthor && <Button variant="contained" color="secondary" style={{ marginTop: '1vh', }} onClick={handleOpen}>
                     Add Subsection
-                    {enrollLoading && <CircularProgress color="secondary" />}
                 </Button>}
                 {!isAuthor && token && !isEnrolled &&
-                    <Button variant="contained" color="secondary" style={{ marginTop: '1vh', }} onClick={handleEnroll}>
-                        Enroll
-                    </Button>
+                    <>
+                        <Button variant="contained" color="secondary" disabled={enrollLoading} style={{ marginTop: '1vh', }} onClick={handleEnroll}>
+                            Enroll
+                        </Button>
+                        {enrollLoading && <CircularProgress style={{ color: 'pink', marginLeft: '1vw', marginBottom: '-2vh', }} />}
+                    </>
                 }
                 <Modal
                     open={isOpen}
