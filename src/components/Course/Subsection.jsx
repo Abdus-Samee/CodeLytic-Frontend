@@ -1,13 +1,13 @@
-import { useParams, useLocation, useNavigate } from "react-router-dom"
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
-import Accordion from '@mui/material/Accordion'
-import AccordionSummary from '@mui/material/AccordionSummary'
-import AccordionDetails from '@mui/material/AccordionDetails'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { useNavigate } from "react-router-dom"
 
-import '../../assets/css/subsection.css'
 import { useEffect } from "react"
+import '../../assets/css/subsection.css'
 
 const Subsection = ({ course, isAuthor }) => {
   const navigate = useNavigate()
@@ -16,11 +16,12 @@ const Subsection = ({ course, isAuthor }) => {
     console.log('course', course)
   }, [])
 
-  const handleLectureClick = (lid) => {
+  const handleLectureClick = (sid, lid) => {
     console.log('selected lec', lid)
     navigate(`/course/lectures/${lid}`, {
       state: {
-        cid: course.id
+        cid: course.id,
+        sid
       }
     })
   }
@@ -70,7 +71,7 @@ const Subsection = ({ course, isAuthor }) => {
                   </AccordionSummary>
                   <AccordionDetails>
                     {o.lectures.map((i, k) => (
-                      <Button key={k} className="show-lec-btn" onClick={() => handleLectureClick(i.id)}>{i.title}</Button>
+                      <Button key={k} className="show-lec-btn" onClick={() => handleLectureClick(o.id, i.id)}>{i.title}</Button>
                     ))}
                     {isAuthor && <Button onClick={() => handleAddLecture(o.id)}>Add Lecture</Button>}
                   </AccordionDetails>

@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react'
-import { useParams, useLocation, useNavigate } from "react-router-dom"
-import { Container, Divider, Button, Chip, Modal, Box, CircularProgress } from '@mui/material'
+import { Box, Button, Chip, CircularProgress, Container, Divider, Modal } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 
 import Subsection from './Subsection'
 
+import { createSubsection, enrollCourse, loadSingleCourse } from '../../services/course-service'
 import { getUser } from '../../services/user-service'
-import { loadSingleCourse, createSubsection, enrollCourse } from '../../services/course-service'
 import transition from "../../transition"
 
 import "../../assets/css/showcourse.css"
@@ -79,7 +79,7 @@ const styleModal = {
 
                 if(res.author === user?.email) setIsAuthor(true)
                 
-                if(user?.enrolledCourse.length > 0){
+                if(user?.enrolledCourse?.length > 0){
                     user.enrolledCourse.forEach(course => {
                         //course.id is number and courseId is string
                         if(course.id === parseInt(courseId)) setIsEnrolled(true)
@@ -89,82 +89,6 @@ const styleModal = {
                 setLoading(false)
             }).catch((e) => console.log(e))
         }, [])
-
-    // const course = {
-    //     id: 1,
-    //     author: 'User 1',
-    //     title: 'Sorting',
-    //     icon: '',
-    //     description: 'This is course description',
-    //     subsections: [
-    //     {
-    //         id: 1,
-    //         name: 'Week 1',
-    //         lecture: [
-    //         {
-    //             id: 1,
-    //             title: 'Lecture 1',
-    //             body: 'Body of lecture 1',
-    //             live: true,
-    //         },
-    //         {
-    //             id: 2,
-    //             title: 'Lecture 2',
-    //             body: 'Body of lecture 2',
-    //             live: true,
-    //         },
-    //         ],
-    //         quiz: {
-    //         id: 1,
-    //         questions: [
-    //             {
-    //             id: 1,
-    //             question: 'string',
-    //             options: ['string'],
-    //             },
-    //         ],
-    //         },
-    //     },
-    //     {
-    //         id: 2,
-    //         name: 'Week 2',
-    //         lecture: [
-    //         {
-    //             id: 3,
-    //             title: 'Lecture 1',
-    //             body: 'Body of lecture 1',
-    //             live: true,
-    //         },
-    //         {
-    //             id: 4,
-    //             title: 'Lecture 2',
-    //             body: 'Body of lecture 2',
-    //             live: true,
-    //         },
-    //         ],
-    //     },
-    //     {
-    //         id: 3,
-    //         name: 'Week 3',
-    //         lecture: [
-    //         {
-    //             id: 5,
-    //             title: 'Lecture 5',
-    //             body: 'Body of lecture 5',
-    //             live: true,
-    //         },
-    //         {
-    //             id: 6,
-    //             title: 'Lecture 6',
-    //             body: 'Body of lecture 6',
-    //             live: true,
-    //         },
-    //         ],
-    //     },
-    //     ],
-    //     live: true,
-    //     premium: true,
-    // }
 
     const handleEditInfo = () => {
         navigate('/create/course', {
@@ -190,6 +114,7 @@ const styleModal = {
 
         const customHeaders = {
             Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
         }
 
         enrollCourse(courseId, customHeaders).then((res) => {

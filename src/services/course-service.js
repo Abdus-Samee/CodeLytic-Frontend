@@ -105,3 +105,14 @@ export const enrollCourse = (courseId, headers) => {
 
     return myAxios.post(`/course/${courseId}/enroll`, {}, config).then(res => res.data)
 }
+
+export const completeLecture = (courseId, subsectionId, lectureId, headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
+    }
+
+    return myAxios.post(`/course/${courseId}/complete/${subsectionId}/lecture/${lectureId}`, {}, config).then(res => res.data)
+}

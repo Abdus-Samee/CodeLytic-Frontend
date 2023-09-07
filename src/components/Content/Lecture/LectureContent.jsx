@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
-import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import { Button, CircularProgress } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
-import { loadSingleLecture } from '../../../services/course-service'
+import { completeLecture, loadSingleLecture } from '../../../services/course-service'
 import transition from '../../../transition'
 
 import '../../../assets/css/showlecturecontent.css'
@@ -17,7 +17,7 @@ const LectureContent = ({ token }) => {
     const navigate = useNavigate()
 
     const lid = params.lectureId
-    const { cid } = location.state || {}
+    const { cid, sid } = location.state || {}
 
     useEffect(() => {
         loadSingleLecture(lid).then((res) => {
@@ -37,7 +37,10 @@ const LectureContent = ({ token }) => {
     }
 
     const handleComplete = () => {
-        
+        completeLecture(cid, sid, lid).then((res) => {
+            console.log(res)
+            navigate(`/course/${cid}`)
+        }).catch((err) => console.log(err))        
     }
 
     return (

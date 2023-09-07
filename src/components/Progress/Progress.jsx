@@ -1,7 +1,7 @@
-import { useEffect, useState, useRef } from "react"
-import { useNavigate } from "react-router-dom"
 import { ResponsiveCalendar } from "@nivo/calendar"
 import { motion } from "framer-motion"
+import { useEffect, useRef, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 import transition from "../../transition"
 
@@ -9,6 +9,7 @@ import "../../assets/css/progress.css"
 
 const Progress = ({ token }) => {
     const [width, setWidth] = useState(0)
+    const [clickedCourse, setClickedCourse] = useState(0)
     const carousel = useRef()
 
     const navigate = useNavigate()
@@ -46,26 +47,31 @@ const Progress = ({ token }) => {
 
     const ongoingCourses = [
         {
+          id: '1',
           title: 'Basic Graph Theory',
           body: 'Learn the basics of graph theory',
           author: 'John Doe',
         },
         {
+          id: '2',
           title: 'Dynamic Programming',
           body: 'Learn the basics of dynamic programming',
           author: 'John Doe',
         },
         {
+          id: '3',
           title: 'Number Theory',
           body: 'Learn the basics of number theory',
           author: 'Rick & Morty',
         },
         {
+          id: '4',
           title: 'String Algorithms',
           body: 'Learn the basics of string algorithms',
           author: 'Trudy',
         },
         {
+          id: '5',
           title: 'Discrete Mathematics',
           body: 'Learn the basics of discrete mathematics',
           author: 'Eve',
@@ -107,14 +113,19 @@ const Progress = ({ token }) => {
 
         setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth)
     }, [])
+    
+    const handleCourseClick = (cid) => {
+        setClickedCourse(cid)
+    }
 
     return (
         <div className="" style={{ height: '100vh', }}>
+          <div style={{display:'flex', flexDirection:'row', justifyContent :'space-around'}}>
             <motion.div ref={carousel} className="carousel" whileTap={{ cursor: "grabbing", }}>
               <h3 className="ongoing-carousel-header">Ongoing Courses</h3>
-              <motion.div drag="x" dragConstraints={{ right: 0, left: -width, }} className="inner-carousel">
+               <motion.div drag="x" dragConstraints={{ right: 0, left: -width, }} className="inner-carousel">
                 {ongoingCourses.map((course, index) => (
-                  <motion.div className="item" key={index}>
+                  <motion.div className="item" key={index} onClick={() => handleCourseClick(course.id)}>
                     <article className="ongoing-card">
                       <header className="ongoing-card-header">
                         <h2>{course.title}</h2>
@@ -134,6 +145,13 @@ const Progress = ({ token }) => {
                 ))}
               </motion.div>
             </motion.div>
+            <div style={{ border: "1px solid red", padding: "1rem", marginTop:"1vh" }}>
+                <h3 style={{ color: 'white'}}>hello there buddy</h3>
+                {
+                    clickedCourse === 0 ? <h3 style={{ color: 'white'}}>No course selected</h3> : <h3 style={{ color: 'white'}}>Course {clickedCourse} selected</h3>
+                }
+            </div>
+            </div>
             <div style={{ height: '50vh', width: '70vw', }}>
                 <ResponsiveCalendar
                     data={data}
