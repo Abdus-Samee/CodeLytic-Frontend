@@ -6,7 +6,7 @@ import { loadAllCourses } from "../../services/course-service"
 
 import '../../assets/css/admin.css'
 
-const User = () => {
+const User = ({token}) => {
     const [loading, setLoading] = useState(true)
     const [users, setusers] = useState([])
 

@@ -116,3 +116,14 @@ export const completeLecture = (courseId, subsectionId, lectureId, headers) => {
 
     return myAxios.post(`/course/${courseId}/complete/${subsectionId}/lecture/${lectureId}`, {}, config).then(res => res.data)
 }
+
+export const deleteCourse = (courseId, headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
+    }
+
+    return myAxios.delete(`/course/${courseId}`, config).then(res => res.data)
+}

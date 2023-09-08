@@ -62,17 +62,17 @@ const Admin = ({ token }) => {
           <hr />
           {view === "courses" &&
             <>
-              <Course />
+              <Course token />
             </>
           }
           {view === "users" &&
             <>
-              <User />
+              <User token />
             </>
           }
           {view === "posts" &&
             <>
-              <Post />
+              <Post token />
             </>
           }
         </>
