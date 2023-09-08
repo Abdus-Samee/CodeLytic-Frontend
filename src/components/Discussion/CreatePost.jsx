@@ -21,16 +21,6 @@ const CreatePost = ({ token }) => {
 
   const navigate = useNavigate()
 
-  // const tags = [
-  //   { label: 'sorting' },
-  //   { label: 'graph' },
-  //   { label: 'dfs' },
-  //   { label: 'bfs' },
-  //   { label: 'searching' },
-  //   { label: 'dp' },
-  //   { label: 'recursion' },
-  // ]
-
   const [view, setView] = useState("create")
   const [isError, setError] = useState(null)
   const [userInfo, setuserInfo] = useState({

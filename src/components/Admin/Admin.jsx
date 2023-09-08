@@ -2,11 +2,15 @@ import { useEffect, useState, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 
-import { loadAllCourses } from "../services/course-service"
+import Course from "./Course"
+import User from "./User"
+import Post from "./Post"
 
-import '../assets/css/test.css'
+import { loadAllCourses } from "../../services/course-service"
 
-const Test = ({ token }) => {
+import '../../assets/css/admin.css'
+
+const Admin = ({ token }) => {
     const [courses, setCourses] = useState([])
     const [users, setUsers] = useState([])
     const [posts, setPosts] = useState([])
@@ -21,15 +25,16 @@ const Test = ({ token }) => {
         if(!token){
             navigate('/login')
         }
+
+        // const user = JSON.parse(localStorage.getItem('codelytic-user'))
+        // const { role } = user
+        // if(role !== 'ADMIN'){
+        //     navigate('/')
+        // }
     
         const customHeaders = {
             Authorization: 'Bearer ' + token,
         }
-
-        loadAllCourses().then((data) => {
-            setCourses(data)
-            setLoadingCourses(false)
-        })
     }, [])
 
     const handleTabClick = (e) => {
@@ -57,11 +62,21 @@ const Test = ({ token }) => {
           <hr />
           {view === "courses" &&
             <>
-              Courses...
+              <Course />
+            </>
+          }
+          {view === "users" &&
+            <>
+              <User />
+            </>
+          }
+          {view === "posts" &&
+            <>
+              <Post />
             </>
           }
         </>
     )
 }
 
-export default Test
+export default Admin

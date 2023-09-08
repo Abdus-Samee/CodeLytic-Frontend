@@ -19,6 +19,7 @@ import { PostProvider } from './contexts/PostContext'
 import CreatePost from './components/Discussion/CreatePost'
 import Register from './components/Auth/Register'
 import Login from './components/Auth/Login'
+import Admin from './components/Admin/Admin'
 import Test from './components/Test'
 import { AnimatePresence } from 'framer-motion'
 
@@ -54,6 +55,7 @@ const App = () => {
           <Route path="discussion/create" element={<CreatePost token={token} />} />
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login setToken={setToken} />} />
+          <Route path="admin" element={<Admin token={token} />} />
 
           <Route path="test" element={<Test token={token} />} />
         </Routes>
