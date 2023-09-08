@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import { CircularProgress } from "@mui/material"
 import { ResponsiveCalendar } from "@nivo/calendar"
+import { Button } from "@mui/material"
 
 import transition from "../../transition"
 import { loadAllCourses } from "../../services/course-service"
@@ -17,6 +18,8 @@ const Progress = ({ token }) => {
     const [clickedCourse, setClickedCourse] = useState(0)
     const [loading, setLoading] = useState(true)
     const [loadingCourseProgress, setLoadingCourseProgress] = useState(false)
+    const [courseProgress, setCourseProgress] = useState(0)
+    const [subsectionProgresses, setSubsectionProgresses] = useState([])
     const carousel = useRef()
 
     const navigate = useNavigate()
@@ -148,6 +151,7 @@ const Progress = ({ token }) => {
     
     const handleCourseClick = (cid) => {
         setClickedCourse(cid)
+        setCourseProgress(getCoursePercent(cid))
         setLoadingCourseProgress(true)
 
         const customHeaders = {
@@ -156,10 +160,76 @@ const Progress = ({ token }) => {
 
         getCourseProgress(cid, customHeaders).then((res) => {
             console.log(res)
+            setSubsectionProgresses(res.subsectionsProgresses)
             setLoadingCourseProgress(false)
         }).catch(e => console.log(e))
     }
-    
+
+    const getCompletedLectures = (lectures) => {
+        let i = 0
+        for(var l in lectures){
+          if(lectures[l]) i++
+        }
+
+        return i
+    }
+
+    const getIncompleteLectures = (lectures) => {
+        let i = 0
+        for(var l in lectures){
+          if(!lectures[l]) i++
+        }
+
+        return i
+    }
+
+    const renderLectureLinks = (lectures) => {
+      return (
+        <div>
+          {
+            Object.keys(lectures).map((l, i) => (
+              <a 
+                key={i} 
+                onClick={() => navigate(`/course/lectures/${l}`)} 
+                style={{ 
+                  color: lectures[l] === true? 'green' : 'red',
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  marginRight: '10px',
+                  marginBottom: '10px',
+                  transition: 'color 0.3s',
+                }}
+                onMouseEnter={(e) => e.target.style.color = '#17141D'}
+                onMouseLeave={(e) => e.target.style.color = lectures[l] === 1 ? 'green' : 'red'}
+              >
+                Lecture: {i+1}
+              </a>
+            ))
+          }
+        </div>
+      )
+    }
+
+    const handleVisitSubsectionClick = () => {
+      return () => {
+        navigate(`/course/${clickedCourse}`)
+      }
+    }
+
+    const renderQuizProgress = (questions) => {
+      var unattempted = 0
+      var score = 0
+      var total = 0
+
+      for(var q in questions){
+        if(questions[q] === 1) score++
+        else if(questions[q] === -1) unattempted++
+        total++
+      }
+
+      if(unattempted === total) return "Not attempted"
+      else return `${score}/${total}`
+    }
 
     return (
         <div className="" style={{ height: '100vh', }}>
@@ -191,17 +261,50 @@ const Progress = ({ token }) => {
                 </motion.div>
                }
             </motion.div>
-            <div style={{ border: "1px solid #fff", padding: "1rem", marginTop:"1vh", display: clickedCourse===0? 'none' : '', }}>
+            <div style={{ border: "1px solid #fff", padding: "1rem", marginTop:"1vh", minWidth: '30%', display: clickedCourse===0? 'none' : '', }}>
                 {
-                    clickedCourse === 0 ? <h3 style={{ color: 'white'}}>No course selected</h3> : 
+                    clickedCourse === 0 ? <h3 style={{ color: 'white', fontFamily: 'DM Mono, monospace', }}>No course selected</h3> : 
                     <>
-                      <h3 style={{ color: 'white'}}>Course {clickedCourse} selected</h3>
-                      {loadingCourseProgress ? <CircularProgress style={{ color: 'pink', marginLeft: '30%', }} /> : <p>Course Progress...</p>}
+                      {/**<h3 style={{ color: 'white'}}>Course {clickedCourse} selected</h3>**/}
+                      {loadingCourseProgress ? <CircularProgress style={{ color: 'pink', marginLeft: '48%', marginTop: '20%', }} /> 
+                        : 
+                        <div >
+                          <h4 style={{ color: 'white', fontFamily: 'DM Mono, monospace', }}>Course Progress: {courseProgress.toFixed(2)}%</h4>
+                          <br />
+                          <div className="cp-row">
+                            <div className="cp-col">
+                              <h4>Subsection Progresses:</h4>
+                              <div className="cp-tabs">
+                                {subsectionProgresses.map((subsection, index) => (
+                                  <div className="cp-tab" key={index}>
+                                    <input className="cp-input" type="checkbox" id={"chck"+index} />
+                                    <label class="cp-tab-label" for={"chck"+index}>{subsection.name}</label>
+                                    <div className="cp-tab-content">
+                                      <p>Completed Lectures: {getCompletedLectures(subsection.lectures)}</p>
+                                      <p>Incomplete Lectures: {getIncompleteLectures(subsection.lectures)}</p>
+                                      {subsection.quizProgress.quizId === null ? 
+                                        <p style={{ color: 'red', marginTop: '5px', }}>No quiz to attempt!</p>
+                                        :
+                                        <p>Quiz Progress: {renderQuizProgress(subsection.quizProgress.questions)} ({subsection.quizProgress.quizProgressInPercentage}%)</p>
+                                      }
+                                      <br />
+                                      <div style={{ padding: '0.6rem', border: '1px solid #17141D', }}>
+                                        {renderLectureLinks(subsection.lectures)}
+                                        <Button variant="contained" onClick={handleVisitSubsectionClick()}>Visit subsection</Button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      }
                     </>
                 }
             </div>
             </div>
-            <div style={{ background: '#26A649', height: '40vh', width: '70vw', margin: '0 auto', marginTop: '1vh' }}>
+            <div style={{ borderRadius: '16px', background: 'linear-gradient(90deg, rgba(236,232,240,1) 14%, rgba(230,224,216,1) 54%, rgba(223,200,228,1) 100%)', height: '40vh', width: '70vw', margin: '0 auto', marginTop: '1vh' }}>
                 <ResponsiveCalendar
                     data={data}
                     from="2023-01-01"
