@@ -37,37 +37,25 @@ const UserCourses = ({ token }) => {
         getUser(customHeaders).then((res) => {
             // console.log("User: ", res)
             localStorage.setItem('codelytic-user', JSON.stringify(res))
+
+            const user = JSON.parse(localStorage.getItem('codelytic-user'))
+            const { role } = user
+            setRole(role)
+
+            if(role === "CONTENT_CREATOR"){
+                loadCourseByAuthor(customHeaders).then((res) => {
+                    setCourses(res)
+                    setLoading(false)
+                }).catch(e => console.log(e))
+            }else{
+                const { enrolledCourse } = user
+                const enrolledCourseIds = enrolledCourse.map(course => course.id)
+                loadAllCourses().then((res) => {
+                    setCourses(res.filter(course => enrolledCourseIds.includes(course.id)))
+                    setLoading(false)
+                }).catch(e => console.log(e))
+            }
         }).catch(e => console.log(e))
-        
-        const user = JSON.parse(localStorage.getItem('codelytic-user'))
-        const { role } = user
-        setRole(role)
-
-        // getTotalComments(customHeaders).then((res) => {
-        //     console.log("Total comments: ", res['total-comments'])
-        //     setTotalComments(res['total-comments'])
-        // }).catch(e => console.log(e))
-
-        if(role === "CONTENT_CREATOR"){
-            loadCourseByAuthor(customHeaders).then((res) => {
-                setCourses(res)
-                setLoading(false)
-            }).catch(e => console.log(e))
-        }else{
-            const { enrolledCourse } = user
-            const enrolledCourseIds = enrolledCourse.map(course => course.id)
-            loadAllCourses().then((res) => {
-                setCourses(res.filter(course => enrolledCourseIds.includes(course.id)))
-                setLoading(false)
-            }).catch(e => console.log(e))
-        }
-
-        // loadAllCourses().then((res) => {
-        //     setCourses(res.filter(course => course.author === author))
-        //     setLoading(false)
-        // }).catch(e => console.log(e))
-
-
     }, [])
 
     const editCourse = (courseId) => {

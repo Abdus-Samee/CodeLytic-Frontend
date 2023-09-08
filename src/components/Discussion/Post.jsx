@@ -29,6 +29,7 @@ const Post = ({ token }) => {
       if (res?.comments == null) return
       
       setComments(res.comments)
+      console.log("post comments", res.comments)
       
       const rootComments = res.comments.filter(comment => comment.parentComment == null)
       setRootComments(rootComments)

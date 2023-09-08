@@ -16,8 +16,10 @@ function Navbar({ token, handleLogout}) {
 
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem('codelytic-user'))
-		const { role } = user
-		setRole(role)
+		if(user){
+			const { role } = user
+			setRole(role)
+		}
 	}, [])
 
 	return (

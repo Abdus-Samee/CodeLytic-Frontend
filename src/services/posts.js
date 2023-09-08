@@ -52,3 +52,14 @@ export const deleteComment = (commentId, headers) => {
 
     return myAxios.delete(`/comment/${commentId}`, config, headers).then(res => res.data)
 }
+
+export const toggleCommentLike = (commentId, headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
+    }
+
+    return myAxios.post(`/like/{commentId}?commentId=${commentId}`, null, config).then(res => res.data)
+}

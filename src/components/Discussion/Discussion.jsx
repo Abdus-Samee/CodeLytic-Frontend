@@ -23,27 +23,12 @@ const Discussion = ({ token }) => {
     const error = false
     const navigate = useNavigate()
 
-    // const posts = [
-    //     {id: 1, title: "Post 1", body: "This is the body of post 1", tags: ["tag1", "tag2"]},
-    //     {id: 2, title: "Post 2", body: "This is the body of post 2<br/>This is the heading<br/>This is the subheading<br/>More text", tags: ["tag1", "tag2"]},
-    //     {id: 3, title: "Post 3", body: "This is the body of post 3", tags: ["tag1", "tag2"]},
-    //     {id: 4, title: "Post 4", body: "This is the body of post 4", tags: ["tag1", "tag2"]},
-    //     {id: 5, title: "Post 5", body: "This is the body of post 5", tags: ["tag1", "tag2"]},
-    // ]
-
     useEffect(() => {
         loadAllPosts().then((res) => {
             setPosts(res)
             // console.log("Res", res)
             setLoading(false)
         }).catch(e => console.log(e))
-
-        // const customHeaders = {
-        //     Authorization: 'Bearer ' + token,
-        // }
-        // loadAllTags(customHeaders).then((res) => {
-        //     console.log(res)
-        // }).catch(e => console.log(e))
     }, [])
 
     const isSearchEmpty = searchPost === '' && searchTags.length === 0

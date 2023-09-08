@@ -8,12 +8,17 @@ export function CommentForm({
   initialValue = "",
 }) {
   const [message, setMessage] = useState(initialValue)
+  const [isLoading, setIsLoading] = useState(false)
 
   function handleSubmit(e) {
     e.preventDefault()
+    setIsLoading(true)
     // onSubmit(message).then(() => setMessage(""))
     onSubmit(message)
     setMessage("")
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 2000)
   }
 
   return (
@@ -25,8 +30,8 @@ export function CommentForm({
           onChange={e => setMessage(e.target.value)}
           className="message-input"
         />
-        <button className="btn" type="submit" disabled={loading}>
-          {loading ? "Loading" : "Post"}
+        <button className="btn" type="submit" disabled={isLoading}>
+          {isLoading ? "Loading" : "Post"}
         </button>
       </div>
       <div className="error-msg">{error}</div>

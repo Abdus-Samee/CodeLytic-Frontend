@@ -6,7 +6,7 @@ import { useState, useEffect } from "react"
 
 import { CommentForm } from "./CommentForm"
 
-import { createComment, updateComment, deleteComment } from "../../services/posts"
+import { createComment, updateComment, deleteComment, toggleCommentLike } from "../../services/posts"
 
 const dateFormatter = new Intl.DateTimeFormat(undefined, {
   dateStyle: "medium",
@@ -16,7 +16,9 @@ const dateFormatter = new Intl.DateTimeFormat(undefined, {
 export function Comment({
   id,
   content,
-  author,
+  commentedBy,
+  likes,
+  createdAt,
   parentComment,
   childComments,
   postId
@@ -25,19 +27,20 @@ export function Comment({
   const [areChildrenHidden, setAreChildrenHidden] = useState(false)
   const [isReplying, setIsReplying] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [likedByMe, setLikedByMe] = useState(false)
 
   const token = localStorage.getItem('codelytic-token')
   const currentUser = JSON.parse(localStorage.getItem('codelytic-user'))
   const navigate = useNavigate()
 
-//   function onCommentReply(message) {
-//     return createCommentFn
-//       .execute({ postId: post.id, message, parentId: id })
-//       .then(comment => {
-//         setIsReplying(false)
-//         createLocalComment(comment)
-//       })
-//   }
+  useEffect(() => {
+    //likes is an array: [id, likedBy]. Find if this user has liked this comment
+    const userLiked = likes.find(like => like.likedBy === currentUser?.email)
+    if(userLiked){
+      setLikedByMe(true)
+    }
+  }, [])
 
   const onCommentReply = (message) => {
     const comment = {
@@ -59,15 +62,6 @@ export function Comment({
     }).catch(e => console.log(e))
   }
 
-//   function onCommentUpdate(message) {
-//     return updateCommentFn
-//       .execute({ postId: post.id, message, id })
-//       .then(comment => {
-//         setIsEditing(false)
-//         updateLocalComment(id, comment.message)
-//       })
-//   }
-
   const onCommentUpdate = (message) => {
     if(!token){
       navigate('/login')
@@ -85,11 +79,14 @@ export function Comment({
   }
 
   const onCommentDelete = () => {
+    setIsDeleting(true)
+
     const headers = {
       Authorization: 'Bearer ' + token,
     }
 
     deleteComment(id, headers).then((res) => {
+      setIsDeleting(false)
       console.log('Comment Deleted', res)
       window.location.reload()
     }).catch(e => console.log(e))
@@ -102,16 +99,26 @@ export function Comment({
 //   }
 
   const onToggleCommentLike = () => {
-    toggleLocalCommentLike(id, !likedByMe)
+    const headers = {
+      Authorization: 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    }
+
+    setLikedByMe(prev => !prev)
+
+    toggleCommentLike(id, headers).then((res) => {
+      console.log('Comment Like Toggled', res)
+      // window.location.reload()
+    }).catch(e => console.log(e))
   }
 
   return (
     <>
       <div className="comment">
         <div className="header">
-          <span className="name" style={{ marginRight: '0', marginLeft: 'auto', }}>{author}</span>
+          <span className="name" style={{ marginRight: '.5vw', marginLeft: 'auto', }}>{commentedBy}</span>
           <span className="date">
-            {/**dateFormatter.format(Date.parse(createdAt))**/}
+            {dateFormatter.format(Date.parse(createdAt))}
           </span>
         </div>
         {isEditing ? (
@@ -127,13 +134,13 @@ export function Comment({
           <div className="message">{commentContent}</div>
         )}
         <div className="footer">
-          {/**<IconBtn
+          <IconBtn
             onClick={onToggleCommentLike}
             // disabled={toggleCommentLikeFn.loading}
             disabled={false}
-            // Icon={likedByMe ? FaHeart : FaRegHeart}
-            // aria-label={likedByMe ? "Unlike" : "Like"}
-        />**/}
+            Icon={likedByMe ? FaHeart : FaRegHeart}
+            aria-label={likedByMe ? "Unlike" : "Like"}
+          />
           {token && 
             <IconBtn
               onClick={() => setIsReplying(prev => !prev)}
@@ -142,7 +149,7 @@ export function Comment({
               aria-label={isReplying ? "Cancel Reply" : "Reply"}
             />
           }
-          {currentUser?.id && (
+          {currentUser?.email === commentedBy && (
             <>
               <IconBtn
                 onClick={() => setIsEditing(prev => !prev)}
@@ -152,7 +159,7 @@ export function Comment({
               />
               <IconBtn
                 // disabled={deleteCommentFn.loading}
-                disabled={false}
+                disabled={isDeleting}
                 onClick={onCommentDelete}
                 Icon={FaTrash}
                 aria-label="Delete"
