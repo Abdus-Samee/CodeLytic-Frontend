@@ -30,7 +30,7 @@ function Navbar({ token, handleLogout}) {
 			<nav ref={navRef}>
 				<NavLink to="courses">Courses</NavLink>
 				{role === "CONTENT_CREATOR" && <NavLink to="create/course">Create Course</NavLink>}
-				<NavLink to="progress">Progress</NavLink>
+				{token && <NavLink to="progress">Progress</NavLink>}
 				<NavLink to="discussion">Discussion</NavLink>
 				{token && (
 					<>
