@@ -6,7 +6,7 @@ import { ResponsiveCalendar } from "@nivo/calendar"
 
 import transition from "../../transition"
 import { loadAllCourses } from "../../services/course-service"
-import { getProgressPercentage } from "../../services/user-service"
+import { getCourseProgress, getProgressPercentage } from "../../services/user-service"
 
 import "../../assets/css/progress.css"
 
@@ -16,6 +16,7 @@ const Progress = ({ token }) => {
     const [width, setWidth] = useState(0)
     const [clickedCourse, setClickedCourse] = useState(0)
     const [loading, setLoading] = useState(true)
+    const [loadingCourseProgress, setLoadingCourseProgress] = useState(false)
     const carousel = useRef()
 
     const navigate = useNavigate()
@@ -147,6 +148,16 @@ const Progress = ({ token }) => {
     
     const handleCourseClick = (cid) => {
         setClickedCourse(cid)
+        setLoadingCourseProgress(true)
+
+        const customHeaders = {
+          'Authorization': `Bearer ${token}`,
+        }
+
+        getCourseProgress(cid, customHeaders).then((res) => {
+            console.log(res)
+            setLoadingCourseProgress(false)
+        }).catch(e => console.log(e))
     }
     
 
@@ -165,7 +176,7 @@ const Progress = ({ token }) => {
                           <div>
                             {/**<style>{`:root { --progress-percent: 10%; }`}</style>
                   <div className="progress-4"></div>**/}
-                            <p>Progess: {getCoursePercent(course.id)}%</p>
+                            <p>Progess: {(Math.round(getCoursePercent(course.id)*100)/100).toFixed(2)}%</p>
                           </div>
                         </header>
                         <div className="ongoing-card-author">
@@ -182,7 +193,11 @@ const Progress = ({ token }) => {
             </motion.div>
             <div style={{ border: "1px solid #fff", padding: "1rem", marginTop:"1vh", display: clickedCourse===0? 'none' : '', }}>
                 {
-                    clickedCourse === 0 ? <h3 style={{ color: 'white'}}>No course selected</h3> : <h3 style={{ color: 'white'}}>Course {clickedCourse} selected</h3>
+                    clickedCourse === 0 ? <h3 style={{ color: 'white'}}>No course selected</h3> : 
+                    <>
+                      <h3 style={{ color: 'white'}}>Course {clickedCourse} selected</h3>
+                      {loadingCourseProgress ? <CircularProgress style={{ color: 'pink', marginLeft: '30%', }} /> : <p>Course Progress...</p>}
+                    </>
                 }
             </div>
             </div>
