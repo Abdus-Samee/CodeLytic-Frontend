@@ -155,6 +155,7 @@ const QuizView = ({ token }) => {
         }
     }
 
+    //connect to db
     const checkAnswers = () => {
         let score = 0
         for (let i = 0; i < length; i++) {
@@ -189,7 +190,7 @@ const QuizView = ({ token }) => {
                                 className="quiz-option"
                                 key={index}
                                 value={option}
-                                control={<Radio checked={answers[current]===option? true : false} />}
+                                control={<Radio checked={answers[current]===option? true : false} style={{ color: '#F3AF96'}} />}
                                 label={option}
                             />
                         ))}

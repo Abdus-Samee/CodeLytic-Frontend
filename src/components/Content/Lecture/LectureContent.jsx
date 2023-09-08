@@ -37,7 +37,7 @@ const LectureContent = ({ token }) => {
             }
 
             getCourseProgress(cid, customHeaders).then((res) => {
-                // console.log("Course progress: ", res)
+                console.log("Course progress: ", res)
                 const { subsectionsProgresses } = res
                 subsectionsProgresses.forEach((o) => {
                     //find if there is a key of cid in o.lectures(an object)

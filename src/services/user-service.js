@@ -42,3 +42,14 @@ export const getCourseProgress = (courseId, headers) => {
 
     return myAxios.get(`/progress/${courseId}`, config).then(res => res.data)
 }
+
+export const getProgressPercentage = (headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
+    }
+
+    return myAxios.get(`/progress/percentage`, config).then(res => res.data)
+}
