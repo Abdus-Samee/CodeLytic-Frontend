@@ -190,7 +190,7 @@ const AddCourseContent = ({ token }) => {
 
                 createLecture(lecture, sid, customHeaders).then(res => {
                     console.log(res)
-                    navigate('/user')
+                    navigate(-1)
                 }).catch(e => {
                     console.log(e)
                     setLoading(false)

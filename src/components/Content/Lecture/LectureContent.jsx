@@ -12,6 +12,7 @@ const LectureContent = ({ token }) => {
     const [title, setTitle] = useState("")
     const [contentItems, setContentItems] = useState([])
     const [isComplete, setIsComplete] = useState(false)
+    const [isNotEnrolled, setIsNotErolled] = useState(true)
     const [loading, setLoading] = useState(true)
     const [completeAction, setCompleteAction] = useState(false)
     const [nextAction, setNextAction] = useState(false)
@@ -29,7 +30,6 @@ const LectureContent = ({ token }) => {
             setTitle(res.title)
             const body = JSON.parse(res.body)
             setContentItems(body)
-            setLoading(false)
             console.log("Lec body:", body)
 
             const customHeaders = {
@@ -43,14 +43,30 @@ const LectureContent = ({ token }) => {
                     //find if there is a key of cid in o.lectures(an object)
                     console.log("Lectures: ", o.lectures)
                     if(o.lectures){
-                        if(o.lectures[lid] !== undefined){
+                        if(o.lectures.hasOwnProperty(lid) && o.lectures[lid]){
                             setIsComplete(true)
+                            setIsNotErolled(false)
                             // if(o.lectures[cid][lid] !== undefined){
                             //     setIsComplete(o.lectures[cid][lid])
                             // }
                         }
                     }
                 })
+
+                if(!isComplete){
+                    const user = JSON.parse(localStorage.getItem('codelytic-user'))
+                    // console.log('User: ', user.enrolledCourse)
+                    if(user.enrolledCourse.length > 0){
+                        user.enrolledCourse.forEach(course => {
+                            if(course.id === parseInt(cid)){
+                                console.log(course.id, parseInt(cid))
+                                setIsNotErolled(false)
+                            }
+                        })
+                    }
+                }
+
+                setLoading(false)
             }).catch((err) => console.log(err))
         }).catch((err) => console.log(err))
     }, [])
@@ -62,8 +78,12 @@ const LectureContent = ({ token }) => {
     }
 
     const handleComplete = () => {
+        const customHeaders = {
+            Authorization: 'Bearer ' + token
+        }
+
         setCompleteAction(true)
-        completeLecture(cid, sid, lid).then((res) => {
+        completeLecture(cid, sid, lid, customHeaders).then((res) => {
             setCompleteAction(false)
             console.log(res)
             navigate(`/course/${cid}`)
@@ -109,7 +129,7 @@ const LectureContent = ({ token }) => {
                         ))}
                     </div>
                     <div className="lec-btns">
-                        {token && !isComplete && <Button variant="contained" disabled={nextAction} style={{ marginRight: '1vw', }} onClick={handleComplete}>Complete</Button>}
+                        {token && !isComplete && !isNotEnrolled && <Button variant="contained" disabled={nextAction} style={{ marginRight: '1vw', }} onClick={handleComplete}>Complete</Button>}
                         <Button variant="contained" color="secondary" disabled={completeAction} style={{ marginRight: '1vw', }} onClick={handleNext}>Next</Button>
                         {nextAction && <CircularProgress style={{ color: 'pink', marginTop: '0', marginBottom: '-1vh' }} />}
                         {completeAction && <CircularProgress style={{ color: 'pink', marginTop: '0', marginBottom: '-1vh' }} />}
