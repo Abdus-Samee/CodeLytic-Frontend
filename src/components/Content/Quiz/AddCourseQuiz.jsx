@@ -163,7 +163,7 @@ const AddCourseQuiz = ({ token }) => {
                 Add Quiz
         </Typography>
         <Grid container direction="row" justifyContent="space-around" alignItems="center">
-            <Grid item xs={6}>
+            <Grid item xs={6} style={{ border: '1px solid #fff', padding: '1rem', }}>
                 <Container>
                 <TextField
                     multiline
@@ -241,6 +241,7 @@ const AddCourseQuiz = ({ token }) => {
             <Divider
                 orientation="vertical"
                 style={{ minHeight: '80vh', width: '1px' }}
+                sx={{ bgcolor: '#fff', }}
             />
             <Grid item xs={5}>
                 <Container>

@@ -7,7 +7,8 @@ import transition from "../../transition"
 import '../../assets/css/register.css'
 
 const Register = () => {
-    const [role, setRole] = useState('')
+    const [name, setName] = useState('')
+    const [role, setRole] = useState('USER')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
@@ -18,7 +19,7 @@ const Register = () => {
 
     const handleRegister = () => {
         const user = {
-            name: email,
+            name,
             email,
             role,
             password
@@ -48,26 +49,25 @@ const Register = () => {
                 <form class="c-form" action="">
                     <div class="c-form__group">
                         <label class="c-form__label" for="role">
-                            {/**select id="role" className="c-formn__input" style={{ width: '70%', }} onChange={(e) => setRole(e.target.value)}>
-                                <option value="USER">USER</option>
-                                <option value="CONTENT_CREATOR">CONTENT_CREATOR</option>
-                            </select>**/}
-                           <input
+                            <input
                                 type="text"
                                 id="role"
                                 class="c-form__input"
                                 placeholder=" "
-                                onChange={(e) => setRole(e.target.value)}
+                                onChange={(e) => setName(e.target.value)}
                                 pattern="[^\s]+"
                                 required
-                            />  
+                            />
                             <label class="c-form__next" for="progress2" role="button">
                                 <span class="c-form__nextIcon"></span>
                             </label>
-                            <span class="c-form__groupLabel">Select your role.</span>
+                            <span class="c-form__groupLabel">Select your name.</span>
                             <b class="c-form__border"></b>
                         </label>
-                        <p style={{ marginTop: '2vh', }}>Type USER or CONTENT_CREATOR</p>
+                        <select className="c-formn__input" style={{ width: '70%', marginTop: '4vh', padding: '0.5rem' }} onChange={(e) => setRole(e.target.value)}>
+                            <option value="USER">USER</option>
+                            <option value="CONTENT_CREATOR">CONTENT_CREATOR</option>
+                        </select>
                     </div>
                     <div class="c-form__group">
                         <label class="c-form__label" for="femail">

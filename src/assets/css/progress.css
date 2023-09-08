@@ -15,6 +15,7 @@
     margin-top: 2vh;
     margin-left: 2vw;
     border: 1px solid #ccc;
+    min-height: 20vh;
 }
 
 .ongoing-carousel-header {
