@@ -117,6 +117,28 @@ export const completeLecture = (courseId, subsectionId, lectureId, headers) => {
     return myAxios.post(`/course/${courseId}/complete/${subsectionId}/lecture/${lectureId}`, {}, config).then(res => res.data)
 }
 
+export const submitQuiz = (cid, sid, scores, headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
+    }
+
+    return myAxios.post(`/course/${cid}/complete/${sid}/quiz`, scores, config).then(res => res.data)
+}
+
+export const updateCourse = (course, headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
+    }
+
+    return myAxios.put(`/course`, course, config).then(res => res.data)
+}
+
 export const deleteCourse = (courseId, headers) => {
     const config = {
         headers: {
@@ -126,4 +148,26 @@ export const deleteCourse = (courseId, headers) => {
     }
 
     return myAxios.delete(`/course/${courseId}`, config).then(res => res.data)
+}
+
+export const makeLive = (courseId, headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
+    }
+
+    return myAxios.put(`/course/${courseId}/live`, {}, config).then(res => res.data)
+}
+
+export const makePremium = (courseId, headers) => {
+    const config = {
+        headers: {
+            ...myAxios.defaults.headers,
+            ...headers,
+        },
+    }
+
+    return myAxios.put(`/course/${courseId}/premium`, {}, config).then(res => res.data)
 }

@@ -149,7 +149,7 @@ export function Comment({
               aria-label={isReplying ? "Cancel Reply" : "Reply"}
             />
           }
-          {currentUser?.email === commentedBy && (
+          {(currentUser?.email === commentedBy || currentUser?.role === "ADMIN") && (
             <>
               <IconBtn
                 onClick={() => setIsEditing(prev => !prev)}

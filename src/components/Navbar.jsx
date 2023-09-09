@@ -4,7 +4,9 @@ import { FaBars, FaTimes } from "react-icons/fa"
 
 import "../assets/css/navbar.css"
 
-function Navbar({ token, handleLogout}) {
+import logo from "../assets/img/logo.png"
+
+function Navbar({ token, user, handleLogout}) {
 	const [role, setRole] = useState('')
 	const navRef = useRef();
 
@@ -15,9 +17,10 @@ function Navbar({ token, handleLogout}) {
 	}
 
 	useEffect(() => {
-		const user = JSON.parse(localStorage.getItem('codelytic-user'))
+		// const user = JSON.parse(localStorage.getItem('codelytic-user'))
 		if(user){
 			const { role } = user
+			console.log(role)
 			setRole(role)
 		}
 	}, [])
@@ -25,16 +28,16 @@ function Navbar({ token, handleLogout}) {
 	return (
 		<header>
 			<NavLink to="/">
-				<img src="" alt="LOGO" />
+				<img src={logo} alt="LOGO" />
 			</NavLink>
 			<nav ref={navRef}>
 				<NavLink to="courses">Courses</NavLink>
 				{role === "CONTENT_CREATOR" && <NavLink to="create/course">Create Course</NavLink>}
-				{token && <NavLink to="progress">Progress</NavLink>}
+				{token && role !== "ADMIN" && <NavLink to="progress">Progress</NavLink>}
 				<NavLink to="discussion">Discussion</NavLink>
 				{token && (
 					<>
-						<NavLink to="user" className="register-link">Profile</NavLink>
+						{role === "ADMIN" ? <NavLink to="admin" className="register-link">Admin</NavLink> : <NavLink to="user" className="register-link">Profile</NavLink>}
 						<NavLink to="courses" className="login-link" onClick={handleLogout}>Logout</NavLink>
 					</>
 				)}

@@ -22,7 +22,7 @@ const LectureContent = ({ token }) => {
     const navigate = useNavigate()
 
     const lid = params.lectureId
-    const { cid, sid } = location.state || {}
+    const { cid, sid, isAuthor } = location.state || {}
 
     useEffect(() => {
         loadSingleLecture(lid).then((res) => {
@@ -36,38 +36,43 @@ const LectureContent = ({ token }) => {
                 Authorization: 'Bearer ' + token,
             }
 
-            getCourseProgress(cid, customHeaders).then((res) => {
-                console.log("Course progress: ", res)
-                const { subsectionsProgresses } = res
-                subsectionsProgresses.forEach((o) => {
-                    //find if there is a key of cid in o.lectures(an object)
-                    console.log("Lectures: ", o.lectures)
-                    if(o.lectures){
-                        if(o.lectures.hasOwnProperty(lid) && o.lectures[lid]){
-                            setIsComplete(true)
-                            setIsNotErolled(false)
-                            // if(o.lectures[cid][lid] !== undefined){
-                            //     setIsComplete(o.lectures[cid][lid])
-                            // }
+            const user = JSON.parse(localStorage.getItem('codelytic-user'))
+
+            if(!isAuthor){
+                getCourseProgress(cid, customHeaders).then((res) => {
+                    console.log("Course progress: ", res)
+                    const { subsectionsProgresses } = res
+                    subsectionsProgresses?.forEach((o) => {
+                        //find if there is a key of cid in o.lectures(an object)
+                        console.log("Lectures: ", o.lectures)
+                        if(o.lectures){
+                            if(o.lectures.hasOwnProperty(lid) && o.lectures[lid]){
+                                setIsComplete(true)
+                                setIsNotErolled(false)
+                                // if(o.lectures[cid][lid] !== undefined){
+                                //     setIsComplete(o.lectures[cid][lid])
+                                // }
+                            }
+                        }
+                    })
+    
+                    if(!isComplete){
+                        // console.log('User: ', user.enrolledCourse)
+                        if(user.enrolledCourse.length > 0){
+                            user.enrolledCourse.forEach(course => {
+                                if(course.id === parseInt(cid)){
+                                    console.log(course.id, parseInt(cid))
+                                    setIsNotErolled(false)
+                                }
+                            })
                         }
                     }
-                })
-
-                if(!isComplete){
-                    const user = JSON.parse(localStorage.getItem('codelytic-user'))
-                    // console.log('User: ', user.enrolledCourse)
-                    if(user.enrolledCourse.length > 0){
-                        user.enrolledCourse.forEach(course => {
-                            if(course.id === parseInt(cid)){
-                                console.log(course.id, parseInt(cid))
-                                setIsNotErolled(false)
-                            }
-                        })
-                    }
-                }
-
+    
+                    setLoading(false)
+                }).catch((err) => console.log(err))
+            }else{
                 setLoading(false)
-            }).catch((err) => console.log(err))
+            }
         }).catch((err) => console.log(err))
     }, [])
 
@@ -131,7 +136,7 @@ const LectureContent = ({ token }) => {
                     <div className="lec-btns">
                         {token && !isComplete && !isNotEnrolled && <Button variant="contained" disabled={nextAction} style={{ marginRight: '1vw', }} onClick={handleComplete}>Complete</Button>}
                         <Button variant="contained" color="secondary" disabled={completeAction} style={{ marginRight: '1vw', }} onClick={handleNext}>Next</Button>
-                        {nextAction && <CircularProgress style={{ color: 'pink', marginTop: '0', marginBottom: '-1vh' }} />}
+                        {/**{nextAction && <CircularProgress style={{ color: 'pink', marginTop: '0', marginBottom: '-1vh' }} />}**/}
                         {completeAction && <CircularProgress style={{ color: 'pink', marginTop: '0', marginBottom: '-1vh' }} />}
                     </div>
                 </>

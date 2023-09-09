@@ -35,12 +35,14 @@ const App = () => {
     localStorage.setItem('codelytic-user', null)
   }
 
+  const user = JSON.parse(localStorage.getItem('codelytic-user'))
+
   return (
     <>
-      <Navbar token={token} handleLogout={clearToken} />
+      <Navbar token={token} user={user} handleLogout={clearToken} />
       <AnimatePresence mode="wait">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Course />} />
           <Route path="courses" element={<Course />} />
           <Route path="create/course" element={<AddCourseInfo token={token} />} />
           <Route path="user" element={<UserCourses token={token} />} />

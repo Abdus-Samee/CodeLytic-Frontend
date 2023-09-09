@@ -26,11 +26,11 @@ const Admin = ({ token }) => {
             navigate('/login')
         }
 
-        // const user = JSON.parse(localStorage.getItem('codelytic-user'))
-        // const { role } = user
-        // if(role !== 'ADMIN'){
-        //     navigate('/')
-        // }
+        const user = JSON.parse(localStorage.getItem('codelytic-user'))
+        const { role } = user
+        if(role !== 'ADMIN'){
+            navigate('/')
+        }
     
         const customHeaders = {
             Authorization: 'Bearer ' + token,
@@ -45,15 +45,15 @@ const Admin = ({ token }) => {
         <>
           <div className="admin-wrapper">
             <div className="admin-tabs">
-                <div className={`admin-tab ${view === "courses" ? "active-tab" : ""}`}>
+                <div className={`admin-tab ${view === "courses" ? "admin-active-tab" : ""}`}>
                     <input type="radio" name="css-tabs" id="tab-1" value="courses" checked={view === "courses"} onChange={handleTabClick} className="admin-tab-switch" />
                     <label for="tab-1" className="admin-tab-label">Courses</label>
                 </div>
-                <div className={`admin-tab ${view === "users" ? "active-tab" : ""}`}>
+                <div className={`admin-tab ${view === "users" ? "admin-active-tab" : ""}`}>
                     <input type="radio" name="css-tabs" id="tab-2" value="users" checked={view === "users"} onChange={handleTabClick} className="admin-tab-switch" />
                     <label for="tab-2" className="admin-tab-label">Users</label>
                 </div>
-                <div className={`admin-tab ${view === "posts" ? "active-tab" : ""}`}>
+                <div className={`admin-tab ${view === "posts" ? "admin-active-tab" : ""}`}>
                     <input type="radio" name="css-tabs" id="tab-3" value="posts" checked={view === "posts"} onChange={handleTabClick} className="admin-tab-switch" />
                     <label for="tab-3" className="admin-tab-label">Posts</label>
                 </div>
@@ -62,17 +62,17 @@ const Admin = ({ token }) => {
           <hr />
           {view === "courses" &&
             <>
-              <Course token />
+              <Course token={token} />
             </>
           }
           {view === "users" &&
             <>
-              <User token />
+              <User token={token} />
             </>
           }
           {view === "posts" &&
             <>
-              <Post token />
+              <Post token={token} />
             </>
           }
         </>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Link, useNavigate } from 'react-router-dom'
-import { CircularProgress } from "@mui/material"
+import { CircularProgress, Snackbar } from "@mui/material"
 import LockIcon from '@mui/icons-material/Lock'
 
 import Search from "./Search"
@@ -16,6 +16,7 @@ const Course = () => {
   const [selectedCourse, setSelectedCourse] = useState('')
   const [searchTags, setSearchTags] = useState([])
   const [loading, setLoading] = useState(true)
+  const [open, setOpen] = useState(false)
 
   const navigate = useNavigate()
 
@@ -27,19 +28,26 @@ const Course = () => {
     }
     
     loadAllCourses().then((res) => {
-      setCourses(res)
-      // setFilteredCourses(res)
+      console.log(res)
+      const arr = []
+      res.map((course) => {
+        if(course.live === true){
+          arr.push(course)
+        }
+      })
+      setCourses(arr)
       setLoading(false)
     }).catch((e) => console.log(e))
   }, [])
 
   const handleShowCourse = (courseId,premium) => {
-    if (!premium){// Navigate to the ShowCourse route with the appropriate user ID and course ID
-      const userId = 1;
-      //find the coursename with corresponding courseId
+    const user = JSON.parse(localStorage.getItem('codelytic-user'))
+    if (!premium || user?.role === "ADMIN"){
       const course = courses.find(course => course.id === courseId)
       const coursename = course.title
       navigate(`/course/${courseId}`)
+    }else{
+      setOpen(true)
     }
   }
 
@@ -130,6 +138,23 @@ const Course = () => {
         </section>
       </>
       }
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        open={open}
+        onClose={() => setOpen(false)}
+        key="bottomcenter"
+      >
+        <div style={{ background: '#FF4B2B', padding: '0.5rem 5rem', borderRadius: '10px', }}>
+            <span 
+                style={{
+                    display: 'inline',
+                    color: '#000',
+                    fontFamily: '"DM Mono", monospace',
+                }}>
+                    Premium course cannot be accessed
+            </span>
+        </div>
+      </Snackbar>
     </div>
   )
 }

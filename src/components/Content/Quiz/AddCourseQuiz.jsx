@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
    Grid,  Container, TextField, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Divider, Typography,
-   Snackbar
+   Snackbar, CircularProgress
 } from '@mui/material'
 import MuiAlert from '@mui/material/Alert'
 
@@ -22,6 +22,7 @@ const AddCourseQuiz = ({ token }) => {
   const [warning, setWarning] = useState('')
   const [editQuestion, setEditQuestion] = useState(false)
   const [editIdx, setEditIdx] = useState(-1)
+  const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -119,11 +120,7 @@ const AddCourseQuiz = ({ token }) => {
 
   // submit the quiz
   const proceed = () => {
-    // const editedOptions = [
-    //   ...options.map((obj) => {
-    //     return obj.option
-    //   }),
-    // ]
+    setLoading(true)
 
     const quizData = {
       questions: [
@@ -142,8 +139,13 @@ const AddCourseQuiz = ({ token }) => {
     }
 
     createQuiz(quizData, sid, customHeaders).then((res) => {
+      setLoading(false)
       navigate(-1)
-    }).catch(e => console.log(e))
+    }).catch(e => {
+      console.log(e)
+      setWarning('Error creating the quiz!')
+      setLoading(false)
+    })
   }
 
   const handleSnackbarClose = () => {
@@ -237,6 +239,7 @@ const AddCourseQuiz = ({ token }) => {
                     </Button>
                 </div>
                 </Container>
+                {loading && <CircularProgress style={{ color: 'pink', marginLeft: '50%', }} />}
             </Grid>
             <Divider
                 orientation="vertical"
@@ -245,9 +248,9 @@ const AddCourseQuiz = ({ token }) => {
             />
             <Grid item xs={5}>
                 <Container>
-                {quiz.map((obj, idx) => (
-                    <QuizCard key={idx} sl={idx + 1} obj={obj} handleEditQuestion={handleEditQuestion} />
-                ))}
+                  {quiz.map((obj, idx) => (
+                      <QuizCard key={idx} sl={idx + 1} obj={obj} handleEditQuestion={handleEditQuestion} />
+                  ))}
                 </Container>
             </Grid>
         </Grid>

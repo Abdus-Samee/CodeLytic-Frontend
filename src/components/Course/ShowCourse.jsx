@@ -40,7 +40,7 @@ const styleModal = {
     borderRadius: '10px',
     boxShadow: 24,
     p: 4,
-  }
+}
 
     const ShowCourse = ({ token }) => {
         const [course, setCourse] = useState({})
@@ -50,6 +50,7 @@ const styleModal = {
         const [subsection, setSubsection] = useState('')
         const [isOpen, setIsOpen] = useState(false)
         const [isAuthor, setIsAuthor] = useState(false)
+        const [isAdmin, setIsAdmin] = useState(false)
         const [enrollLoading, setEnrollLoading] = useState(false)
 
         const params = useParams()
@@ -68,16 +69,16 @@ const styleModal = {
         const handleClose = () => setIsOpen(false)
 
         const courseId = params.courseId  
-        // const { coursename, userId } = location.state
 
-        // fetch course with courseId from backend
         useEffect(() => {
             loadSingleCourse(courseId).then((res) => {
                 setCourse(res)
+                console.log(res)
                 const storedUser = localStorage.getItem('codelytic-user')
                 const user = JSON.parse(storedUser)
 
                 if(res.author === user?.email) setIsAuthor(true)
+                if(user?.role === 'ADMIN') setIsAdmin(true)
                 
                 if(user?.enrolledCourse?.length > 0){
                     user.enrolledCourse.forEach(course => {
@@ -186,11 +187,11 @@ const styleModal = {
                     {course.tags && course.tags.map((tag, index) => <a key={index} className="course-tag-chip">{tag}</a>)}
                 </div>
                 <Divider variant="middle" color="pink" />
-                {course.subsections.length > 0 && <Subsection course={course} isAuthor={isAuthor} />}
+                {course.subsections.length > 0 && <Subsection token={token} course={course} isEnrolled={isEnrolled} isAuthor={isAuthor} isAdmin={isAdmin} />}
                 {isAuthor && <Button variant="contained" color="secondary" style={{ marginTop: '1vh', }} onClick={handleOpen}>
                     Add Subsection
                 </Button>}
-                {!isAuthor && token && !isEnrolled &&
+                {!isAdmin && !isAuthor && token && !isEnrolled &&
                     <>
                         <Button variant="contained" color="secondary" disabled={enrollLoading} style={{ marginTop: '1vh', }} onClick={handleEnroll}>
                             Enroll

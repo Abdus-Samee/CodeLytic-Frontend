@@ -27,7 +27,6 @@ const UserCourses = ({ token }) => {
             navigate('/login')
             // return
         }
-
         
         const customHeaders = {
             Authorization: 'Bearer ' + token,
@@ -42,7 +41,9 @@ const UserCourses = ({ token }) => {
             const { role } = user
             setRole(role)
 
-            if(role === "CONTENT_CREATOR"){
+            if(role === "ADMIN"){
+                navigate('/admin')
+            }else if(role === "CONTENT_CREATOR"){
                 loadCourseByAuthor(customHeaders).then((res) => {
                     setCourses(res)
                     setLoading(false)

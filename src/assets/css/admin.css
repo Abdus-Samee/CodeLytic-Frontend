@@ -31,9 +31,9 @@
     display: none;
 }
 
-.active-tab {
-    background-color: #333440;
-    color: #17141D;
+.admin-active-tab {
+    background-color: #FF4B2B;
+    color: #fff;
 }
 
 hr {
@@ -48,6 +48,7 @@ hr {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    overflow-x: scroll;
 }
 
 .admin-course {
@@ -55,13 +56,22 @@ hr {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    min-width: 30%;
     width: 30%;
     height: 20rem;
     border: 1px solid black;
     border-radius: 5px;
     margin: 1rem;
     padding: 1rem;
-    cursor: pointer;
+    background: #331D2C;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; 
+}
+
+.admin-course:hover {
+    background: #28242f;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    transform: scale(1.02); 
 }
 
 .admin-course-image {
@@ -77,3 +87,177 @@ hr {
     margin: 1rem;
     font-family: 'DM Mono', monospace;
 }
+
+.admin-post-tags {
+    margin: 1rem 0 2rem;
+    padding: 0.5rem 0 1rem;
+    line-height: 2;
+    margin-bottom: 0;
+}
+  
+.admin-post-tags a {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 0.5rem;
+    color: #7a7a8c;
+    text-transform: uppercase;
+    font-size: 0.66rem;
+    border: 3px solid #28242f;
+    border-radius: 2rem;
+    padding: 0.2rem 0.85rem 0.25rem;
+    position: relative;
+}
+  
+.admin-post-tags a:hover {
+    background: linear-gradient(90deg, #ff8a00, #e52e71);
+    text-shadow: none;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: slice;
+    background-clip: text;
+    border-color: white;
+    /* cursor: pointer; */
+}
+
+.admin-posts {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    overflow-x: scroll;
+}
+
+.admin-post {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    min-width: 30%;
+    height: 20rem;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 1rem;
+    padding: 1rem;
+    background: #352F44;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; 
+}
+
+.admin-post:hover {
+    background: #28242f;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    transform: scale(1.02); 
+}
+
+.admin-post-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 1rem;
+    font-family: 'DM Mono', monospace;
+}
+
+.admin-users {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    overflow-x: scroll;
+}
+
+.admin-user {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    min-width: 30%;
+    height: 20rem;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 1rem;
+    padding: 1rem;
+    background: #352F44;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; 
+}
+
+.admin-user:hover {
+    background: #28242f;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    transform: scale(1.02); 
+}
+
+.admin-user-name {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 1rem;
+    font-family: 'DM Mono', monospace;
+}
+
+.admin-user-email {
+    color: #97e28b;
+}
+
+.admin-user-role {
+    border: 1px solid #FF4B2B;
+    background: orange;
+    font-family: 'DM Mono', monospace;
+    padding: 0.7rem;
+    margin-top: 1vh;
+}
+
+.admin-user-role > p {
+    color: #000;
+    font-family: 'DM Mono', monospace;
+}
+
+/* Style the select element */
+.admin-user-select {
+    padding: 10px;
+    margin-bottom: 1vh;
+    font-size: 16px;
+    font-family: 'DM Mono', monospace;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    width: 200px; /* Adjust the width as needed */
+    cursor: pointer;
+    outline: none; /* Remove the default outline */
+  }
+  
+  /* Style the selected option */
+  .admin-user-select option:checked {
+    background-color: #007bff; /* Change the background color for the selected option */
+    color: #fff; /* Change the text color for the selected option */
+  }
+  
+  /* Style all options */
+  .admin-user-select option {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #333;
+    font-family: 'DM Mono', monospace;
+  }
+  
+  /* Style the dropdown arrow */
+  .admin-user-select::-ms-expand {
+    display: none; /* Hide the default arrow in Internet Explorer */
+  }
+  
+  .admin-user-select::after {
+    content: '\25BC'; /* Unicode character for a down arrow */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  
+  /* Hover and focus styles for the select element */
+  .admin-user-select:hover,
+  .admin-user-select:focus {
+    border-color: #007bff;
+  }

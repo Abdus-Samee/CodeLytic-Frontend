@@ -1,27 +1,51 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Accordion from '@mui/material/Accordion'
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
-import { useNavigate } from "react-router-dom"
 
-import { useEffect } from "react"
+import { getCourseProgress } from '../../services/user-service'
+
 import '../../assets/css/subsection.css'
 
-const Subsection = ({ course, isAuthor }) => {
+const Subsection = ({ token, course, isEnrolled, isAuthor, isAdmin }) => {
+  const [isQuiz, setIsQuiz] = useState(true)
+  const [progress, setProgress] = useState([])
+
   const navigate = useNavigate()
 
   useEffect(() => {
-    console.log('course', course)
+    // console.log('course', course)
+
+    const customHeaders = {
+      Authorization: 'Bearer ' + token
+    }
+
+    if(isEnrolled){
+      getCourseProgress(course.id, customHeaders).then((res) => {
+        console.log('Course progress: ', res)
+
+        const { subsectionsProgresses } = res
+        if(subsectionsProgresses.length > 0){
+          setProgress(subsectionsProgresses)
+        }
+      }).catch(e => console.log(e))
+      setIsQuiz(false)
+    }else{
+      setIsQuiz(false)
+    }
   }, [])
 
   const handleLectureClick = (sid, lid) => {
-    console.log('selected lec', lid)
+    // console.log('selected lec', lid)
     navigate(`/course/lectures/${lid}`, {
       state: {
         cid: course.id,
-        sid
+        sid,
+        isAuthor
       }
     })
   }
@@ -29,17 +53,41 @@ const Subsection = ({ course, isAuthor }) => {
   const handleAddLecture = (sid) => {
     navigate('/create/course-content', {
       state: {
+        cid: course.id,
         sid
       }
     })
   }
 
-  const handleQuizClick = (id) => {
-    //get quiz id
-    // const id = 1
-    // console.log('selected quiz', id)
+  const handleQuizClick = (id, sid) => {
+    let found = true
 
-    navigate(`/quiz/${id}`)
+    if(!isEnrolled && !isAdmin){
+      alert('You have to enroll to access quiz')
+      return
+    }
+
+    progress.forEach((o) => {
+      if(o.subsectionId === sid){
+        const lectures = Object.values(o.lectures)
+        lectures.forEach((lec) => {
+          if(lec === false){
+            found = false
+          }
+        })
+      }
+    })
+
+    if(!found && !isAdmin){
+      alert('You have to complete all lectures to access quiz')
+    }else{
+      navigate(`/quiz/${id}`, {
+        state: {
+          cid: course.id,
+          sid
+        }
+      })
+    }
   }
 
   const handleAddQuiz = (sid) => {
@@ -86,8 +134,8 @@ const Subsection = ({ course, isAuthor }) => {
                   <Typography>Quiz</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  {o.quiz ? (
-                    <Button variant="outlined" size="small" onClick={() => handleQuizClick(o.quiz.id)}>
+                  {isQuiz ? <p>Loading quizes</p> : o.quiz ? (
+                    <Button variant="outlined" size="small" onClick={() => handleQuizClick(o.quiz.id, o.id)}>
                       Show
                     </Button>
                   ) : (

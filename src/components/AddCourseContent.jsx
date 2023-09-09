@@ -19,7 +19,7 @@ const AddCourseContent = ({ token }) => {
     const navigate = useNavigate()
     const [title, setTitle] = useState("")
     const [items, setItems] = useState([])
-    const [sid, setSid] = useState(null)
+    // const [sid, setSid] = useState(null)
     const [imgRefs, setImgRefs] = useState([])
     const [downloadUrls, setDownloadUrls] = useState([])
     const [loading, setLoading] = useState(false)
@@ -29,14 +29,16 @@ const AddCourseContent = ({ token }) => {
         'Heading', 'Sub-Heading', 'Text Box', 'Image', 'Link', 'List'
     ]
 
+    const { cid, sid } = location.state || {}
+
     useEffect(() => {
         if(!token){
             navigate('/login')
         }
         
         // const userDataItems = (userData['items'] === undefined)? [] : userData['items']
-        const { sid } = location.state || {}
-        setSid(sid)
+        // const { sid } = location.state || {}
+        // setSid(sid)
         // console.log("useeffect", sid)
     }, [])
 
@@ -209,7 +211,7 @@ const AddCourseContent = ({ token }) => {
 
             createLecture(lecture, sid, customHeaders).then(res => {
                 console.log(res)
-                navigate('/user')
+                navigate(`/course/${cid}`)
             }).catch(e => {
                 console.log(e)
                 alert("Error in creating lecture")
@@ -257,10 +259,10 @@ const AddCourseContent = ({ token }) => {
                 </div>
                 </div>
             <div className="btn-submit">
-                <Button variant="contained" color="primary" onClick={handleSubmitLecture}>
+                <Button variant="contained" color="primary" disabled={loading} onClick={handleSubmitLecture}>
                     Submit Lecture
                 </Button>
-                {loading && <CircularProgress color="secondary" />}
+                {loading && <CircularProgress color="secondary" style={{ color: 'pink', marginBottom: '-1vh', marginLeft: '1vw', }} />}
             </div>
         </div>
     )

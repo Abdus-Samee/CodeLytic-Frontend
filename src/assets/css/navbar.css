@@ -82,6 +82,12 @@ nav {
 img {
 	text-decoration: none;
 	color: var(--textColor);
+	border-radius: 50%;
+	height: 70px;
+	width: 70px;
+	margin-bottom: -4px;
+	object-fit: contain;
+	border: 1px solid #17141D;
 }
 
 @media only screen and (max-width: 1024px) {

@@ -37,7 +37,7 @@ const Login = ({ setToken }) => {
         }
 
         authenticateUser(user).then((res) => {
-            localStorage.setItem('codelytic-user', email)
+            // localStorage.setItem('codelytic-user', email)
             setToken(res.token)
             setLoading(false)
             navigate('/user')

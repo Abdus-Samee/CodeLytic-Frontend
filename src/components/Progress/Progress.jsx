@@ -7,11 +7,12 @@ import { Button } from "@mui/material"
 
 import transition from "../../transition"
 import { loadAllCourses } from "../../services/course-service"
-import { getCourseProgress, getProgressPercentage } from "../../services/user-service"
+import { getCourseProgress, getDailyProgress, getProgressPercentage } from "../../services/user-service"
 
 import "../../assets/css/progress.css"
 
 const Progress = ({ token }) => {
+    const [data, setData] = useState([])
     const [ongoingCourses, setOngoingCourses] = useState([])
     const [percent, setPercent] = useState({})
     const [width, setWidth] = useState(0)
@@ -24,69 +25,27 @@ const Progress = ({ token }) => {
 
     const navigate = useNavigate()
 
-    const data = [
-        {
-            "value": 9,
-            "day": "2023-06-18"
-          },
-          {
-            "value": 7,
-            "day": "2023-11-03"
-          },
-          {
-            "value": 24,
-            "day": "2023-07-13"
-          },
-          {
-            "value": 21,
-            "day": "2023-03-18"
-          },
-          {
-            "value": 11,
-            "day": "2023-08-18"
-          },
-          {
-            "value": 4,
-            "day": "2023-09-05"
-          },
-          {
-            "value": 3,
-            "day": "2023-10-17"
-          },
-    ]
-
-    // const ongoingCourses = [
+    // const data = [
     //     {
-    //       id: '1',
-    //       title: 'Basic Graph Theory',
-    //       body: 'Learn the basics of graph theory',
-    //       author: 'John Doe',
-    //     },
-    //     {
-    //       id: '2',
-    //       title: 'Dynamic Programming',
-    //       body: 'Learn the basics of dynamic programming',
-    //       author: 'John Doe',
-    //     },
-    //     {
-    //       id: '3',
-    //       title: 'Number Theory',
-    //       body: 'Learn the basics of number theory',
-    //       author: 'Rick & Morty',
-    //     },
-    //     {
-    //       id: '4',
-    //       title: 'String Algorithms',
-    //       body: 'Learn the basics of string algorithms',
-    //       author: 'Trudy',
-    //     },
-    //     {
-    //       id: '5',
-    //       title: 'Discrete Mathematics',
-    //       body: 'Learn the basics of discrete mathematics',
-    //       author: 'Eve',
-    //     },
+    //         "value": 9,
+    //         "day": "2023-06-18"
+    //       },
+    //       {
+    //         "value": 7,
+    //         "day": "2023-11-03"
+    //       },
     // ]
+
+    const changeDateFormat = (date) => {
+      const dateComponents = date.split('-')
+      const year = dateComponents[2]
+      const month = dateComponents[1]
+      const day = dateComponents[0]
+
+      const newDate = `${year}-${month}-${day}`
+
+      return newDate;
+    }
 
     const ticks = ["Loss", 0, 5, 10, 15]
 
@@ -137,7 +96,24 @@ const Progress = ({ token }) => {
             getProgressPercentage(customHeaders).then((res) => {
                 console.log(res)
                 setPercent(res)
-                setLoading(false)
+
+                getDailyProgress(customHeaders).then((res) => {
+                    console.log(res)
+
+                    if(res.length > 0){
+                      res.forEach((o) => {
+                        const { date, activities } = o
+                        const obj = {
+                          value: activities.length,
+                          day: changeDateFormat(date),
+                        }
+                        setData(data => [...data, obj])
+                      })
+                    }
+
+                    setLoading(false)
+                }).catch(e => console.log(e))
+
             }).catch(e => console.log(e))
 
         }).catch(e => console.log(e))
@@ -285,7 +261,7 @@ const Progress = ({ token }) => {
                                       {subsection.quizProgress.quizId === null ? 
                                         <p style={{ color: 'red', marginTop: '5px', }}>No quiz to attempt!</p>
                                         :
-                                        <p>Quiz Progress: {renderQuizProgress(subsection.quizProgress.questions)} ({subsection.quizProgress.quizProgressInPercentage}%)</p>
+                                        <p>Quiz Progress: {renderQuizProgress(subsection.quizProgress.questions)} ({subsection.quizProgress.quizProgressInPercentage*100}%)</p>
                                       }
                                       <br />
                                       <div style={{ padding: '0.6rem', border: '1px solid #17141D', }}>
@@ -317,7 +293,7 @@ const Progress = ({ token }) => {
                     dayBorderColor="#17141D"
                     tooltip={({ day, value, color }) => (
                         <strong style={{ color: 'white', }}>
-                            {value}: {color}
+                            Total Activities: {value}
                         </strong>
                     )}
                     legends={[
