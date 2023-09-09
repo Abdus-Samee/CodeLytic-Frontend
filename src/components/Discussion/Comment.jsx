@@ -134,13 +134,13 @@ export function Comment({
           <div className="message">{commentContent}</div>
         )}
         <div className="footer">
-          <IconBtn
+          {token && <IconBtn
             onClick={onToggleCommentLike}
             // disabled={toggleCommentLikeFn.loading}
             disabled={false}
             Icon={likedByMe ? FaHeart : FaRegHeart}
             aria-label={likedByMe ? "Unlike" : "Like"}
-          />
+          />}
           {token && 
             <IconBtn
               onClick={() => setIsReplying(prev => !prev)}
