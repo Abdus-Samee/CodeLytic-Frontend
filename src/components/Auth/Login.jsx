@@ -2,12 +2,12 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { CircularProgress } from "@mui/material"
 
-import { authenticateUser } from "../../services/user-service"
+import { authenticateUser, getUser } from "../../services/user-service"
 import transition from "../../transition"
 
 import '../../assets/css/login.css'
 
-const Login = ({ setToken }) => {
+const Login = ({ setToken, setUser }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
@@ -37,17 +37,29 @@ const Login = ({ setToken }) => {
         }
 
         authenticateUser(user).then((res) => {
-            // localStorage.setItem('codelytic-user', email)
+            console.log(res)
             setToken(res.token)
+
+            const customHeaders = {
+                Authorization: 'Bearer ' + res.token,
+            }
+
+            getUser(customHeaders).then((response) => {
+                console.log(response)
+                // localStorage.setItem('codelytic-user', JSON.stringify(response))
+                setLoading(false)
+                console.log(response.role)
+                if(response.role === "ADMIN"){
+                    setUser(response)
+                    navigate('/admin')
+                }
+                else navigate('/user')
+            }).catch(e => console.log(e))
+        }).catch((e) => {
+            console.log(e)
+            alert("Invalid credentials")
             setLoading(false)
-            navigate('/user')
-            // if(res.status === 200){
-            //     localStorage.setItem('codelytic-token', res.data.token)
-            //     navigate('/dashboard')
-            // } else {
-            //     alert('Invalid credentials')
-            // }
-        }).catch((e) => console.log(e))
+        })
     }
 
     const handleSignInClick = () => {

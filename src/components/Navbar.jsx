@@ -7,7 +7,7 @@ import "../assets/css/navbar.css"
 import logo from "../assets/img/logo.png"
 
 function Navbar({ token, user, handleLogout}) {
-	const [role, setRole] = useState('')
+	// const [role, setRole] = useState('')
 	const navRef = useRef();
 
 	const showNavbar = () => {
@@ -18,11 +18,11 @@ function Navbar({ token, user, handleLogout}) {
 
 	useEffect(() => {
 		// const user = JSON.parse(localStorage.getItem('codelytic-user'))
-		if(user){
-			const { role } = user
-			console.log(role)
-			setRole(role)
-		}
+		// if(user){
+		// 	const { role } = user
+		// 	console.log(role)
+		// 	setRole(role)
+		// }
 	}, [])
 
 	return (
@@ -32,12 +32,12 @@ function Navbar({ token, user, handleLogout}) {
 			</NavLink>
 			<nav ref={navRef}>
 				<NavLink to="courses">Courses</NavLink>
-				{role === "CONTENT_CREATOR" && <NavLink to="create/course">Create Course</NavLink>}
-				{token && role !== "ADMIN" && <NavLink to="progress">Progress</NavLink>}
+				{token && user && user?.role === "CONTENT_CREATOR" && <NavLink to="create/course">Create Course</NavLink>}
+				{token && user && user?.role !== "ADMIN" && <NavLink to="progress">Progress</NavLink>}
 				<NavLink to="discussion">Discussion</NavLink>
 				{token && (
 					<>
-						{role === "ADMIN" ? <NavLink to="admin" className="register-link">Admin</NavLink> : <NavLink to="user" className="register-link">Profile</NavLink>}
+						{(user && user?.role === "ADMIN" )? <NavLink to="admin" className="register-link">Admin</NavLink> : <NavLink to="user" className="register-link">Profile</NavLink>}
 						<NavLink to="courses" className="login-link" onClick={handleLogout}>Logout</NavLink>
 					</>
 				)}

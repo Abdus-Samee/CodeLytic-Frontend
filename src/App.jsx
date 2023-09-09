@@ -24,28 +24,30 @@ import Test from './components/Test'
 import { AnimatePresence } from 'framer-motion'
 
 import useToken from './hooks/useToken'
+import useUser from './hooks/useUser'
 
 import './App.css'
 
 const App = () => {
   const { token, setToken } = useToken()
+  const { user, setUser } = useUser()
 
-  const clearToken = () => {
+  const clearCreds = () => {
     setToken('')
     localStorage.setItem('codelytic-user', null)
   }
 
-  const user = JSON.parse(localStorage.getItem('codelytic-user'))
+  // const user = JSON.parse(localStorage.getItem('codelytic-user'))
 
   return (
     <>
-      <Navbar token={token} user={user} handleLogout={clearToken} />
+      <Navbar token={token} user={user} handleLogout={clearCreds} />
       <AnimatePresence mode="wait">
         <Routes>
           <Route path="/" element={<Course />} />
           <Route path="courses" element={<Course />} />
           <Route path="create/course" element={<AddCourseInfo token={token} />} />
-          <Route path="user" element={<UserCourses token={token} />} />
+          <Route path="user" element={<UserCourses token={token} setUser={setUser} />} />
           <Route path="create/course-content" element={<AddCourseContent token={token} />} />
           <Route path="create/course-quiz" element={<AddCourseQuiz token={token} />} />
           <Route path="progress" element={<Progress token={token} />} />
@@ -56,7 +58,7 @@ const App = () => {
           <Route path="posts/:id" element={<Post token={token} />} />
           <Route path="discussion/create" element={<CreatePost token={token} />} />
           <Route path="register" element={<Register />} />
-          <Route path="login" element={<Login setToken={setToken} />} />
+          <Route path="login" element={<Login setToken={setToken} setUser={setUser} />} />
           <Route path="admin" element={<Admin token={token} />} />
 
           <Route path="test" element={<Test token={token} />} />

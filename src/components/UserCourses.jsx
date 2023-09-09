@@ -8,7 +8,7 @@ import transition from "../transition"
 
 import "../assets/css/profile.css"
 
-const UserCourses = ({ token }) => {
+const UserCourses = ({ token, setUser }) => {
     const [role, setRole] = useState('')
     const [courses, setCourses] = useState([])
     // const [totalComments, setTotalComments] = useState(0)
@@ -35,7 +35,8 @@ const UserCourses = ({ token }) => {
         //pass to backend to get user details
         getUser(customHeaders).then((res) => {
             // console.log("User: ", res)
-            localStorage.setItem('codelytic-user', JSON.stringify(res))
+            // localStorage.setItem('codelytic-user', JSON.stringify(res))
+            setUser(res)
 
             const user = JSON.parse(localStorage.getItem('codelytic-user'))
             const { role } = user
