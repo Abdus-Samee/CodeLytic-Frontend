@@ -6,7 +6,7 @@ import "../assets/css/navbar.css"
 
 import logo from "../assets/img/logo.png"
 
-function Navbar({ token, user, handleLogout}) {
+function Navbar({ token, user, handleLogout}) {       
 	// const [role, setRole] = useState('')
 	const navRef = useRef();
 
