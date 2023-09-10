@@ -4,7 +4,7 @@ import { FaBars, FaTimes } from "react-icons/fa"
 
 import "../assets/css/navbar.css"
 
-import logo from "../assets/img/logo.png"
+// import logo from "../assets/img/logo.png"
 
 function Navbar({ token, user, handleLogout}) {       
 	// const [role, setRole] = useState('')
@@ -28,7 +28,7 @@ function Navbar({ token, user, handleLogout}) {
 	return (
 		<header>
 			<NavLink to="/" className="navbar-logo">
-				<img src={logo} alt="LOGO" />
+				<img src="https://firebasestorage.googleapis.com/v0/b/codelytic-image.appspot.com/o/logo.png?alt=media&token=88ed2981-5d1e-4828-8edb-38b1efa0ab4e" alt="LOGO" />
 			</NavLink>
 			<nav ref={navRef}>
 				<NavLink to="courses">Courses</NavLink>
