@@ -42,11 +42,12 @@ const Course = () => {
 
   const handleShowCourse = (courseId, premium) => {
     const user = JSON.parse(localStorage.getItem('codelytic-user'))
-    if (user?.role === "ADMIN"){
-      const course = courses.find(course => course.id === courseId)
-      const coursename = course.title
-      navigate(`/course/${courseId}`)
-    }
+    // if (user?.role === "ADMIN"){
+      
+    // }
+    const course = courses.find(course => course.id === courseId)
+    const coursename = course.title
+    navigate(`/course/${courseId}`)
     // else{
     //   setOpen(true)
     // }
