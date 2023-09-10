@@ -40,15 +40,16 @@ const Course = () => {
     }).catch((e) => console.log(e))
   }, [])
 
-  const handleShowCourse = (courseId,premium) => {
+  const handleShowCourse = (courseId, premium) => {
     const user = JSON.parse(localStorage.getItem('codelytic-user'))
-    if (!premium || user?.role === "ADMIN"){
+    if (user?.role === "ADMIN"){
       const course = courses.find(course => course.id === courseId)
       const coursename = course.title
       navigate(`/course/${courseId}`)
-    }else{
-      setOpen(true)
     }
+    // else{
+    //   setOpen(true)
+    // }
   }
 
   const handleTagClick = (tagName) => {

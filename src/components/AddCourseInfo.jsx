@@ -195,7 +195,7 @@ const AddCourseInfo = ({ token }) => {
                     </div>
                 </div>
                 <div className="flex flex-col col-2">
-                    <img src={img} alt="Course Image" />
+                    <img className="upload-img" src={img} alt="Course Image" />
                     <Button component="label" variant="outlined" startIcon={<UploadFileIcon />} sx={{ marginRight: '1rem' }}>
                         Upload Image
                         <input type="file" accept="image/*" hidden onChange={handleImageUpload} />

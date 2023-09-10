@@ -96,8 +96,8 @@ const Course = ({token}) => {
                                 <div className="admin-course-author">{course.author}</div>
                                 <div>
                                     <Button variant="contained" color="warning" style={{ marginTop: '1vh', marginLeft: '1vw', }} onClick={() => handleUpdateCourse(course.id, "live")}>{course.live === true? 'Live' : 'Not Live'}</Button>
-                                    <Button variant="contained" color="info" style={{ marginTop: '1vh', marginLeft: '1vw', }} onClick={() => handleUpdateCourse(course.id, "premium")}>{course.premium === true? 'Premium' : 'Not Premium'}</Button>
-                                    <Button variant="contained" color="error" style={{ marginTop: '1vh', marginLeft: '35%', }} onClick={() => handleDelete(course.id)}>Delete</Button>
+                                    {/**<Button variant="contained" color="info" style={{ marginTop: '1vh', marginLeft: '1vw', }} onClick={() => handleUpdateCourse(course.id, "premium")}>{course.premium === true? 'Premium' : 'Not Premium'}</Button>**/}
+                                    <Button variant="contained" color="error" style={{ marginTop: '1vh', marginLeft: '1vw', }} onClick={() => handleDelete(course.id)}>Delete</Button>
                                 </div>                            
                             </div>
                         ))}

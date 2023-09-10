@@ -98,6 +98,18 @@ const Subsection = ({ token, course, isEnrolled, isAuthor, isAdmin }) => {
     })
   }
 
+  const furnishSubsectionName = (name) => {
+    if(name.startsWith('"')){
+      name = name.slice(1)
+    }
+
+    if(name.endsWith('"')){
+      name = name.slice(0, -1)
+    }
+
+    return name
+  }
+
   return (
     <div className="ag-format-container">
       <div className="ag-courses_box">
@@ -106,7 +118,7 @@ const Subsection = ({ token, course, isEnrolled, isAuthor, isAdmin }) => {
             <div className="ag-courses-item_link">
               <div className="ag-courses-item_bg"></div>
 
-              <div className="ag-courses-item_title">{o.name}</div>
+              <div className="ag-courses-item_title">{furnishSubsectionName(o.name)}</div>
 
               {o.lectures.count !== 0 && (
                 <Accordion className="lecture">

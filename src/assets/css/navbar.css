@@ -79,7 +79,7 @@ nav {
 	margin-left: 28rem;
 }
 
-img {
+.navbar-logo > img {
 	text-decoration: none;
 	color: var(--textColor);
 	border-radius: 50%;

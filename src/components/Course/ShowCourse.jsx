@@ -174,7 +174,7 @@ const styleModal = {
         <Container sx={styleContainer} className="course-info">
             {loading ? <CircularProgress style={{ color: 'pink', marginLeft: '50%', }} /> : 
             <>
-                <img src={course.icon} alt={course.title} className="course-image" />
+                <img src={course.icon} alt={course.title} className="show-course-image" />
                 <div style={styleTitleDiv}>
                     <h1 className="course-title">{course.title}</h1>
                     <div className="info">

@@ -27,7 +27,7 @@ function Navbar({ token, user, handleLogout}) {
 
 	return (
 		<header>
-			<NavLink to="/">
+			<NavLink to="/" className="navbar-logo">
 				<img src={logo} alt="LOGO" />
 			</NavLink>
 			<nav ref={navRef}>
