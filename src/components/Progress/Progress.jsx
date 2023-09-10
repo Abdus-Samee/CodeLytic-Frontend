@@ -166,7 +166,7 @@ const Progress = ({ token }) => {
             Object.keys(lectures).map((l, i) => (
               <a 
                 key={i} 
-                onClick={() => navigate(`/course/lectures/${l}`)} 
+                onClick={() => navigate(`/course/lectures/${parseInt(l)}`)} 
                 style={{ 
                   color: lectures[l] === true? 'green' : 'red',
                   cursor: 'pointer',
